@@ -6,6 +6,7 @@ import com.valex.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +23,13 @@ public class UserController {
 
   @GetMapping
   public List<User> getAll () {
+
     return this.userService.getAll();
   }
 
   @PostMapping
   @ResponseStatus (code = HttpStatus.CREATED)
-  public void create (@RequestBody UserDto userDto) {
+  public void create (@RequestBody @Validated UserDto userDto) {
 
     this.userService.create(userDto);
   }
