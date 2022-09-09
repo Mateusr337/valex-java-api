@@ -1,6 +1,8 @@
 package com.valex.demon.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity (name = "users")
@@ -9,14 +11,14 @@ import lombok.*;
 public class User {
 
   @Id
-  @Column
   @GeneratedValue (strategy = GenerationType.IDENTITY)
   private Long id;
 
-//  @Column
+  @NotNull
   private String name;
 
-//  @Column
+  @NotNull
+  @Email
   private String email;
 
 }
