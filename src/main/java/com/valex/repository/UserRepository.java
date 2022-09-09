@@ -1,6 +1,6 @@
 package com.valex.repository;
 
-import com.valex.model.User;
+import com.valex.demon.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

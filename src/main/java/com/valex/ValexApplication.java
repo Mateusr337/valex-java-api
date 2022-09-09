@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan (basePackages = "com.valex.model")
+@EntityScan (basePackages = "com.valex.demon.model")
 public class ValexApplication {
 
 	public static void main(String[] args) {

@@ -1,6 +1,7 @@
 package com.valex.controller;
 
-import com.valex.model.User;
+import com.valex.demon.model.User;
+import com.valex.demon.Dto.UserDto;
 import com.valex.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,14 @@ public class UserController {
 
   @GetMapping
   public List<User> getAll () {
-
     return this.userService.getAll();
   }
 
   @PostMapping
   @ResponseStatus (code = HttpStatus.CREATED)
-  public void create (@RequestBody User user) {
+  public void create (@RequestBody UserDto userDto) {
 
-    this.userService.create(user);
+    this.userService.create(userDto);
   }
 
 }
