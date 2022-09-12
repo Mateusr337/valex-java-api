@@ -1,13 +1,14 @@
 package com.valex.demon.model;
 
 import javax.persistence.*;
+import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
-@Entity (name = "users")
 @Getter
 @Setter
+@Entity (name = "users")
 public class User {
 
   @Id
@@ -19,6 +20,10 @@ public class User {
 
   @NotNull
   @Email
+  @Column (unique = true)
   private String email;
+
+  @NotNull
+  private String password;
 
 }

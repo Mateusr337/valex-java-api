@@ -5,6 +5,7 @@ import com.valex.demon.Dto.UserDto;
 import com.valex.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +13,13 @@ public class UserService {
 
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private PasswordEncoder encoder;
+
+  public UserService (PasswordEncoder encoder) {
+
+    this.encoder = encoder;
+  }
 
   public List<User> getAll() {
 
@@ -24,6 +32,7 @@ public class UserService {
 
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
+    user.setPassword(encoder.encode(userDto.getPassword()));
 
     this.userRepository.save(user);
   }
