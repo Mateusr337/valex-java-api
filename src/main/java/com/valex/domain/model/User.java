@@ -1,10 +1,9 @@
-package com.valex.demon.model;
+package com.valex.domain.model;
 
 import javax.persistence.*;
 import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter

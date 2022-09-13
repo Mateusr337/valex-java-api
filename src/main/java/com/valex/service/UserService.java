@@ -1,7 +1,8 @@
 package com.valex.service;
 
-import com.valex.demon.model.User;
-import com.valex.demon.Dto.UserDto;
+import com.valex.domain.exception.NotFoundException;
+import com.valex.domain.model.User;
+import com.valex.domain.Dto.UserDto;
 import com.valex.repository.UserRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
   @Autowired
-  private PasswordEncoder encoder;
+  private final PasswordEncoder encoder;
 
   public UserService (PasswordEncoder encoder) {
 
@@ -24,6 +25,22 @@ public class UserService {
   public List<User> getAll() {
 
     return this.userRepository.findAll();
+  }
+
+  public User getByEmail (String email) {
+
+    return this.userRepository.findByEmail(email);
+  }
+
+  public User getByEmailOrFail (String email) {
+
+    User user = this.userRepository.findByEmail(email);
+
+    if (user == null) {
+      throw new NotFoundException("user");
+    }
+
+    return user;
   }
 
   public void create (UserDto userDto) {
@@ -36,4 +53,5 @@ public class UserService {
 
     this.userRepository.save(user);
   }
+
 }

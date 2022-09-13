@@ -1,7 +1,7 @@
 package com.valex.controller;
 
-import com.valex.demon.model.User;
-import com.valex.demon.Dto.UserDto;
+import com.valex.domain.model.User;
+import com.valex.domain.Dto.UserDto;
 import com.valex.service.UserService;
 import java.util.List;
 import javax.validation.Valid;

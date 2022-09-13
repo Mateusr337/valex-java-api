@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication (exclude = { SecurityAutoConfiguration.class })
-@EntityScan (basePackages = "com.valex.demon.model")
+@EntityScan (basePackages = "com.valex.domain.model")
 public class ValexApplication {
 
 	public static void main(String[] args) {
@@ -20,8 +20,7 @@ public class ValexApplication {
 		@Bean
 		public PasswordEncoder getEncoder () {
 
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			return encoder;
+			return new BCryptPasswordEncoder();
 		}
 
 }
