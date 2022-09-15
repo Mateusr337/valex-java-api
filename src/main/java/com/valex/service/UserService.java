@@ -36,7 +36,6 @@ public class UserService {
     if (user == null) {
       throw new NotFoundException("User Not Found!");
     }
-
     return user;
   }
 
@@ -49,13 +48,11 @@ public class UserService {
     }
 
     User user = new User();
-
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
     user.setPassword(encoder.encode(userDto.getPassword()));
 
     this.userRepository.save(user);
-
   }
 
 }
