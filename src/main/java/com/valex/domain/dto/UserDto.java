@@ -1,4 +1,4 @@
-package com.valex.domain.Dto;
+package com.valex.domain.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
