@@ -4,10 +4,9 @@ import com.valex.domain.dto.CardDto;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.repository.CardRepository;
+import com.valex.utils.GenerateCardData;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,29 +25,16 @@ public class CardService {
 
   public void create (CardDto cardDto) {
     Random random = new Random();
-    StringBuilder cardNumber = new StringBuilder();
-    StringBuilder CardCVV = new StringBuilder();
-
-
-    for (int i = 0; i < 16; i++) {
-      int randomNumber = random.nextInt(9);
-      cardNumber.append(Integer.toString(randomNumber));
-    }
-
-    for (int i = 0; i < 3; i++) {
-      int randomNumber = random.nextInt(9);
-      CardCVV.append(Integer.toString(randomNumber));
-    }
 
     User user = this.userService.findByIdOrFail(cardDto.getUserId());
 
     Card card = new Card ();
-    card.setNumber(cardNumber.toString());
-    card.setCvv(CardCVV.toString());
+    card.setNumber(GenerateCardData.Number());
+    card.setCvv(GenerateCardData.CVV());
     card.setStatus("disabled");
     card.setLimitCredit(cardDto.getLimit());
     card.setType(cardDto.getType());
-    card.setUserName("fulano");
+    card.setUserName(user.getName());
     card.setUser(user);
 
     this.cardRepository.save(card);
