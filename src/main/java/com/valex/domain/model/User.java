@@ -1,6 +1,7 @@
 package com.valex.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -14,15 +15,12 @@ public class User {
   @GeneratedValue (strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
   private String name;
 
-  @NotNull
-  @Email
   @Column (unique = true)
   private String email;
 
-  @NotNull
   private String password;
 
+  private String cpf;
 }
