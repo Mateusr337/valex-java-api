@@ -4,7 +4,6 @@ import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.jwt.data.UserDataDetails;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
-import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;

@@ -6,6 +6,7 @@ import com.valex.domain.model.User;
 import com.valex.domain.dto.UserDto;
 import com.valex.repository.UserRepository;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,22 +16,19 @@ public class UserService {
 
   @Autowired
   private UserRepository userRepository;
+
   @Autowired
   private PasswordEncoder encoder;
 
-
   public List<User> getAll() {
-
     return this.userRepository.findAll();
   }
 
   public User getByEmail (String email) {
-
     return this.userRepository.findByEmail(email);
   }
 
   public User getByEmailOrFail (String email) {
-
     User user = this.userRepository.findByEmail(email);
 
     if (user == null) {
@@ -39,12 +37,11 @@ public class UserService {
     return user;
   }
 
-  public void create (UserDto userDto) {
-
+  public void create (@NotNull UserDto userDto) {
     User foundUser = this.userRepository.findByEmail(userDto.getEmail());
 
     if (foundUser != null) {
-      throw new ConflictException("This email already exist!");
+      throw new ConflictException ("This email already exist!");
     }
 
     User user = new User();

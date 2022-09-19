@@ -1,9 +1,9 @@
 package com.valex.domain.exception.handler;
 
 import com.valex.domain.exception.ConflictException;
-import com.valex.domain.exception.DefaultException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.exception.UnauthorizedException;
+import com.valex.domain.exception.DefaultException;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
