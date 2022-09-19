@@ -6,6 +6,7 @@ import com.valex.domain.model.User;
 import com.valex.domain.dto.UserDto;
 import com.valex.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +38,16 @@ public class UserService {
     return user;
   }
 
+  public User findByIdOrFail (Long id) {
+    @NotNull Optional<User> foundUser = this.userRepository.findById(id);
+
+    if (foundUser.isEmpty()) {
+      throw new NotFoundException ("Not found user!");
+    }
+
+    return foundUser.get();
+  }
+
   public void create (@NotNull UserDto userDto) {
     User foundUser = this.userRepository.findByEmail(userDto.getEmail());
 
@@ -48,6 +59,7 @@ public class UserService {
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
     user.setPassword(encoder.encode(userDto.getPassword()));
+    user.setCpf(userDto.getCpf());
 
     this.userRepository.save(user);
   }

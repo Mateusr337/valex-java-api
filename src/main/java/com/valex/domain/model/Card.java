@@ -1,8 +1,8 @@
 package com.valex.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,19 +12,19 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
+@Entity (name = "cards")
 @Table (name = "cards")
 public class Card {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
   private Long id;
 
   @ManyToOne
-  @JoinColumn (name = "card", nullable = false)
+  @JsonIgnore
+  @JoinColumn (name = "cards", nullable = false)
   private User user = new User ();
 
   @Column (nullable = false)
@@ -43,4 +43,7 @@ public class Card {
 
   @Column (nullable = false)
   private String type;
+
+  @Column (nullable = false)
+  private Long limitCredit;
 }

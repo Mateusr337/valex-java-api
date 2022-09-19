@@ -7,16 +7,18 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Getter;
 
+@Getter
 public class CardDto {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
 
   @NotBlank
   @NotNull
   private Long userId;
 
+  @NotBlank
+  @NotNull
+  private String type;
+
+  private Long limit;
 }

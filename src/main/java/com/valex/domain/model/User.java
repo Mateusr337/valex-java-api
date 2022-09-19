@@ -9,7 +9,7 @@ import org.hibernate.annotations.Cascade;
 
 @Getter
 @Setter
-@Entity
+@Entity (name = "users")
 @Table (name = "users")
 public class User {
 
