@@ -1,5 +1,6 @@
 package com.valex.domain.exception.handler;
 
+import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.ConflictException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.exception.UnauthorizedException;
@@ -54,6 +55,20 @@ public class HandlerException {
     );
 
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception);
+  }
+
+  @ExceptionHandler ( BadRequestException.class )
+  public ResponseEntity<DefaultException> unauthorized (
+      BadRequestException e,
+      HttpServletRequest request
+  ) {
+    DefaultException exception = new DefaultException(
+        HttpStatus.BAD_REQUEST.value(),
+        new Date(),
+        e.getMessage()
+    );
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
   }
 
 }
