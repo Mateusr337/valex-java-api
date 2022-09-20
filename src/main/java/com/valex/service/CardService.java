@@ -4,12 +4,10 @@ import com.valex.domain.dto.CardDto;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
-import com.valex.domain.validation.CardTypeValidation;
+import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.repository.CardRepository;
 import com.valex.utils.GenerateCardData;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,9 +27,8 @@ public class CardService {
 
   public void create (CardDto cardDto) {
     User user = this.userService.findByIdOrFail(cardDto.getUserId());
-    CardTypeValidation.valid(cardDto.getType());
 
-    //implementar validação-regra de negocio para limit(>0)-credito e limit(0)-debito
+    CardTypeAndLimitValidation.valid(cardDto.getType(), cardDto.getLimit());
 
     Card card = new Card ();
     card.setNumber(GenerateCardData.Number());
