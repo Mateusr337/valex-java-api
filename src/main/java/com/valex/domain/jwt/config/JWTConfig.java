@@ -3,6 +3,7 @@ package com.valex.domain.jwt.config;
 import com.valex.domain.jwt.filter.JWTAuthenticationFilter;
 import com.valex.domain.jwt.filter.JWTValidateFilter;
 import com.valex.domain.jwt.service.UserDetailService;
+import com.valex.utils.Encoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,11 +20,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class JWTConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailService userDetailService;
-  private final PasswordEncoder encoder;
 
-  public JWTConfig(UserDetailService userDetailService, PasswordEncoder encoder) {
+  public JWTConfig(UserDetailService userDetailService) {
     this.userDetailService = userDetailService;
-    this.encoder = encoder;
   }
 
   @Override
@@ -31,7 +30,7 @@ public class JWTConfig extends WebSecurityConfigurerAdapter {
 
     auth.
         userDetailsService(this.userDetailService)
-        .passwordEncoder(this.encoder);
+        .passwordEncoder(Encoder.getEncoder());
   }
 
   @Override

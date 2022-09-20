@@ -42,4 +42,8 @@ public class CardService {
     this.cardRepository.save(card);
   }
 
+  public void activate () {
+
+  }
+
 }

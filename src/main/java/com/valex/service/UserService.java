@@ -9,18 +9,15 @@ import com.valex.utils.Encoder;
 import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
   private final UserRepository userRepository;
-  private final PasswordEncoder encoder;
 
-  public UserService(UserRepository userRepository, PasswordEncoder encoder) {
+  public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
-    this.encoder = encoder;
   }
 
   public List<User> getAll() {
@@ -41,7 +38,7 @@ public class UserService {
   }
 
   public User findByIdOrFail (Long id) {
-    @NotNull Optional<User> foundUser = this.userRepository.findById(id);
+    Optional<User> foundUser = this.userRepository.findById(id);
 
     if (foundUser.isEmpty()) {
       throw new NotFoundException ("Not found user!");
@@ -60,7 +57,7 @@ public class UserService {
     User user = new User();
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
-    user.setPassword(encoder.encode(userDto.getPassword()));
+    user.setPassword(Encoder.encode(userDto.getPassword()));
     user.setCpf(userDto.getCpf());
 
     this.userRepository.save(user);
