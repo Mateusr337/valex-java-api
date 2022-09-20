@@ -12,7 +12,6 @@ import lombok.Getter;
 @Getter
 public class CardDto {
 
-  @NotBlank
   @NotNull
   private Long userId;
 
@@ -20,5 +19,6 @@ public class CardDto {
   @NotNull
   private String type;
 
+  @NotNull
   private Long limit;
 }

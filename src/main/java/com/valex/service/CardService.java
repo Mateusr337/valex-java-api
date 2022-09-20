@@ -43,7 +43,11 @@ public class CardService {
   }
 
   public void activate () {
+    //activate a card
+  }
 
+  public List<Card> findCardsByUserId (Long id) {
+    return this.cardRepository.findByUserId(id);
   }
 
 }

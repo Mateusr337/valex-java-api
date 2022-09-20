@@ -2,6 +2,7 @@ package com.valex.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.*;
@@ -9,7 +10,7 @@ import org.hibernate.annotations.Cascade;
 
 @Getter
 @Setter
-@Entity (name = "users")
+@Entity
 @Table (name = "users")
 public class User {
 
@@ -29,8 +30,7 @@ public class User {
   @Column (nullable = false)
   private String cpf;
 
-  @OneToMany (mappedBy = "user", orphanRemoval = true)
-  @Cascade (org.hibernate.annotations.CascadeType.ALL)
-  private List<Card> cards = new ArrayList<Card> ();
+  @OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
+  private Set<Card> cards;
 
 }
