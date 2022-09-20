@@ -15,9 +15,5 @@ public class ValexApplication {
 		SpringApplication.run(ValexApplication.class, args);
 
 		}
-		@Bean
-		public PasswordEncoder getEncoder () {
-			return new BCryptPasswordEncoder();
-		}
 
 }

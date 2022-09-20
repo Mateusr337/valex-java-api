@@ -5,21 +5,23 @@ import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.User;
 import com.valex.domain.dto.UserDto;
 import com.valex.repository.UserRepository;
+import com.valex.utils.Encoder;
 import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
+  private final PasswordEncoder encoder;
 
-  @Autowired
-  private PasswordEncoder encoder;
+  public UserService(UserRepository userRepository, PasswordEncoder encoder) {
+    this.userRepository = userRepository;
+    this.encoder = encoder;
+  }
 
   public List<User> getAll() {
     return this.userRepository.findAll();
