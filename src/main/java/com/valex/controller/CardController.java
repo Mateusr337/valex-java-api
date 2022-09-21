@@ -30,7 +30,7 @@ public class CardController {
 
   @GetMapping
   public List<Card> findAll() {
-    return this.cardService.getAll();
+    return this.cardService.findAll();
   }
 
   @PostMapping
@@ -43,11 +43,9 @@ public class CardController {
   @ResponseStatus (code = HttpStatus.NO_CONTENT)
   public void activeCard (
       @RequestBody @Valid ActivateCardDto activateCardDto,
-      @PathVariable ("id") Long id
+      @PathVariable ("id") Long cardId
   ) {
-    //Pegar id passar para a service ver se o cartão existe
-    //Salvar o CVV encoded e password
-    //mudar status para active e setar a senha
+    this.cardService.activate(cardId, activateCardDto.getPasscode());
   }
 
   @GetMapping ("/clients/{id}")

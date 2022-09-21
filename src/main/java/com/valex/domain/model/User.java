@@ -1,12 +1,9 @@
 package com.valex.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 @Getter
 @Setter
@@ -30,7 +27,10 @@ public class User {
   @Column (nullable = false)
   private String cpf;
 
-  @OneToMany (mappedBy = "user", fetch = FetchType.LAZY)
+  @OneToMany(
+      mappedBy = "user",
+      cascade = CascadeType.ALL
+  )
   private Set<Card> cards;
 
 }

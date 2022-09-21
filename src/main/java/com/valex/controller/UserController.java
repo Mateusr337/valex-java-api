@@ -19,7 +19,7 @@ public class UserController {
 
   @GetMapping
   public List<User> getAll () {
-    return this.userService.getAll();
+    return this.userService.findAll();
   }
 
   @PostMapping

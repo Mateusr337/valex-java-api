@@ -3,6 +3,7 @@ package com.valex.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ import lombok.Setter;
 public class Card {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue (strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
@@ -39,7 +40,7 @@ public class Card {
   @Column (nullable = false)
   private String cvv;
 
-  private String password;
+  private String passcode;
 
   @Column (nullable = false)
   private String type;
