@@ -4,6 +4,7 @@ import com.valex.domain.dto.CardDto;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
+import com.valex.domain.validation.CardPasscodeValidation;
 import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.repository.CardRepository;
 import com.valex.utils.Encoder;
@@ -57,6 +58,8 @@ public class CardService {
   public void activate (Long cardId, String passcode) {
     Card card = this.findByIdOrFail(cardId);
     String encodedPasscode = Encoder.encode(passcode);
+
+    CardPasscodeValidation.valid(passcode);
 
     card.setStatus("active");
     card.setPasscode(encodedPasscode);
