@@ -1,6 +1,7 @@
 package com.valex.service;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
@@ -58,6 +59,10 @@ public class CardService {
   public void activate (Long cardId, String passcode) {
     Card card = this.findByIdOrFail(cardId);
     String encodedPasscode = Encoder.encode(passcode);
+
+    if (card.getType().equals("active")) {
+      throw new BadRequestException("This card is already activated");
+    }
 
     CardPasscodeValidation.valid(passcode);
 
