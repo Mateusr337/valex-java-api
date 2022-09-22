@@ -1,8 +1,13 @@
 package com.valex.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.valex.domain.enumeration.CardStatus;
+import com.valex.domain.enumeration.CardType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +28,6 @@ public class Card {
   private Long id;
 
   @ManyToOne
-  @JsonIgnore
   @JoinColumn (name = "user_id")
   private User user;
 
@@ -34,7 +38,8 @@ public class Card {
   private String number;
 
   @Column (nullable = false)
-  private String status;
+  @Enumerated (EnumType.STRING)
+  private CardStatus status;
 
   @Column (nullable = false)
   private String cvv;
@@ -42,7 +47,8 @@ public class Card {
   private String passcode;
 
   @Column (nullable = false)
-  private String type;
+  @Enumerated (EnumType.STRING)
+  private CardType type;
 
   @Column (nullable = false)
   private Long limitCredit;

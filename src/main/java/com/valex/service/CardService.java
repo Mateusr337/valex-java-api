@@ -1,6 +1,8 @@
 package com.valex.service;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.enumeration.CardStatus;
+import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
@@ -12,18 +14,18 @@ import com.valex.utils.Encoder;
 import com.valex.utils.GenerateCardData;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CardService {
 
-  private final CardRepository cardRepository;
-  private final UserService userService;
+  @Autowired
+  private CardRepository cardRepository;
+  @Autowired
+  private UserService userService;
 
-  public CardService(CardRepository cardRepository, UserService userService) {
-    this.cardRepository = cardRepository;
-    this.userService = userService;
-  }
+
 
   public List<Card> findAll() {
     return this.cardRepository.findAll();
@@ -47,9 +49,9 @@ public class CardService {
     Card card = new Card ();
     card.setNumber(GenerateCardData.Number());
     card.setCvv(encodedCVV);
-    card.setStatus("disabled");
+    card.setStatus(CardStatus.DISABLED);
     card.setLimitCredit(cardDto.getLimit());
-    card.setType(cardDto.getType());
+    card.setType(CardType.valueOf(cardDto.getType()));
     card.setUserName(user.getName());
     card.setUser(user);
 
@@ -61,11 +63,11 @@ public class CardService {
     CardPasscodeValidation.valid(passcode);
     String encodedPasscode = Encoder.encode(passcode);
 
-    if (card.getStatus().equals("active")) {
+    if (card.getStatus().equals(CardStatus.ACTIVE)) {
       throw new BadRequestException("This card is already activated");
     }
 
-    card.setStatus("active");
+    card.setStatus(CardStatus.ACTIVE);
     card.setPasscode(encodedPasscode);
 
     this.cardRepository.save(card);

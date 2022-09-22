@@ -9,16 +9,14 @@ import com.valex.utils.Encoder;
 import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-  private final UserRepository userRepository;
-
-  public UserService(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+  @Autowired
+  private UserRepository userRepository;
 
   public List<User> findAll() {
     return this.userRepository.findAll();

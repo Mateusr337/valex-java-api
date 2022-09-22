@@ -23,13 +23,13 @@ public class UserController {
   }
 
   @PostMapping
-  @ResponseStatus (code = HttpStatus.CREATED)
+  @ResponseStatus (HttpStatus.CREATED)
   public void create (@RequestBody @Valid UserDto userDto) {
     this.userService.create(userDto);
   }
 
   @DeleteMapping("/{id}")
-  @ResponseStatus (code = HttpStatus.NO_CONTENT)
+  @ResponseStatus (HttpStatus.NO_CONTENT)
   public void delete (@PathVariable ("id") Long userId) {
     this.userService.delete(userId);
   }

@@ -6,13 +6,13 @@ public final class CardTypeAndLimitValidation {
 
   public static void valid(String type, long limit) {
 
-    if ( !type.equals("debit") && !type.equals("credit") ) {
+    if ( !type.equals("DEBIT") && !type.equals("CREDIT") ) {
       throw new BadRequestException("Card type not allowed! must be 'credit' or 'debit'");
     }
 
-    if (type.equals("credit")) { validCreditCard (limit); }
+    if (type.equals("CREDIT")) { validCreditCard (limit); }
 
-    if (type.equals("debit")) { validDebitCard (limit); }
+    if (type.equals("DEBIT")) { validDebitCard (limit); }
   }
 
   private static void validCreditCard (long limit) {
