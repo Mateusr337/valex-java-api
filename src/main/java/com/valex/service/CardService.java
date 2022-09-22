@@ -58,13 +58,12 @@ public class CardService {
 
   public void activate (Long cardId, String passcode) {
     Card card = this.findByIdOrFail(cardId);
+    CardPasscodeValidation.valid(passcode);
     String encodedPasscode = Encoder.encode(passcode);
 
-    if (card.getType().equals("active")) {
+    if (card.getStatus().equals("active")) {
       throw new BadRequestException("This card is already activated");
     }
-
-    CardPasscodeValidation.valid(passcode);
 
     card.setStatus("active");
     card.setPasscode(encodedPasscode);
