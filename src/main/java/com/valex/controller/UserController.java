@@ -28,4 +28,10 @@ public class UserController {
     this.userService.create(userDto);
   }
 
+  @DeleteMapping("/{id}")
+  @ResponseStatus (code = HttpStatus.NO_CONTENT)
+  public void delete (@PathVariable ("id") Long userId) {
+    this.userService.delete(userId);
+  }
+
 }

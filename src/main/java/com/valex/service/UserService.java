@@ -63,4 +63,9 @@ public class UserService {
     this.userRepository.save(user);
   }
 
+  public void delete (Long id) {
+    User user = findByIdOrFail(id);
+    this.userRepository.delete(user);
+  }
+
 }

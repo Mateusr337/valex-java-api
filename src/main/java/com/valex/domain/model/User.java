@@ -31,6 +31,7 @@ public class User {
       mappedBy = "user",
       cascade = CascadeType.ALL
   )
+  @JsonIgnore
   private Set<Card> cards;
 
 }
