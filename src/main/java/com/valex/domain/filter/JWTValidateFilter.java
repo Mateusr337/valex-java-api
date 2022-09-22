@@ -1,4 +1,4 @@
-package com.valex.domain.jwt.filter;
+package com.valex.domain.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

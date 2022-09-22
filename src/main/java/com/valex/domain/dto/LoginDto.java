@@ -1,13 +1,14 @@
 package com.valex.domain.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class LoginDto {
 
-  @NotNull
+  @NotBlank
   @Email
   private String email;
 

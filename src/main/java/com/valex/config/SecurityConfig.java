@@ -1,8 +1,8 @@
-package com.valex.domain.jwt.config;
+package com.valex.config;
 
-import com.valex.domain.jwt.filter.JWTAuthenticationFilter;
-import com.valex.domain.jwt.filter.JWTValidateFilter;
-import com.valex.domain.jwt.service.UserDetailService;
+import com.valex.domain.filter.JWTValidateFilter;
+import com.valex.domain.filter.JWTAuthenticationFilter;
+import com.valex.service.UserAuthService;
 import com.valex.utils.Encoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -16,11 +16,11 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
-public class JWTConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final UserDetailService userDetailService;
+  private final UserAuthService userDetailService;
 
-  public JWTConfig(UserDetailService userDetailService) {
+  public SecurityConfig(UserAuthService userDetailService) {
     this.userDetailService = userDetailService;
   }
 
@@ -36,9 +36,10 @@ public class JWTConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     http.
-        csrf().disable().authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/login").permitAll()
-        .antMatchers(HttpMethod.POST, "/users").permitAll()
+        csrf().disable()
+        .authorizeRequests()
+          .antMatchers(HttpMethod.POST, "/login").permitAll()
+          .antMatchers(HttpMethod.POST, "/users").permitAll()
         .anyRequest().authenticated()
         .and()
         .addFilter( new JWTAuthenticationFilter( authenticationManager() ) )

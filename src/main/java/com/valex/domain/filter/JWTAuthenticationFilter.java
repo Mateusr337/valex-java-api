@@ -1,9 +1,9 @@
-package com.valex.domain.jwt.filter;
+package com.valex.domain.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.valex.domain.jwt.data.UserDataDetails;
+import com.valex.domain.exception.UnauthorizedException;
 import com.valex.domain.model.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +37,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     try {
       User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
+      System.out.println(user.getUsername());
+      System.out.println(user.getPassword());
+      System.out.println(user.getClass());
+
+
       return this.authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(
               user.getEmail(),
@@ -46,7 +51,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       );
 
     } catch (IOException e) {
-      throw new RuntimeException("Unauthorized user!", e);
+      throw new UnauthorizedException("Unauthorized user!", e);
     }
   }
 
@@ -57,10 +62,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       FilterChain chain, Authentication authResult
   ) throws IOException, ServletException {
 
-    UserDataDetails userData = (UserDataDetails) authResult.getPrincipal();
+    User user = (User) authResult.getPrincipal();
 
     String token = JWT.create()
-        .withSubject( userData.getUsername() )
+        .withSubject( user.getEmail() )
         .withExpiresAt( new Date ( System.currentTimeMillis() + EXPIRATION_TOKEN ) )
         .sign( Algorithm.HMAC512(PASSWORD_TOKEN) );
 
