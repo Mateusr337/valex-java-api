@@ -12,20 +12,19 @@ import org.hibernate.validator.constraints.br.CPF;
 @Setter
 public class UserDto {
 
-  @NotBlank(message = "name not be null or empty!")
+  @NotBlank(message = "{name.null.empty}")
   private String name;
 
-  @Email (message = "this email is not valid")
-  @NotBlank (message = "email not be null or empty!")
+  @Email (message = "{email.invalid}")
+  @NotBlank (message = "{email.null.empty}")
   private String email;
 
-  @NotBlank (message = "password not be null or empty!")
-  @Size (min = 6, max = 8, message = "Password must have length between 6 and 8 digits")
+  @NotBlank (message = "{password.null.empty}")
+  @Size (min = 6, max = 8, message = "{password.length}")
   private String password;
 
-  @NotBlank (message = "CPF not be null or empty!")
-  @Size (min = 11, max = 11)
-  @CPF
+  @NotBlank (message = "{cpf.null.empty}")
+  @CPF (message = "{cpf.invalid}")
   private String cpf;
 
 }
