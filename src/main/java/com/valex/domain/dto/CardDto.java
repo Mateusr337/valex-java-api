@@ -13,12 +13,12 @@ import lombok.Getter;
 @Getter
 public class CardDto {
 
-  @NotNull
+  @NotNull (message = "{user.id.null}")
   private Long userId;
 
-  @NotEmpty
+  @NotBlank (message = "{card.type.null.empty}")
   private String type;
 
-  @NotNull
+  @NotNull (message = "{limit.null}")
   private Long limit;
 }

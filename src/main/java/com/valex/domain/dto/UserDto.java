@@ -9,7 +9,6 @@ import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
-@Setter
 public class UserDto {
 
   @NotBlank(message = "{name.null.empty}")
