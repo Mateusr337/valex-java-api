@@ -24,8 +24,8 @@ public class UserController {
 
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
-  public void create (@RequestBody @Valid UserDto userDto) {
-    this.userService.create(userDto);
+  public User create (@RequestBody @Valid UserDto userDto) {
+    return this.userService.create(userDto);
   }
 
   @DeleteMapping("/{id}")

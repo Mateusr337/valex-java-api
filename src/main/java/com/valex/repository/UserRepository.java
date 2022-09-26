@@ -13,6 +13,7 @@ public interface UserRepository extends JpaRepository <User, Long> {
 
   @NotNull Optional<User> findById(@NotNull Long id);
 
+
 //  @Query ("select u from User u left join fetch u.cards where u.id = :id")
 //  User findByIdFetchCards (Long id);
 }

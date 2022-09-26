@@ -26,11 +26,11 @@ public class UserService {
     return foundUser.orElseThrow(() -> new NotFoundException("User not found"));
   }
 
-  public void create (UserDto userDto) {
+  public User create (UserDto userDto) {
     User foundUser = this.userRepository.findByEmail(userDto.getEmail());
 
     if (foundUser != null) {
-      throw new ConflictException ("This email already exist!");
+      throw new ConflictException ("This email already exist");
     }
 
     User user = new User();
@@ -39,12 +39,12 @@ public class UserService {
     user.setPassword(Encoder.encode(userDto.getPassword()));
     user.setCpf(userDto.getCpf());
 
-    this.userRepository.save(user);
+    return this.userRepository.save(user);
   }
 
   public void delete (Long id) {
     User user = findByIdOrFail(id);
-    this.userRepository.delete(user);
+    this.userRepository.deleteById(id);
   }
 
 }
