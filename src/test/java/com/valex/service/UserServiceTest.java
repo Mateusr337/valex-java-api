@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import com.valex.domain.dto.UserDto;
+import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
@@ -60,7 +61,17 @@ class UserServiceTest {
     assertEquals(ID, response.getId());
   }
 
+  @Test
+  void whenFindByIdOrThrowWithNoExistingIdThenReturnThrowNotFoundException () {
+    when(userRepository.findById(anyLong())).thenReturn(emptyOptionalUser);
 
+    try {
+      User response = userService.findByIdOrFail(ID);
+    } catch (Exception e) {
+      assertEquals(NotFoundException.class, e.getClass());
+      assertEquals("{user.not.found}", e.getMessage());
+    }
+  }
 
   private void startUser () {
     this.user = new User(ID, NAME, EMAIL, PASSWORD, CPF, CARDS);
