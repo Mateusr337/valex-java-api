@@ -35,7 +35,7 @@ public class CardService {
     Optional<Card> card = this.cardRepository.findById(id);
 
     if (card.isEmpty()) {
-      throw new NotFoundException("Not found card!");
+      throw new NotFoundException("{card.not.found}");
     }
     return card.get();
   }

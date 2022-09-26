@@ -2,7 +2,6 @@ package com.valex.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,15 +11,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.ToString.Exclude;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Setter
-@Entity
-@Table (name = "users")
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Table
+@Entity (name = "users")
 public class User implements UserDetails {
 
   @Id
@@ -43,6 +49,7 @@ public class User implements UserDetails {
       mappedBy = "user",
       cascade = CascadeType.ALL
   )
+  @Exclude
   @JsonIgnore
   private Set<Card> cards;
 

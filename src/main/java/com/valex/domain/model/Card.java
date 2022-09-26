@@ -1,7 +1,5 @@
 package com.valex.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import javax.persistence.Column;
@@ -14,13 +12,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Table
 @Entity (name = "cards")
-@Table (name = "cards")
 public class Card {
 
   @Id

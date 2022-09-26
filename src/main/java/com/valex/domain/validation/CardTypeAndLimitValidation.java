@@ -7,7 +7,7 @@ public final class CardTypeAndLimitValidation {
   public static void valid(String type, long limit) {
 
     if ( !type.equals("DEBIT") && !type.equals("CREDIT") ) {
-      throw new BadRequestException("Card type not allowed! must be 'credit' or 'debit'");
+      throw new BadRequestException("Card type not allowed! must be 'CREDIT' or 'DEBIT'");
     }
 
     if (type.equals("CREDIT")) { validCreditCard (limit); }

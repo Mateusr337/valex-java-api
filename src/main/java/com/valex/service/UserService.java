@@ -39,7 +39,7 @@ public class UserService {
     Optional<User> foundUser = this.userRepository.findById(id);
 
     if (foundUser.isEmpty()) {
-      throw new NotFoundException ("Not found user!");
+      throw new NotFoundException ("{user.not.found}");
     }
 
     return foundUser.get();
