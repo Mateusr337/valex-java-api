@@ -8,7 +8,6 @@ import com.valex.repository.UserRepository;
 import com.valex.utils.Encoder;
 import java.util.List;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,30 +21,12 @@ public class UserService {
     return this.userRepository.findAll();
   }
 
-  public User getByEmail (String email) {
-    return this.userRepository.findByEmail(email);
-  }
-
-  public User getByEmailOrFail (String email) {
-    User user = this.userRepository.findByEmail(email);
-
-    if (user == null) {
-      throw new NotFoundException("User Not Found!");
-    }
-    return user;
-  }
-
   public User findByIdOrFail (Long id) {
     Optional<User> foundUser = this.userRepository.findById(id);
-
-    if (foundUser.isEmpty()) {
-      throw new NotFoundException ("{user.not.found}");
-    }
-
-    return foundUser.get();
+    return foundUser.orElseThrow(() -> new NotFoundException("User not found"));
   }
 
-  public void create (@NotNull UserDto userDto) {
+  public void create (UserDto userDto) {
     User foundUser = this.userRepository.findByEmail(userDto.getEmail());
 
     if (foundUser != null) {

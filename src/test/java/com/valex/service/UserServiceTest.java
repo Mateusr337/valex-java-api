@@ -10,6 +10,7 @@ import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +54,7 @@ class UserServiceTest {
 
   @Test
   void whenFindByIdOrThrowWithExistingIdThenReturnAnUser () {
-    when(userRepository.findById(anyLong())).thenReturn(optionalUser);
+    when(userRepository.findById(anyLong())).thenReturn(this.optionalUser);
 
     User response = userService.findByIdOrFail(ID);
 
@@ -63,7 +64,7 @@ class UserServiceTest {
 
   @Test
   void whenFindByIdOrThrowWithNoExistingIdThenReturnThrowNotFoundException () {
-    when(userRepository.findById(anyLong())).thenReturn(emptyOptionalUser);
+    when(userRepository.findById(anyLong())).thenReturn(this.emptyOptionalUser);
 
     try {
       User response = userService.findByIdOrFail(ID);
@@ -71,6 +72,16 @@ class UserServiceTest {
       assertEquals(NotFoundException.class, e.getClass());
       assertEquals("{user.not.found}", e.getMessage());
     }
+  }
+
+  @Test
+  void whenFindAllThenReturnUserList () {
+    when(userRepository.findAll()).thenReturn(List.of(this.user));
+
+    List<User> response = userService.findAll();
+
+    assertEquals(1, response.size());
+    assertEquals(ID, response.get(0).getId());
   }
 
   private void startUser () {
