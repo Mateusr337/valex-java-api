@@ -1,5 +1,7 @@
 package com.valex.domain.mapper;
 
+import static org.mapstruct.ReportingPolicy.IGNORE;
+
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;

@@ -2,6 +2,7 @@ package com.valex.service;
 
 import com.valex.domain.exception.ConflictException;
 import com.valex.domain.exception.NotFoundException;
+import com.valex.domain.mapper.UserMapper;
 import com.valex.domain.model.User;
 import com.valex.domain.dto.UserDto;
 import com.valex.repository.UserRepository;
@@ -16,6 +17,9 @@ public class UserService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private UserMapper userMapper;
 
   public List<User> findAll() {
     return this.userRepository.findAll();
@@ -33,13 +37,7 @@ public class UserService {
       throw new ConflictException ("This email already exist");
     }
 
-    User user = new User();
-    user.setName(userDto.getName());
-    user.setEmail(userDto.getEmail());
-    user.setPassword(Encoder.encode(userDto.getPassword()));
-    user.setCpf(userDto.getCpf());
-
-    return this.userRepository.save(user);
+    return this.userRepository.save(userMapper.dtoToUser(userDto));
   }
 
   public void delete (Long id) {
