@@ -1,4 +1,4 @@
-package com.valex.domain.dto;
+package com.valex.domain.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CardDto {
+public class CardRequest {
 
   @NotNull (message = "{user.id.null}")
   private Long userId;

@@ -1,6 +1,6 @@
 package com.valex.service;
 
-import com.valex.domain.dto.CardDto;
+import com.valex.domain.request.CardRequest;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
@@ -11,7 +11,6 @@ import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.domain.mapper.CardMapper;
 import com.valex.repository.CardRepository;
 import com.valex.utils.Encoder;
-import com.valex.utils.GenerateCardData;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +40,11 @@ public class CardService {
     return card.get();
   }
 
-  public void create (CardDto cardDto) {
+  public void create (CardRequest cardDto) {
     User user = this.userService.findByIdOrFail(cardDto.getUserId());
     CardTypeAndLimitValidation.valid(cardDto.getType(), cardDto.getLimit());
 
-    this.cardRepository.save(cardMapper.DtoToModel(cardDto));
+    this.cardRepository.save(cardMapper.requestToModel(cardDto));
   }
 
   public void activate (Long cardId, String passcode) {

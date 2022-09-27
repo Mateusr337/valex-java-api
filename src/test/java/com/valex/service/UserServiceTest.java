@@ -9,7 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.valex.domain.dto.UserDto;
+import com.valex.domain.request.UserRequest;
 import com.valex.domain.exception.ConflictException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
@@ -46,7 +46,7 @@ class UserServiceTest {
 
   private User user;
 
-  private UserDto userDto;
+  private UserRequest userDto;
 
   private Optional<User> optionalUser;
 
@@ -127,7 +127,7 @@ class UserServiceTest {
   private void startUser () {
     this.user = new User(ID, NAME, EMAIL, PASSWORD, CPF, CARDS);
     this.optionalUser = Optional.of(new User(ID, NAME, EMAIL, PASSWORD, CPF, CARDS));
-    this.userDto = new UserDto(NAME, PASSWORD, PASSWORD, CPF);
+    this.userDto = new UserRequest(NAME, PASSWORD, PASSWORD, CPF);
     this.emptyOptionalUser = Optional.of(new User());
   }
 }

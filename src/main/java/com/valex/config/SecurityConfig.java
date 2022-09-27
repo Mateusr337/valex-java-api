@@ -1,7 +1,7 @@
 package com.valex.config;
 
-import com.valex.domain.filter.JWTValidateFilter;
-import com.valex.domain.filter.JWTAuthenticationFilter;
+import com.valex.filter.JWTValidateFilter;
+import com.valex.filter.JWTAuthenticationFilter;
 import com.valex.service.UserAuthService;
 import com.valex.utils.Encoder;
 import org.springframework.context.annotation.Bean;

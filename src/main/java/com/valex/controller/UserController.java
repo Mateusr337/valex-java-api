@@ -1,6 +1,6 @@
 package com.valex.controller;
 
-import com.valex.domain.dto.UserDto;
+import com.valex.domain.request.UserRequest;
 import com.valex.domain.model.User;
 import com.valex.service.UserService;
 import java.util.List;
@@ -24,7 +24,7 @@ public class UserController {
 
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
-  public User create (@RequestBody @Valid UserDto userDto) {
+  public User create (@RequestBody @Valid UserRequest userDto) {
     return this.userService.create(userDto);
   }
 

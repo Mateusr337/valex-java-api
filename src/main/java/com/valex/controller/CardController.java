@@ -1,7 +1,7 @@
 package com.valex.controller;
 
-import com.valex.domain.dto.ActivateCardDto;
-import com.valex.domain.dto.CardDto;
+import com.valex.domain.request.ActivateCardRequest;
+import com.valex.domain.request.CardRequest;
 import com.valex.domain.model.Card;
 import com.valex.service.CardService;
 import java.util.List;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,14 +33,14 @@ public class CardController {
 
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
-  public void create (@RequestBody @Valid CardDto cardDto) {
+  public void create (@RequestBody @Valid CardRequest cardDto) {
     this.cardService.create(cardDto);
   }
 
   @PatchMapping ("/activate/{id}")
   @ResponseStatus (HttpStatus.NO_CONTENT)
   public void activeCard (
-      @RequestBody @Valid ActivateCardDto activateCardDto,
+      @RequestBody @Valid ActivateCardRequest activateCardDto,
       @PathVariable ("id") Long cardId
   ) {
     this.cardService.activate(cardId, activateCardDto.getPasscode());
