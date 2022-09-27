@@ -1,22 +1,13 @@
 package com.valex.domain.mapper;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.valex.domain.dto.UserDto;
-import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.request.UserRequest;
+import com.valex.domain.response.UserResponse;
 import com.valex.utils.Encoder;
-import java.util.Collection;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import lombok.ToString.Exclude;
+import java.util.Arrays;
+import java.util.List;
 import org.mapstruct.Mapper;
-import org.springframework.security.core.GrantedAuthority;
 
 @Mapper (componentModel = "spring")
 public class UserMapper {
@@ -35,12 +26,66 @@ public class UserMapper {
     UserDto userDto = this.requestToDto(userRequest);
 
     User user = new User();
-    user.setName(user.getName());
+    user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
     user.setCpf(userDto.getCpf());
     user.setPassword(Encoder.encode(userDto.getPassword()));
 
     return user;
+  }
+
+  public UserDto modelToDto (User user) {
+    UserDto userDto = new UserDto();
+    userDto.setId(user.getId());
+    userDto.setName(user.getName());
+    userDto.setEmail(user.getEmail());
+    userDto.setCpf(user.getCpf());
+    userDto.setPassword(Encoder.encode(user.getPassword()));
+
+    return userDto;
+  }
+
+  public UserResponse dtoToResponse (UserDto userDto) {
+    UserResponse userResponse = new UserResponse();
+    userResponse.setId(userDto.getId());
+    userResponse.setName(userDto.getName());
+    userResponse.setEmail(userDto.getEmail());
+    userResponse.setCpf(userDto.getCpf());
+
+    return userResponse;
+  }
+
+  public List<UserDto> modelToDto (List<User> userList) {
+    UserDto[] userDtoList = new UserDto[ userList.size() ];
+
+    for (int i = 0; i < userList.size(); i++) {
+      User user = userList.get(i);
+
+      UserDto userDto = new UserDto();
+      userDto.setId(user.getId());
+      userDto.setName(user.getName());
+      userDto.setEmail(user.getEmail());
+      userDto.setCpf(user.getCpf());
+      userDto.setPassword(user.getPassword());
+      userDtoList[i] = userDto;
+    };
+    return Arrays.stream(userDtoList).toList();
+  }
+
+  public List<UserResponse> dtoToResponse (List<UserDto> userDtoList) {
+    UserResponse[] userResponseList = new UserResponse[ userDtoList.size() ];
+
+    for (int i = 0; i < userDtoList.size(); i++) {
+      UserDto userDto = userDtoList.get(i);
+
+      UserResponse userResponse = new UserResponse();
+      userResponse.setId(userDto.getId());
+      userResponse.setName(userDto.getName());
+      userResponse.setEmail(userDto.getEmail());
+      userResponse.setCpf(userDto.getCpf());
+      userResponseList[i] = userResponse;
+    };
+    return Arrays.stream(userResponseList).toList();
   }
 
 }

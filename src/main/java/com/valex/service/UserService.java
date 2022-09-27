@@ -1,5 +1,6 @@
 package com.valex.service;
 
+import com.valex.domain.dto.UserDto;
 import com.valex.domain.exception.ConflictException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.UserMapper;
@@ -20,8 +21,10 @@ public class UserService {
   @Autowired
   private UserMapper userMapper;
 
-  public List<User> findAll() {
-    return this.userRepository.findAll();
+  public List<UserDto> findAll() {
+    List<User> users = this.userRepository.findAll();
+
+    return userMapper.modelToDto(users);
   }
 
   public User findByIdOrFail (Long id) {
@@ -29,14 +32,15 @@ public class UserService {
     return foundUser.orElseThrow(() -> new NotFoundException("User not found"));
   }
 
-  public User create (UserRequest userRequest) {
+  public UserDto create (UserRequest userRequest) {
     User foundUser = this.userRepository.findByEmail(userRequest.getEmail());
 
     if (foundUser != null) {
       throw new ConflictException ("This email already exist");
     }
 
-    return this.userRepository.save(userMapper.requestToModel(userRequest));
+    User user = this.userRepository.save(userMapper.requestToModel(userRequest));
+    return userMapper.modelToDto(user);
   }
 
   public void delete (Long id) {

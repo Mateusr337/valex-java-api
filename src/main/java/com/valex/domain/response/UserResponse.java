@@ -1,4 +1,4 @@
-package com.valex.domain.dto;
+package com.valex.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,12 +11,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UserDto {
-
+public class UserResponse {
   private Long id;
   private String name;
   private String email;
-  private String password;
   private String cpf;
-
 }
