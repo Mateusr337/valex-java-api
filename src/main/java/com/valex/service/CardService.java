@@ -2,13 +2,13 @@ package com.valex.service;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardStatus;
-import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.validation.CardPasscodeValidation;
 import com.valex.domain.validation.CardTypeAndLimitValidation;
+import com.valex.domain.mapper.CardMapper;
 import com.valex.repository.CardRepository;
 import com.valex.utils.Encoder;
 import com.valex.utils.GenerateCardData;
@@ -25,7 +25,8 @@ public class CardService {
   @Autowired
   private UserService userService;
 
-
+  @Autowired
+  private CardMapper cardMapper;
 
   public List<Card> findAll() {
     return this.cardRepository.findAll();
@@ -42,20 +43,9 @@ public class CardService {
 
   public void create (CardDto cardDto) {
     User user = this.userService.findByIdOrFail(cardDto.getUserId());
-
     CardTypeAndLimitValidation.valid(cardDto.getType(), cardDto.getLimit());
-    String encodedCVV = Encoder.encode(GenerateCardData.CVV());
 
-    Card card = new Card ();
-    card.setNumber(GenerateCardData.Number());
-    card.setCvv(encodedCVV);
-    card.setStatus(CardStatus.DISABLED);
-    card.setLimitCredit(cardDto.getLimit());
-    card.setType(CardType.valueOf(cardDto.getType()));
-    card.setUserName(user.getName());
-    card.setUser(user);
-
-    this.cardRepository.save(card);
+    this.cardRepository.save(cardMapper.DtoToModel(cardDto));
   }
 
   public void activate (Long cardId, String passcode) {
