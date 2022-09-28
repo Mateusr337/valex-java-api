@@ -1,10 +1,12 @@
 package com.valex.domain.mapper;
 
+import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.User;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.UserResponse;
 import com.valex.utils.Encoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -56,7 +58,7 @@ public class UserMapper {
   }
 
   public List<UserDto> modelToDto (List<User> userList) {
-    UserDto[] userDtoList = new UserDto[ userList.size() ];
+    List<UserDto> userDtoList = new ArrayList<>();
 
     for (int i = 0; i < userList.size(); i++) {
       User user = userList.get(i);
@@ -67,9 +69,9 @@ public class UserMapper {
       userDto.setEmail(user.getEmail());
       userDto.setCpf(user.getCpf());
       userDto.setPassword(user.getPassword());
-      userDtoList[i] = userDto;
+      userDtoList.set(i, userDto);
     };
-    return Arrays.stream(userDtoList).toList();
+    return userDtoList;
   }
 
   public List<UserResponse> dtoToResponse (List<UserDto> userDtoList) {

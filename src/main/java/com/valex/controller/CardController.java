@@ -1,8 +1,11 @@
 package com.valex.controller;
 
+import com.valex.domain.dto.CardDto;
+import com.valex.domain.mapper.CardMapper;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
 import com.valex.domain.model.Card;
+import com.valex.domain.response.CardResponse;
 import com.valex.service.CardService;
 import java.util.List;
 import javax.validation.Valid;
@@ -26,15 +29,19 @@ public class CardController {
   @Autowired
   private CardService cardService;
 
+  @Autowired
+  private CardMapper cardMapper;
+
   @GetMapping
-  public List<Card> findAll() {
-    return this.cardService.findAll();
+  public List<CardResponse> findAll() {
+    return cardMapper.dtoToResponse(this.cardService.findAll());
   }
 
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
-  public void create (@RequestBody @Valid CardRequest cardDto) {
-    this.cardService.create(cardDto);
+  public CardResponse create (@RequestBody @Valid CardRequest cardRequest) {
+    CardDto cardDto =  this.cardService.create(cardRequest);
+    return cardMapper.dtoToResponse(cardDto);
   }
 
   @PatchMapping ("/activate/{id}")
@@ -47,8 +54,9 @@ public class CardController {
   }
 
   @GetMapping ("/clients/{id}")
-  public List<Card> findByClientId (@PathVariable ("id") Long id) {
-    return this.cardService.findCardsByUserId(id);
+  public List<CardResponse> findByClientId (@PathVariable ("id") Long id) {
+    List<CardDto> cardDtoList = this.cardService.findCardsByUserId(id);
+    return cardMapper.dtoToResponse(cardDtoList);
   }
 
 }

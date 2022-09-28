@@ -12,8 +12,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserResponse {
+
   private Long id;
   private String name;
   private String email;
   private String cpf;
+
 }

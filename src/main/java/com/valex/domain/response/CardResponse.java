@@ -1,0 +1,23 @@
+package com.valex.domain.response;
+
+import com.valex.domain.enumeration.CardStatus;
+import com.valex.domain.enumeration.CardType;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class CardResponse {
+
+  private Long id;
+  private Long userId;
+  private String userName;
+  private String number;
+  private CardStatus status;
+  private String cvv;
+  private CardType type;
+  private Long limitCredit;
+
+}
