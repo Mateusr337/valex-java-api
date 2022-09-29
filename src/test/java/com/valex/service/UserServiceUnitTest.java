@@ -2,18 +2,23 @@ package com.valex.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.valex.domain.dto.UserDto;
+import com.valex.domain.exception.ConflictException;
+import com.valex.domain.mapper.UserMapper;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -41,9 +46,14 @@ class UserServiceUnitTest {
   @Mock
   private UserRepository userRepository;
 
+  @Mock
+  private UserMapper userMapper;
+
   private User user;
 
-  private UserRequest userDto;
+  private UserDto userDtoWithoutId;
+
+  private UserDto userDtoWithId;
 
   private Optional<User> optionalUser;
 
@@ -57,9 +67,9 @@ class UserServiceUnitTest {
 
   @Test
   void whenFindByIdOrThrowWithExistingIdThenReturnAnUser () {
-    when(this.userRepository.findById(anyLong())).thenReturn(this.optionalUser);
+    when(userRepository.findById(anyLong())).thenReturn(optionalUser);
 
-    User response = this.userService.findByIdOrFail(ID);
+    User response = userService.findByIdOrFail(ID);
 
     assertEquals(User.class, response.getClass());
     assertEquals(ID, response.getId());
@@ -67,10 +77,10 @@ class UserServiceUnitTest {
 
   @Test
   void whenFindByIdOrThrowWithNoExistingIdThenReturnThrowNotFoundException () {
-    when(this.userRepository.findById(anyLong())).thenReturn(this.emptyOptionalUser);
+    when(userRepository.findById(anyLong())).thenReturn(emptyOptionalUser);
 
     try {
-      User response = this.userService.findByIdOrFail(ID);
+      userService.findByIdOrFail(ID);
 
     } catch (Exception e) {
       assertEquals(NotFoundException.class, e.getClass());
@@ -80,51 +90,60 @@ class UserServiceUnitTest {
 
   @Test
   void whenFindAllThenReturnUserList () {
-    when(this.userRepository.findAll()).thenReturn(List.of(this.user));
+    when(userRepository.findAll()).thenReturn(List.of(user));
+    when(userMapper.modelToDto(anyList())).thenReturn(List.of(userDtoWithId));
 
-    List<UserDto> response = this.userService.findAll();
+    List<UserDto> response = userService.findAll();
+
+    System.out.println(response);
 
     assertEquals(1, response.size());
     assertEquals(ID, response.get(0).getId());
   }
 
-//  @Test
-//  void whenCreateThenReturnSuccess () {
-//    when(this.userRepository.save(any())).thenReturn(this.user);
-//
-//    User response = this.userService.create(userDto);
-//
-//    assertNotNull(response);
-//    assertEquals(User.class, response.getClass());
-//  }
-//
-//  @Test
-//  void whenTryCreateExistEmailUserThenReturnConflictException () {
-//    when(this.userRepository.findByEmail(anyString())).thenReturn(this.user);
-//
-//    try {
-//      User response = this.userService.create(userDto);
-//
-//    } catch (Exception e) {
-//      assertEquals(ConflictException.class, e.getClass());
-//      assertEquals("This email already exist", e.getMessage());
-//    }
-//  }
+  @Test
+  void whenCreateThenReturnUserDto () {
+    when(userRepository.findByEmail(anyString())).thenReturn(null);
+    when(userMapper.dtoToModel(any(UserDto.class))).thenReturn(user);
+    when(userRepository.save(any(User.class))).thenReturn(user);
+    when(userMapper.modelToDto(any(User.class))).thenReturn(userDtoWithId);
+
+    UserDto response = userService.create(userDtoWithoutId);
+
+    verify(userMapper).dtoToModel(userDtoWithoutId);
+    verify(userMapper).modelToDto(user);
+
+    assertEquals(UserDto.class, response.getClass());
+  }
+
+  @Test
+  void whenTryCreateExistEmailUserThenReturnConflictException () {
+    when(userRepository.findByEmail(anyString())).thenReturn(user);
+
+    try {
+      userService.create(userDtoWithoutId);
+
+    } catch (Exception e) {
+      assertEquals(ConflictException.class, e.getClass());
+      assertEquals("This email already exist", e.getMessage());
+    }
+  }
 
   @Test
   void deleteWithSuccess () {
-    when(this.userRepository.findById(anyLong())).thenReturn(optionalUser);
-    doNothing().when(this.userRepository).deleteById(anyLong());
+    when(userRepository.findById(anyLong())).thenReturn(optionalUser);
+    doNothing().when(userRepository).deleteById(anyLong());
 
     this.userService.delete(ID);
 
-    verify(this.userRepository, times(1)).deleteById(anyLong());
+    verify(userRepository, times(1)).deleteById(anyLong());
   }
 
   private void startUser () {
     this.user = new User(ID, NAME, EMAIL, PASSWORD, CPF, CARDS);
     this.optionalUser = Optional.of(new User(ID, NAME, EMAIL, PASSWORD, CPF, CARDS));
-    this.userDto = new UserRequest(NAME, PASSWORD, PASSWORD, CPF);
+    this.userDtoWithoutId = new UserDto(null, NAME, EMAIL, PASSWORD, CPF);
+    this.userDtoWithId = new UserDto(ID, NAME, EMAIL, PASSWORD, CPF);
     this.emptyOptionalUser = Optional.of(new User());
   }
 }

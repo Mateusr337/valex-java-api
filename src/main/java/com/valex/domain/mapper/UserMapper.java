@@ -1,6 +1,5 @@
 package com.valex.domain.mapper;
 
-import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.User;
 import com.valex.domain.request.UserRequest;
@@ -24,25 +23,14 @@ public class UserMapper {
     return userDto;
   }
 
-  public User requestToModel (UserRequest userRequest) {
-    UserDto userDto = this.requestToDto(userRequest);
-
-    User user = new User();
-    user.setName(userDto.getName());
-    user.setEmail(userDto.getEmail());
-    user.setCpf(userDto.getCpf());
-    user.setPassword(Encoder.encode(userDto.getPassword()));
-
-    return user;
-  }
-
   public UserDto modelToDto (User user) {
     UserDto userDto = new UserDto();
+
     userDto.setId(user.getId());
     userDto.setName(user.getName());
     userDto.setEmail(user.getEmail());
     userDto.setCpf(user.getCpf());
-    userDto.setPassword(Encoder.encode(user.getPassword()));
+    userDto.setPassword(user.getPassword());
 
     return userDto;
   }
@@ -59,10 +47,13 @@ public class UserMapper {
 
   public User dtoToModel (UserDto userDto) {
     User user = new User();
+    String encodedPassword = Encoder.encode(userDto.getPassword());
+
     user.setId(userDto.getId());
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
     user.setCpf(userDto.getCpf());
+    user.setPassword(encodedPassword);
 
     return user;
   }

@@ -5,7 +5,6 @@ import com.valex.domain.exception.ConflictException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.UserMapper;
 import com.valex.domain.model.User;
-import com.valex.domain.request.UserRequest;
 import com.valex.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,7 @@ public class UserService {
 
   public List<UserDto> findAll() {
     List<User> users = this.userRepository.findAll();
-    return userMapper.modelToDto(users);
+    return this.userMapper.modelToDto(users);
   }
 
   public User findByIdOrFail (Long id) {
@@ -38,12 +37,12 @@ public class UserService {
       throw new ConflictException ("This email already exist");
     }
 
-    User user = this.userRepository.save(userMapper.dtoToModel(userDto));
-    return userMapper.modelToDto(user);
+    User newUser = this.userRepository.save(userMapper.dtoToModel(userDto));
+    return this.userMapper.modelToDto(newUser);
   }
 
   public void delete (Long id) {
-    User user = findByIdOrFail(id);
+    findByIdOrFail(id);
     this.userRepository.deleteById(id);
   }
 
