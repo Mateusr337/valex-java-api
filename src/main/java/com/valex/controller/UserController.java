@@ -24,19 +24,20 @@ public class UserController {
 
   @GetMapping
   public List<UserResponse> findAll() {
-    return userMapper.dtoToResponse(this.userService.findAll());
+    return userMapper.dtoToResponse(userService.findAll());
   }
 
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
   public UserResponse create (@RequestBody @Valid UserRequest userRequest) {
-    return userMapper.dtoToResponse(this.userService.create(userRequest));
+    UserDto userDto = userMapper.requestToDto(userRequest);
+    return userMapper.dtoToResponse(userService.create(userDto));
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus (HttpStatus.NO_CONTENT)
   public void delete (@PathVariable ("id") Long userId) {
-    this.userService.delete(userId);
+    userService.delete(userId);
   }
 
 }

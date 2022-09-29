@@ -57,6 +57,16 @@ public class UserMapper {
     return userResponse;
   }
 
+  public User dtoToModel (UserDto userDto) {
+    User user = new User();
+    user.setId(userDto.getId());
+    user.setName(userDto.getName());
+    user.setEmail(userDto.getEmail());
+    user.setCpf(userDto.getCpf());
+
+    return user;
+  }
+
   public List<UserDto> modelToDto (List<User> userList) {
     List<UserDto> userDtoList = new ArrayList<>();
 

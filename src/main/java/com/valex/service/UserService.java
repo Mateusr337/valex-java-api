@@ -23,7 +23,6 @@ public class UserService {
 
   public List<UserDto> findAll() {
     List<User> users = this.userRepository.findAll();
-
     return userMapper.modelToDto(users);
   }
 
@@ -32,14 +31,14 @@ public class UserService {
     return foundUser.orElseThrow(() -> new NotFoundException("User not found"));
   }
 
-  public UserDto create (UserRequest userRequest) {
-    User foundUser = this.userRepository.findByEmail(userRequest.getEmail());
+  public UserDto create (UserDto userDto) {
+    User foundUser = this.userRepository.findByEmail(userDto.getEmail());
 
     if (foundUser != null) {
       throw new ConflictException ("This email already exist");
     }
 
-    User user = this.userRepository.save(userMapper.requestToModel(userRequest));
+    User user = this.userRepository.save(userMapper.dtoToModel(userDto));
     return userMapper.modelToDto(user);
   }
 
