@@ -15,8 +15,8 @@ public class CardDto {
   private Long userId;
   private String userName;
   private String number;
-  private CardStatus status;
   private String cvv;
+  private CardStatus status;
   private String passcode;
   private CardType type;
   private Long limit;

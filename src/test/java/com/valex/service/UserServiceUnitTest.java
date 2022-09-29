@@ -9,16 +9,15 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.exception.ConflictException;
 import com.valex.domain.mapper.UserMapper;
-import com.valex.domain.request.UserRequest;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -42,26 +41,20 @@ class UserServiceUnitTest {
 
   @InjectMocks
   private UserService userService;
-
   @Mock
   private UserRepository userRepository;
-
   @Mock
   private UserMapper userMapper;
 
   private User user;
-
   private UserDto userDtoWithoutId;
-
   private UserDto userDtoWithId;
-
   private Optional<User> optionalUser;
-
   private Optional<User> emptyOptionalUser;
 
   @BeforeEach
   void setUp () {
-    MockitoAnnotations.openMocks(this);
+    openMocks(this);
     startUser();
   }
 
