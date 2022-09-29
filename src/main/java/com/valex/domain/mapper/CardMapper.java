@@ -21,16 +21,32 @@ public class CardMapper {
   @Autowired
   private UserService userService;
 
-  public Card requestToModel(CardRequest cardRequest) {
+  public CardDto requestToDto(CardRequest cardRequest) {
     User user = this.userService.findByIdOrFail(cardRequest.getUserId());
     String encodedCVV = Encoder.encode(GenerateCardData.CVV());
 
-    Card card = new Card ();
+    CardDto cardDto = new CardDto();
+    cardDto.setNumber(GenerateCardData.Number());
+    cardDto.setCvv(encodedCVV);
+    cardDto.setStatus(CardStatus.DISABLED);
+    cardDto.setLimit(cardRequest.getLimit());
+    cardDto.setType(CardType.valueOf(cardRequest.getType()));
+    cardDto.setUserName(user.getName());
+    cardDto.setUserId(cardRequest.getUserId());
+
+    return cardDto;
+  }
+
+  public Card dtoToModel(CardDto cardDto) {
+    User user = this.userService.findByIdOrFail(cardDto.getUserId());
+    String encodedCVV = Encoder.encode(GenerateCardData.CVV());
+
+    Card card = new Card();
     card.setNumber(GenerateCardData.Number());
     card.setCvv(encodedCVV);
     card.setStatus(CardStatus.DISABLED);
-    card.setLimitCredit(cardRequest.getLimit());
-    card.setType(CardType.valueOf(cardRequest.getType()));
+    card.setLimitCredit(cardDto.getLimit());
+    card.setType(cardDto.getType());
     card.setUserName(user.getName());
     card.setUser(user);
 
@@ -49,7 +65,7 @@ public class CardMapper {
       cardDto.setType(card.getType());
       cardDto.setNumber(card.getNumber());
       cardDto.setUserId(card.getUser().getId());
-      cardDto.setLimitCredit(card.getLimitCredit());
+      cardDto.setLimit(card.getLimitCredit());
       cardDto.setPasscode(card.getPasscode());
       cardDtoList.set(i, cardDto);
     };
@@ -64,7 +80,7 @@ public class CardMapper {
     cardDto.setType(card.getType());
     cardDto.setNumber(card.getNumber());
     cardDto.setUserId(card.getUser().getId());
-    cardDto.setLimitCredit(card.getLimitCredit());
+    cardDto.setLimit(card.getLimitCredit());
     cardDto.setPasscode(card.getPasscode());
 
     return cardDto;
@@ -82,7 +98,7 @@ public class CardMapper {
       cardResponse.setType(cardDto.getType());
       cardResponse.setNumber(cardDto.getNumber());
       cardResponse.setUserId(cardDto.getUserId());
-      cardResponse.setLimitCredit(cardDto.getLimitCredit());
+      cardResponse.setLimitCredit(cardDto.getLimit());
       CardResponseList.set(i, cardResponse);
     };
     return CardResponseList;
@@ -96,7 +112,7 @@ public class CardMapper {
     cardResponse.setType(cardDto.getType());
     cardResponse.setNumber(cardDto.getNumber());
     cardResponse.setUserId(cardDto.getUserId());
-    cardResponse.setLimitCredit(cardDto.getLimitCredit());
+    cardResponse.setLimitCredit(cardDto.getLimit());
 
     return cardResponse;
   }

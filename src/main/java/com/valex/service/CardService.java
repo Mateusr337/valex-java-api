@@ -1,12 +1,10 @@
 package com.valex.service;
 
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.request.CardRequest;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
-import com.valex.domain.model.User;
 import com.valex.domain.validation.CardPasscodeValidation;
 import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.domain.mapper.CardMapper;
@@ -33,7 +31,7 @@ public class CardService {
     return cardMapper.modelToDto(cards);
   }
 
-  public Card findByIdOrFail(Long id) {
+  private Card findByIdOrFail(Long id) {
     Optional<Card> card = this.cardRepository.findById(id);
 
     if (card.isEmpty()) {
@@ -42,11 +40,11 @@ public class CardService {
     return card.get();
   }
 
-  public CardDto create (CardRequest cardRequest) {
-    this.userService.findByIdOrFail(cardRequest.getUserId());
-    CardTypeAndLimitValidation.valid(cardRequest.getType(), cardRequest.getLimit());
+  public CardDto create (CardDto cardDto) {
+    this.userService.findByIdOrFail(cardDto.getUserId());
+    CardTypeAndLimitValidation.valid(String.valueOf(cardDto.getType()), cardDto.getLimit());
 
-    Card card = this.cardRepository.save(cardMapper.requestToModel(cardRequest));
+    Card card = this.cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
   }
 

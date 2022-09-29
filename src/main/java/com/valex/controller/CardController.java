@@ -40,7 +40,7 @@ public class CardController {
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
   public CardResponse create (@RequestBody @Valid CardRequest cardRequest) {
-    CardDto cardDto =  this.cardService.create(cardRequest);
+    CardDto cardDto =  this.cardService.create(this.cardMapper.requestToDto(cardRequest));
     return cardMapper.dtoToResponse(cardDto);
   }
 

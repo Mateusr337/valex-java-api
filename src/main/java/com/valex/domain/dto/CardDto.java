@@ -2,7 +2,6 @@ package com.valex.domain.dto;
 
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
-import com.valex.domain.model.User;
 import lombok.*;
 
 @Getter
@@ -20,6 +19,6 @@ public class CardDto {
   private String cvv;
   private String passcode;
   private CardType type;
-  private Long limitCredit;
+  private Long limit;
 
 }
