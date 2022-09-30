@@ -5,7 +5,7 @@ import com.valex.domain.model.User;
 import com.valex.utils.Encoder;
 import java.util.HashSet;
 
-public class UserMother {
+public final class UserMother {
 
   public static User getUser () {
     User user = new User();

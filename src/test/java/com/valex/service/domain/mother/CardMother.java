@@ -12,7 +12,7 @@ import com.valex.utils.GenerateCardData;
 import java.util.List;
 import java.util.Optional;
 
-public class CardMother {
+public final class CardMother {
 
   public static CardDto getCardDtoWithoutId (CardType cardType) {
     CardDto cardDto = new CardDto();
