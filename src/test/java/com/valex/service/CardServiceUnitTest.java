@@ -99,6 +99,7 @@ class CardServiceUnitTest {
     assertEquals(CardDto.class, response.getClass());
     assertEquals(expectResponseData, response);
   }
+
 //
 //  @Test
 //  void activate() {

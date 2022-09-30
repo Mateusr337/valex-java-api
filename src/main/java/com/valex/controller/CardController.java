@@ -45,12 +45,13 @@ public class CardController {
   }
 
   @PatchMapping ("/activate/{id}")
-  @ResponseStatus (HttpStatus.NO_CONTENT)
-  public void activeCard (
+  @ResponseStatus (HttpStatus.OK)
+  public CardResponse activeCard (
       @RequestBody @Valid ActivateCardRequest activateCardDto,
       @PathVariable ("id") Long cardId
   ) {
-    this.cardService.activate(cardId, activateCardDto.getPasscode());
+    CardDto activatedCard = this.cardService.activate(cardId, activateCardDto.getPasscode());
+    return cardMapper.dtoToResponse(activatedCard);
   }
 
   @GetMapping ("/clients/{id}")

@@ -51,18 +51,18 @@ public class CardService {
     return cardMapper.modelToDto(card);
   }
 
-  public void activate (Long cardId, String passcode) {
+  public CardDto activate (Long cardId, String passcode) {
     CardDto cardDto = this.findByIdOrFail(cardId);
     CardPasscodeValidation.valid(passcode);
-    String encodedPasscode = encode(passcode);
 
     if (cardDto.getStatus().equals(CardStatus.ACTIVE)) {
       throw new BadRequestException("This cardDto is already activated");
     }
     cardDto.setStatus(CardStatus.ACTIVE);
-    cardDto.setPasscode(encodedPasscode);
+    cardDto.setPasscode(encode(passcode));
 
-    this.cardRepository.save(cardMapper.dtoToModel(cardDto));
+    Card card = this.cardRepository.save(cardMapper.dtoToModel(cardDto));
+    return cardMapper.modelToDto(card);
   }
 
   public List<CardDto> findCardsByUserId (Long id) {
