@@ -1,5 +1,6 @@
 package com.valex.service;
 
+import static com.valex.domain.enumeration.CardStatus.ACTIVE;
 import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.service.domain.mother.CardMother.*;
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.CardMapper;
@@ -23,6 +25,7 @@ import com.valex.domain.model.Card;
 import com.valex.domain.validation.CardPasscodeValidation;
 import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.repository.CardRepository;
+import com.valex.service.domain.mother.CardMother;
 import com.valex.service.domain.mother.UserMother;
 import com.valex.utils.Encoder;
 import java.util.List;
@@ -79,15 +82,15 @@ class CardServiceUnitTest {
   @Test
   void whenFindByIdAnValidCardThenReturnThisCard () {
     CardType cardType = DEBIT;
+    Card card = getCardWithId(cardType);
 
-    Optional<Card> optionalCardDebit = getOptionalCardValid(cardType);
-    when(cardRepository.findById(anyLong())).thenReturn(optionalCardDebit);
+    when(cardRepository.findById(anyLong())).thenReturn(Optional.of(card));
     when(cardMapper.modelToDto(any(Card.class))).thenReturn(getCardDtoWithId(cardType));
 
-    CardDto response = cardService.findByIdOrFail(1L);
+    CardDto response = cardService.findByIdOrFail(card.getId());
 
     assertEquals(CardDto.class, response.getClass());
-    assertEquals(optionalCardDebit.get().getId(), response.getId());
+    assertEquals(response.getId(), card.getId());
   }
 
   @Test
@@ -123,6 +126,7 @@ class CardServiceUnitTest {
     CardDto response = cardService.activate(card.getId(), passcode);
 
     assertEquals(CardDto.class, response.getClass());
+    assertEquals(ACTIVE, cardDto.getStatus());
     assertEquals(cardDto, response);
   }
 

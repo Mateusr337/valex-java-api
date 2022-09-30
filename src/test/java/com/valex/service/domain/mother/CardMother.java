@@ -10,16 +10,29 @@ import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.utils.GenerateCardData;
+import java.util.Date;
 import java.util.Optional;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public final class CardMother {
+@Getter
+@NoArgsConstructor
+public abstract class CardMother {
+
+  private static final Long ID = 5L;
+  private static final User USER = getUser();
+  private static final String PASSCODE = "1234";
+  private static final String CVV = "123";
+  private static final String NUMBER = "5198668954545286";
+  private static final Date VALIDATE = new Date();
 
   public static CardDto getCardDtoWithoutId (CardType cardType) {
     CardDto cardDto = new CardDto();
 
-    cardDto.setUserId(2L);
-    cardDto.setUserName("Fulano");
-    cardDto.setNumber(GenerateCardData.Number());
+    cardDto.setUserId(null);
+    cardDto.setUserId(USER.getId());
+    cardDto.setUserName(USER.getName());
+    cardDto.setNumber(NUMBER);
     cardDto.setCvv(getEncodedCVV());
     cardDto.setStatus(DISABLED);
     cardDto.setPasscode(null);
@@ -32,10 +45,10 @@ public final class CardMother {
   public static CardDto getCardDtoWithId (CardType cardType) {
     CardDto cardDto = new CardDto();
 
-    cardDto.setId(5L);
-    cardDto.setUserId(2L);
-    cardDto.setUserName("Fulano");
-    cardDto.setNumber(GenerateCardData.Number());
+    cardDto.setId(ID);
+    cardDto.setUserId(USER.getId());
+    cardDto.setUserName(USER.getName());
+    cardDto.setNumber(NUMBER);
     cardDto.setCvv(getEncodedCVV());
     cardDto.setStatus(DISABLED);
     cardDto.setPasscode(null);
@@ -63,18 +76,12 @@ public final class CardMother {
     return Optional.of(new Card());
   }
 
-  public static Optional<Card> getOptionalCardValid (CardType cardType) {
-    Card card = getCardWithId(cardType);
-    return Optional.of(card);
-  }
-
   public static Card getCardWithId (CardType cardType) {
     Card card = new Card();
-    User user = getUser();
 
-    card.setId(5L);
-    card.setUser(user);
-    card.setUserName(user.getName());
+    card.setId(ID);
+    card.setUser(USER);
+    card.setUserName(USER.getName());
     card.setNumber(GenerateCardData.Number());
     card.setCvv(getEncodedCVV());
     card.setStatus(DISABLED);
@@ -92,11 +99,11 @@ public final class CardMother {
   }
 
   private static String getEncodedPasscode() {
-    return encode("1234");
+    return encode(PASSCODE);
   }
 
   private static String getEncodedCVV () {
-    return encode(GenerateCardData.CVV());
+    return encode(CVV);
   }
 }
 
