@@ -13,12 +13,14 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
+import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.CardMapper;
 import com.valex.domain.model.Card;
@@ -111,12 +113,10 @@ class CardServiceUnitTest {
 
   @Test
   void whenActivateValidCardThenReturnWithStatusActive () {
-    String passcode = "123456";
+    String passcode = getPASSCODE();
     Card card = getCardWithId(CREDIT);
-    Card cardActivated = card;
-    cardActivated.setPasscode(encode(passcode));
+    Card cardActivated = getActivatedCard(CREDIT);
     CardDto cardDto = getCardDtoWithId(CREDIT);
-    cardDto.setPasscode(encode(passcode));
 
     when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(card);
     when(cardMapper.modelToDto(any(Card.class))).thenReturn(cardDto);
@@ -130,8 +130,41 @@ class CardServiceUnitTest {
     assertEquals(cardDto, response);
   }
 
-//  @Test
-//  void findCardsByUserId() {
-//  }
+  @Test
+  void whenTryActiveCardActivatedThenReturnThrowBadRequest () {
+    String passcode = getPASSCODE();
+    Card cardActivated = getActivatedCard(CREDIT);
+    CardDto cardDto = getCardDtoWithId(CREDIT);
+
+    when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(cardActivated);
+    when(cardMapper.modelToDto(any(Card.class))).thenReturn(cardDto);
+    when(cardRepository.findById(anyLong())).thenReturn(Optional.of(cardActivated));
+
+    try {
+      cardService.activate(cardActivated.getId(), passcode);
+
+    } catch (Exception e) {
+      assertEquals(BadRequestException.class, e.getClass());
+      assertEquals("This card already is activated", e.getMessage());
+    }
+  }
+
+  @Test
+  void whenFindCardByUserIdWithCreatedCardsThenReturnThen () {
+    Card card = getCardWithId(CREDIT);
+    CardDto cardDto = getCardDtoWithId(CREDIT);
+
+    when(cardRepository.findByUserId(anyLong())).thenReturn(List.of(card));
+    when(cardMapper.modelToDto(anyList())).thenReturn(List.of(cardDto));
+
+    List<CardDto> response = cardService.findCardsByUserId(cardDto.getUserId());
+
+    verify(cardMapper).modelToDto(List.of(card));
+
+    assertEquals(1, response.size());
+    assertEquals(cardDto, response.get(0));
+    assertEquals(CardDto.class, response.get(0).getClass());
+  }
+
 
 }

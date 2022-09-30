@@ -12,19 +12,23 @@ import com.valex.domain.model.User;
 import com.valex.utils.GenerateCardData;
 import java.util.Date;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
-public abstract class CardMother {
+@AllArgsConstructor
+@ToString
+public final class CardMother {
 
-  private static final Long ID = 5L;
-  private static final User USER = getUser();
-  private static final String PASSCODE = "1234";
-  private static final String CVV = "123";
-  private static final String NUMBER = "5198668954545286";
-  private static final Date VALIDATE = new Date();
+  private static Long ID = 5L;
+  private static User USER = getUser();
+  private static String PASSCODE = "1234";
+  private static String CVV = "123";
+  private static String NUMBER = "5198668954545286";
+  private static Date VALIDATE = new Date();
 
   public static CardDto getCardDtoWithoutId (CardType cardType) {
     CardDto cardDto = new CardDto();
@@ -104,6 +108,10 @@ public abstract class CardMother {
 
   private static String getEncodedCVV () {
     return encode(CVV);
+  }
+
+  public static String getPASSCODE () {
+    return PASSCODE;
   }
 }
 

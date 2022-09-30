@@ -56,7 +56,7 @@ public class CardService {
     CardPasscodeValidation.valid(passcode);
 
     if (cardDto.getStatus().equals(CardStatus.ACTIVE)) {
-      throw new BadRequestException("This cardDto is already activated");
+      throw new BadRequestException("This card already is activated");
     }
     cardDto.setStatus(CardStatus.ACTIVE);
     cardDto.setPasscode(encode(passcode));
