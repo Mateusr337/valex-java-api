@@ -1,15 +1,15 @@
 package com.valex.service.domain.mother;
 
+import static com.valex.domain.enumeration.CardStatus.ACTIVE;
+import static com.valex.domain.enumeration.CardStatus.DISABLED;
 import static com.valex.service.domain.mother.UserMother.getUser;
+import static com.valex.utils.Encoder.encode;
 
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
-import com.valex.utils.Encoder;
 import com.valex.utils.GenerateCardData;
-import java.util.List;
 import java.util.Optional;
 
 public final class CardMother {
@@ -21,8 +21,8 @@ public final class CardMother {
     cardDto.setUserName("Fulano");
     cardDto.setNumber(GenerateCardData.Number());
     cardDto.setCvv(getEncodedCVV());
-    cardDto.setStatus(CardStatus.DISABLED);
-    cardDto.setPasscode(getEncodedPasscode());
+    cardDto.setStatus(DISABLED);
+    cardDto.setPasscode(null);
     cardDto.setType(cardType);
     cardDto.setLimit(getCardLimit(cardType));
 
@@ -37,11 +37,25 @@ public final class CardMother {
     cardDto.setUserName("Fulano");
     cardDto.setNumber(GenerateCardData.Number());
     cardDto.setCvv(getEncodedCVV());
-    cardDto.setStatus(CardStatus.DISABLED);
-    cardDto.setPasscode(getEncodedPasscode());
+    cardDto.setStatus(DISABLED);
+    cardDto.setPasscode(null);
     cardDto.setType(cardType);
     cardDto.setLimit(getCardLimit(cardType));
 
+    return cardDto;
+  }
+
+  public static CardDto getActivatedCardDto (CardType cardType) {
+    CardDto cardDto = getCardDtoWithId(cardType);
+    cardDto.setPasscode(getEncodedPasscode());
+    cardDto.setStatus(ACTIVE);
+    return cardDto;
+  }
+
+  public static Card getActivatedCard (CardType cardType) {
+    Card cardDto = getCardWithId(cardType);
+    cardDto.setPasscode(getEncodedPasscode());
+    cardDto.setStatus(ACTIVE);
     return cardDto;
   }
 
@@ -63,8 +77,8 @@ public final class CardMother {
     card.setUserName(user.getName());
     card.setNumber(GenerateCardData.Number());
     card.setCvv(getEncodedCVV());
-    card.setStatus(CardStatus.DISABLED);
-    card.setPasscode(getEncodedPasscode());
+    card.setStatus(DISABLED);
+    card.setPasscode(null);
     card.setType(cardType);
     card.setLimitCredit(getCardLimit(cardType));
 
@@ -78,11 +92,11 @@ public final class CardMother {
   }
 
   private static String getEncodedPasscode() {
-    return Encoder.encode("1234");
+    return encode("1234");
   }
 
   private static String getEncodedCVV () {
-    return Encoder.encode(GenerateCardData.CVV());
+    return encode(GenerateCardData.CVV());
   }
 }
 

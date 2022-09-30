@@ -2,6 +2,10 @@ package com.valex.domain.dto;
 
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
+import com.valex.domain.model.Card;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.*;
 
 @Getter

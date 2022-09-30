@@ -1,14 +1,17 @@
 package com.valex.service;
 
+import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.service.domain.mother.CardMother.*;
 import static com.valex.service.domain.mother.UserMother.getUser;
+import static com.valex.utils.Encoder.encode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -17,9 +20,11 @@ import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.CardMapper;
 import com.valex.domain.model.Card;
+import com.valex.domain.validation.CardPasscodeValidation;
 import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.repository.CardRepository;
 import com.valex.service.domain.mother.UserMother;
+import com.valex.utils.Encoder;
 import java.util.List;
 import java.util.Optional;
 import org.checkerframework.checker.units.qual.C;
@@ -34,6 +39,7 @@ class CardServiceUnitTest {
 
   @InjectMocks
   private CardService cardService;
+
   @Mock
   private CardRepository cardRepository;
   @Mock
@@ -100,11 +106,26 @@ class CardServiceUnitTest {
     assertEquals(expectResponseData, response);
   }
 
-//
-//  @Test
-//  void activate() {
-//  }
-//
+  @Test
+  void whenActivateValidCardThenReturnWithStatusActive () {
+    String passcode = "123456";
+    Card card = getCardWithId(CREDIT);
+    Card cardActivated = card;
+    cardActivated.setPasscode(encode(passcode));
+    CardDto cardDto = getCardDtoWithId(CREDIT);
+    cardDto.setPasscode(encode(passcode));
+
+    when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(card);
+    when(cardMapper.modelToDto(any(Card.class))).thenReturn(cardDto);
+    when(cardRepository.findById(anyLong())).thenReturn(Optional.of(card));
+    when(cardRepository.save(any(Card.class))).thenReturn(cardActivated);
+
+    CardDto response = cardService.activate(card.getId(), passcode);
+
+    assertEquals(CardDto.class, response.getClass());
+    assertEquals(cardDto, response);
+  }
+
 //  @Test
 //  void findCardsByUserId() {
 //  }
