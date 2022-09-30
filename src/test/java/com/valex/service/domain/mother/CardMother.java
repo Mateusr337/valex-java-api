@@ -9,6 +9,8 @@ import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.utils.Encoder;
 import com.valex.utils.GenerateCardData;
+import java.util.List;
+import java.util.Optional;
 
 public class CardMother {
 
@@ -27,7 +29,7 @@ public class CardMother {
     return cardDto;
   }
 
-  public CardDto getCardDtoWithId (CardType cardType) {
+  public static CardDto getCardDtoWithId (CardType cardType) {
     CardDto cardDto = new CardDto();
 
     cardDto.setId(5L);
@@ -41,6 +43,15 @@ public class CardMother {
     cardDto.setLimit(getCardLimit(cardType));
 
     return cardDto;
+  }
+
+  public static Optional<Card> getOptionalCardEmpty () {
+    return Optional.of(new Card());
+  }
+
+  public static Optional<Card> getOptionalCardValid (CardType cardType) {
+    Card card = getCardWithId(cardType);
+    return Optional.of(card);
   }
 
   public static Card getCardWithId (CardType cardType) {

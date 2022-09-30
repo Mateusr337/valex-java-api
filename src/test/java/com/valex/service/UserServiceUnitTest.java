@@ -77,7 +77,7 @@ class UserServiceUnitTest {
 
     } catch (Exception e) {
       assertEquals(NotFoundException.class, e.getClass());
-      assertEquals("{user.not.found}", e.getMessage());
+      assertEquals("User not found", e.getMessage());
     }
   }
 

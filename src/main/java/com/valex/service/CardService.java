@@ -1,5 +1,8 @@
 package com.valex.service;
 
+import static com.valex.utils.Encoder.encode;
+import static java.lang.String.valueOf;
+
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.exception.BadRequestException;
@@ -31,35 +34,35 @@ public class CardService {
     return cardMapper.modelToDto(cards);
   }
 
-  private Card findByIdOrFail(Long id) {
+  public CardDto findByIdOrFail(Long id) {
     Optional<Card> card = this.cardRepository.findById(id);
 
     if (card.isEmpty()) {
       throw new NotFoundException("{card.not.found}");
     }
-    return card.get();
+    return cardMapper.modelToDto(card.get());
   }
 
   public CardDto create (CardDto cardDto) {
     this.userService.findByIdOrFail(cardDto.getUserId());
-    CardTypeAndLimitValidation.valid(String.valueOf(cardDto.getType()), cardDto.getLimit());
+    CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
 
     Card card = this.cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
   }
 
   public void activate (Long cardId, String passcode) {
-    Card card = this.findByIdOrFail(cardId);
+    CardDto cardDto = this.findByIdOrFail(cardId);
     CardPasscodeValidation.valid(passcode);
-    String encodedPasscode = Encoder.encode(passcode);
+    String encodedPasscode = encode(passcode);
 
-    if (card.getStatus().equals(CardStatus.ACTIVE)) {
-      throw new BadRequestException("This card is already activated");
+    if (cardDto.getStatus().equals(CardStatus.ACTIVE)) {
+      throw new BadRequestException("This cardDto is already activated");
     }
-    card.setStatus(CardStatus.ACTIVE);
-    card.setPasscode(encodedPasscode);
+    cardDto.setStatus(CardStatus.ACTIVE);
+    cardDto.setPasscode(encodedPasscode);
 
-    this.cardRepository.save(card);
+    this.cardRepository.save(cardMapper.dtoToModel(cardDto));
   }
 
   public List<CardDto> findCardsByUserId (Long id) {
