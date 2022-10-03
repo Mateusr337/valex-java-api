@@ -1,21 +1,20 @@
-package com.valex.service.domain.mother;
+package com.valex.domain.mother;
 
 import static com.valex.domain.enumeration.CardStatus.ACTIVE;
 import static com.valex.domain.enumeration.CardStatus.DISABLED;
-import static com.valex.service.domain.mother.UserMother.getUser;
+import static com.valex.domain.mother.UserMother.getUser;
 import static com.valex.utils.Encoder.encode;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
+import com.valex.domain.request.CardRequest;
 import com.valex.utils.GenerateCardData;
 import java.util.Date;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -94,6 +93,17 @@ public final class CardMother {
     card.setLimitCredit(getCardLimit(cardType));
 
     return card;
+  }
+
+  public static CardRequest getCardRequest (CardType cardType) {
+    CardRequest cardRequest = new CardRequest();
+    User user = getUser();
+
+    cardRequest.setUserId(user.getId());
+    cardRequest.setType(cardType.name());
+    cardRequest.setLimit(getCardLimit(cardType));
+
+    return cardRequest;
   }
 
   private static Long getCardLimit (CardType cardType) {

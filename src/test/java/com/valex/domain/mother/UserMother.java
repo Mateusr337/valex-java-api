@@ -1,4 +1,4 @@
-package com.valex.service.domain.mother;
+package com.valex.domain.mother;
 
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.Card;

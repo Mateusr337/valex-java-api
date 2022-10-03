@@ -1,6 +1,6 @@
 package com.valex.service;
 
-import static com.valex.service.domain.mother.UserMother.*;
+import static com.valex.domain.mother.UserMother.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
