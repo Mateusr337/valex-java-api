@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString

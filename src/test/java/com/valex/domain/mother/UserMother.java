@@ -3,13 +3,13 @@ package com.valex.domain.mother;
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
+import com.valex.domain.request.UserRequest;
 import com.valex.utils.Encoder;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Getter
@@ -61,6 +61,22 @@ public final class UserMother {
     userDto.setCpf(CPF);
 
     return userDto;
+  }
+
+  public static UserRequest getUserRequest () {
+    UserRequest userRequest = new UserRequest();
+
+    userRequest.setName(NAME);
+    userRequest.setEmail(EMAIL);
+    userRequest.setPassword(getEncodedPassword());
+    userRequest.setCpf(CPF);
+
+    return userRequest;
+  }
+
+  public static List<User> getUserList() {
+    User user = getUser();
+    return List.of(user);
   }
 
 

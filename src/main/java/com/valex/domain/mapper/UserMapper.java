@@ -4,7 +4,6 @@ import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.User;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.UserResponse;
-import com.valex.utils.Encoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,13 +46,12 @@ public class UserMapper {
 
   public User dtoToModel (UserDto userDto) {
     User user = new User();
-    String encodedPassword = Encoder.encode(userDto.getPassword());
 
     user.setId(userDto.getId());
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
     user.setCpf(userDto.getCpf());
-    user.setPassword(encodedPassword);
+    user.setPassword(userDto.getPassword());
 
     return user;
   }
@@ -61,34 +59,32 @@ public class UserMapper {
   public List<UserDto> modelToDto (List<User> userList) {
     List<UserDto> userDtoList = new ArrayList<>();
 
-    for (int i = 0; i < userList.size(); i++) {
-      User user = userList.get(i);
-
+    for (User user : userList) {
       UserDto userDto = new UserDto();
       userDto.setId(user.getId());
       userDto.setName(user.getName());
       userDto.setEmail(user.getEmail());
       userDto.setCpf(user.getCpf());
       userDto.setPassword(user.getPassword());
-      userDtoList.set(i, userDto);
-    };
+      userDtoList.add(userDto);
+    }
+
     return userDtoList;
   }
 
   public List<UserResponse> dtoToResponse (List<UserDto> userDtoList) {
-    UserResponse[] userResponseList = new UserResponse[ userDtoList.size() ];
+    List<UserResponse> userResponseList = new ArrayList<>();
 
-    for (int i = 0; i < userDtoList.size(); i++) {
-      UserDto userDto = userDtoList.get(i);
-
+    for (UserDto userDto : userDtoList) {
       UserResponse userResponse = new UserResponse();
       userResponse.setId(userDto.getId());
       userResponse.setName(userDto.getName());
       userResponse.setEmail(userDto.getEmail());
       userResponse.setCpf(userDto.getCpf());
-      userResponseList[i] = userResponse;
-    };
-    return Arrays.stream(userResponseList).toList();
+      userResponseList.add(userResponse);
+    }
+    ;
+    return userResponseList;
   }
 
 }
