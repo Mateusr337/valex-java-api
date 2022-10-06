@@ -65,7 +65,7 @@ class CardServiceUnitTest {
 
     try {
       CardDto response = cardService.findByIdOrFail(1L);
-      assertNull(response);
+      assertNull(response.getId());
 
     } catch (Exception e) {
 
@@ -135,7 +135,7 @@ class CardServiceUnitTest {
 
     try {
       CardDto response = cardService.activate(cardActivated.getId(), passcode);
-      assertNull(response);
+      assertNull(response.getId());
 
     } catch (Exception e) {
       assertEquals(BadRequestException.class, e.getClass());
