@@ -39,12 +39,11 @@ public class CardMapper {
 
   public Card dtoToModel(CardDto cardDto) {
     User user = this.userService.findByIdOrFail(cardDto.getUserId());
-    String encodedCVV = Encoder.encode(GenerateCardData.CVV());
 
     Card card = new Card();
-    card.setNumber(GenerateCardData.Number());
-    card.setCvv(encodedCVV);
-    card.setStatus(CardStatus.DISABLED);
+    card.setNumber(cardDto.getNumber());
+    card.setCvv(cardDto.getCvv());
+    card.setStatus(cardDto.getStatus());
     card.setLimitCredit(cardDto.getLimit());
     card.setType(cardDto.getType());
     card.setUserName(user.getName());
@@ -62,12 +61,14 @@ public class CardMapper {
       CardDto cardDto = new CardDto();
       cardDto.setId(card.getId());
       cardDto.setCvv(card.getCvv());
+      cardDto.setUserName(card.getUser().getName());
       cardDto.setType(card.getType());
+      cardDto.setStatus(card.getStatus());
       cardDto.setNumber(card.getNumber());
       cardDto.setUserId(card.getUser().getId());
       cardDto.setLimit(card.getLimitCredit());
       cardDto.setPasscode(card.getPasscode());
-      cardDtoList.set(i, cardDto);
+      cardDtoList.add(cardDto);
     };
     return cardDtoList;
   }
@@ -77,9 +78,11 @@ public class CardMapper {
 
     cardDto.setId(card.getId());
     cardDto.setCvv(card.getCvv());
+    cardDto.setStatus(card.getStatus());
     cardDto.setType(card.getType());
     cardDto.setNumber(card.getNumber());
     cardDto.setUserId(card.getUser().getId());
+    cardDto.setUserName(card.getUserName());
     cardDto.setLimit(card.getLimitCredit());
     cardDto.setPasscode(card.getPasscode());
 
@@ -99,7 +102,7 @@ public class CardMapper {
       cardResponse.setNumber(cardDto.getNumber());
       cardResponse.setUserId(cardDto.getUserId());
       cardResponse.setLimitCredit(cardDto.getLimit());
-      CardResponseList.set(i, cardResponse);
+      CardResponseList.add(cardResponse);
     };
     return CardResponseList;
   }
