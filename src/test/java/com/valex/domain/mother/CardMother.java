@@ -76,7 +76,7 @@ public final class CardMother {
   }
 
   public static Optional<Card> getOptionalCardEmpty () {
-    return Optional.of(new Card());
+    return Optional.empty();
   }
 
   public static Card getCardWithId (CardType cardType) {

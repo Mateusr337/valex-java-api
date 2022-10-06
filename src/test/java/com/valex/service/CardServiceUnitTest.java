@@ -6,6 +6,7 @@ import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.domain.mother.CardMother.*;
 import static com.valex.domain.mother.UserMother.getUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -63,11 +64,13 @@ class CardServiceUnitTest {
     when(cardRepository.findById(anyLong())).thenReturn(getOptionalCardEmpty());
 
     try {
-      cardService.findByIdOrFail(1L);
+      CardDto response = cardService.findByIdOrFail(1L);
+      assertNull(response);
 
     } catch (Exception e) {
+
       assertEquals(NotFoundException.class, e.getClass());
-      assertEquals("Card Not Found", e.getMessage());
+      assertEquals("Card Not Found.", e.getMessage());
     }
   }
 
@@ -124,14 +127,15 @@ class CardServiceUnitTest {
   void whenTryActiveCardActivatedThenReturnThrowBadRequest () {
     String passcode = getPASSCODE();
     Card cardActivated = getActivatedCard(CREDIT);
-    CardDto cardDto = getCardDtoWithId(CREDIT);
+    CardDto cardDto = getActivatedCardDto(CREDIT);
 
     when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(cardActivated);
     when(cardMapper.modelToDto(any(Card.class))).thenReturn(cardDto);
     when(cardRepository.findById(anyLong())).thenReturn(Optional.of(cardActivated));
 
     try {
-      cardService.activate(cardActivated.getId(), passcode);
+      CardDto response = cardService.activate(cardActivated.getId(), passcode);
+      assertNull(response);
 
     } catch (Exception e) {
       assertEquals(BadRequestException.class, e.getClass());

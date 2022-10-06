@@ -38,7 +38,7 @@ public class CardService {
     Optional<Card> card = this.cardRepository.findById(id);
 
     if (card.isEmpty()) {
-      throw new NotFoundException("{card.not.found}");
+      throw new NotFoundException("Card Not Found.");
     }
     return cardMapper.modelToDto(card.get());
   }

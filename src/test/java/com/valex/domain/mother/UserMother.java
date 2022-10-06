@@ -29,7 +29,7 @@ public final class UserMother {
 
   public static Optional<User> getEmptyOptionalUser () {
     User user = new User();
-    return Optional.of(user);
+    return Optional.empty();
   }
 
   public static User getUser () {
