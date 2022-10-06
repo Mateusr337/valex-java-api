@@ -55,9 +55,7 @@ public class CardMapper {
   public List<CardDto> modelToDto (List<Card> cardList) {
     List<CardDto> cardDtoList = new ArrayList<>();
 
-    for (int i = 0; i < cardList.size(); i++) {
-      Card card = cardList.get(i);
-
+    for (Card card : cardList) {
       CardDto cardDto = new CardDto();
       cardDto.setId(card.getId());
       cardDto.setCvv(card.getCvv());
@@ -69,7 +67,8 @@ public class CardMapper {
       cardDto.setLimit(card.getLimitCredit());
       cardDto.setPasscode(card.getPasscode());
       cardDtoList.add(cardDto);
-    };
+    }
+    ;
     return cardDtoList;
   }
 
@@ -92,18 +91,19 @@ public class CardMapper {
   public List<CardResponse> dtoToResponse (List<CardDto> cardDtoList) {
     List<CardResponse> CardResponseList = new ArrayList<>();
 
-    for (int i = 0; i < cardDtoList.size(); i++) {
-      CardDto cardDto = cardDtoList.get(i);
-
+    for (CardDto cardDto : cardDtoList) {
       CardResponse cardResponse = new CardResponse();
       cardResponse.setId(cardDto.getId());
+      cardResponse.setUserName(cardDto.getUserName());
       cardResponse.setCvv(cardDto.getCvv());
       cardResponse.setType(cardDto.getType());
+      cardResponse.setStatus(cardDto.getStatus());
       cardResponse.setNumber(cardDto.getNumber());
       cardResponse.setUserId(cardDto.getUserId());
       cardResponse.setLimitCredit(cardDto.getLimit());
       CardResponseList.add(cardResponse);
-    };
+    }
+    ;
     return CardResponseList;
   }
 
@@ -111,8 +111,10 @@ public class CardMapper {
     CardResponse cardResponse = new CardResponse();
 
     cardResponse.setId(cardDto.getId());
+    cardResponse.setUserName(cardDto.getUserName());
     cardResponse.setCvv(cardDto.getCvv());
     cardResponse.setType(cardDto.getType());
+    cardResponse.setStatus(cardDto.getStatus());
     cardResponse.setNumber(cardDto.getNumber());
     cardResponse.setUserId(cardDto.getUserId());
     cardResponse.setLimitCredit(cardDto.getLimit());

@@ -26,6 +26,7 @@ import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.mother.CardMother;
 import com.valex.domain.request.CardRequest;
+import com.valex.domain.response.CardResponse;
 import com.valex.service.UserService;
 import com.valex.utils.Encoder;
 import java.util.ArrayList;
@@ -123,14 +124,35 @@ class CardMapperUnitTest {
   }
 
   @Test
-  void testModelToDto() {
+  void whenDtoToReturnResponse() {
+    CardDto cardDto = getCardDtoWithId(CREDIT);
+
+    CardResponse response = cardMapper.dtoToResponse(cardDto);
+
+    assertEquals(CardResponse.class, response.getClass());
+    assertEquals(cardDto.getNumber(), response.getNumber());
+    assertEquals(cardDto.getCvv(), response.getCvv());
+    assertEquals(cardDto.getStatus(), response.getStatus());
+    assertEquals(cardDto.getLimit(), response.getLimitCredit());
+    assertEquals(cardDto.getType(), response.getType());
+    assertEquals(cardDto.getUserName(), response.getUserName());
+    assertEquals(cardDto.getUserId(), response.getUserId());
   }
 
   @Test
-  void dtoToResponse() {
-  }
+  void WhenDtoListToReturnResponseList () {
+    CardDto cardDto = getCardDtoWithId(DEBIT);
 
-  @Test
-  void testDtoToResponse() {
+    List<CardResponse> response = cardMapper.dtoToResponse(List.of(cardDto));
+
+    assertEquals(1, response.size());
+    assertEquals(CardResponse.class, response.get(0).getClass());
+    assertEquals(cardDto.getNumber(), response.get(0).getNumber());
+    assertEquals(cardDto.getCvv(), response.get(0).getCvv());
+    assertEquals(cardDto.getStatus(), response.get(0).getStatus());
+    assertEquals(cardDto.getLimit(), response.get(0).getLimitCredit());
+    assertEquals(cardDto.getType(), response.get(0).getType());
+    assertEquals(cardDto.getUserName(), response.get(0).getUserName());
+    assertEquals(cardDto.getUserId(), response.get(0).getUserId());
   }
 }
