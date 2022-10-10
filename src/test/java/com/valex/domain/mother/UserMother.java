@@ -4,6 +4,7 @@ import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.request.UserRequest;
+import com.valex.domain.response.UserResponse;
 import com.valex.utils.Encoder;
 import java.util.HashSet;
 import java.util.List;
@@ -68,7 +69,7 @@ public final class UserMother {
 
     userRequest.setName(NAME);
     userRequest.setEmail(EMAIL);
-    userRequest.setPassword(getEncodedPassword());
+    userRequest.setPassword(PASSWORD);
     userRequest.setCpf(CPF);
 
     return userRequest;
@@ -77,6 +78,16 @@ public final class UserMother {
   public static List<User> getUserList() {
     User user = getUser();
     return List.of(user);
+  }
+
+  public static UserResponse getUserResponse() {
+    UserResponse userResponse = new UserResponse();
+    userResponse.setId(ID);
+    userResponse.setName(NAME);
+    userResponse.setEmail(EMAIL);
+    userResponse.setCpf(CPF);
+
+    return userResponse;
   }
 
 

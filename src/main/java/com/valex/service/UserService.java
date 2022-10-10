@@ -30,7 +30,11 @@ public class UserService {
 
   public User findByIdOrFail (Long id) {
     Optional<User> foundUser = this.userRepository.findById(id);
-    return foundUser.orElseThrow(() -> new NotFoundException("User not found"));
+
+    if (foundUser.isEmpty()) {
+      throw new NotFoundException("User not found");
+    }
+    return foundUser.get();
   }
 
   public UserDto create (UserDto userDto) {
