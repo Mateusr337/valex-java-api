@@ -19,7 +19,7 @@ public final class UserMother {
   private static final Long ID = 1L;
   private static  final String NAME = "fulano";
   private static final String EMAIL = "fulano@email.com";
-  private static final String PASSWORD = "123456";
+  public static final String PASSWORD = "123456";
   private static final String CPF = "67042218086";
   private static final Set<Card> CARDS = new HashSet<Card>();
 
@@ -90,6 +90,9 @@ public final class UserMother {
     return userResponse;
   }
 
+  public static String getPassword () {
+    return PASSWORD;
+  }
 
   private static String getEncodedPassword () {
     return Encoder.encode(PASSWORD);

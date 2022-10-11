@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.br.CPF;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class UserRequest {
 
   @NotBlank(message = "{name.null.empty}")
