@@ -106,7 +106,7 @@ class CardServiceUnitTest {
 
   @Test
   void whenActivateValidCardThenReturnWithStatusActive () {
-    String passcode = getPASSCODE();
+    String passcode = getPasscode();
     Card card = getCardWithId(CREDIT);
     Card cardActivated = getActivatedCard(CREDIT);
     CardDto cardDto = getCardDtoWithId(CREDIT);
@@ -125,7 +125,7 @@ class CardServiceUnitTest {
 
   @Test
   void whenTryActiveCardActivatedThenReturnThrowBadRequest () {
-    String passcode = getPASSCODE();
+    String passcode = getPasscode();
     Card cardActivated = getActivatedCard(CREDIT);
     CardDto cardDto = getActivatedCardDto(CREDIT);
 

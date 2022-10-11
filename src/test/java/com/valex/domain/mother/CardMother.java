@@ -6,10 +6,12 @@ import static com.valex.domain.mother.UserMother.getUser;
 import static com.valex.utils.Encoder.encode;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.request.CardRequest;
+import com.valex.domain.response.CardResponse;
 import com.valex.utils.GenerateCardData;
 import java.util.Date;
 import java.util.Optional;
@@ -22,12 +24,12 @@ import lombok.ToString;
 @ToString
 public final class CardMother {
 
-  private static Long ID = 5L;
-  private static User USER = getUser();
-  private static String PASSCODE = "1234";
-  private static String CVV = "123";
-  private static String NUMBER = "5198668954545286";
-  private static Date VALIDATE = new Date();
+  private static final Long ID = 5L;
+  private static final User USER = getUser();
+  private static final String PASSCODE = "1234";
+  private static final String CVV = "123";
+  private static final String NUMBER = "5198668954545286";
+  private static final Date VALIDATE = new Date();
 
   public static CardDto getCardDtoWithoutId (CardType cardType) {
     CardDto cardDto = new CardDto();
@@ -106,6 +108,21 @@ public final class CardMother {
     return cardRequest;
   }
 
+  public static CardResponse getCardResponse (CardType type, CardStatus status) {
+    CardResponse cardResponse = new CardResponse();
+    User user = getUser();
+
+    cardResponse.setId(ID);
+    cardResponse.setUserId(user.getId());
+    cardResponse.setUserName(user.getName());
+    cardResponse.setNumber(NUMBER);
+    cardResponse.setStatus(status);
+    cardResponse.setType(type);
+    cardResponse.setLimitCredit(getCardLimit(type));
+
+    return cardResponse;
+  }
+
   private static Long getCardLimit (CardType cardType) {
     if (cardType == CardType.CREDIT) return 5000000L;
     if (cardType == CardType.DEBIT) return 0L;
@@ -120,7 +137,7 @@ public final class CardMother {
     return encode(CVV);
   }
 
-  public static String getPASSCODE () {
+  public static String getPasscode() {
     return PASSCODE;
   }
 }

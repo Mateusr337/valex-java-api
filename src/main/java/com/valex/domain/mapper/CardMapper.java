@@ -95,7 +95,6 @@ public class CardMapper {
       CardResponse cardResponse = new CardResponse();
       cardResponse.setId(cardDto.getId());
       cardResponse.setUserName(cardDto.getUserName());
-      cardResponse.setCvv(cardDto.getCvv());
       cardResponse.setType(cardDto.getType());
       cardResponse.setStatus(cardDto.getStatus());
       cardResponse.setNumber(cardDto.getNumber());
@@ -112,7 +111,6 @@ public class CardMapper {
 
     cardResponse.setId(cardDto.getId());
     cardResponse.setUserName(cardDto.getUserName());
-    cardResponse.setCvv(cardDto.getCvv());
     cardResponse.setType(cardDto.getType());
     cardResponse.setStatus(cardDto.getStatus());
     cardResponse.setNumber(cardDto.getNumber());

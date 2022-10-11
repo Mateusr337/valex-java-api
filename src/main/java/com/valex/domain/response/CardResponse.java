@@ -16,7 +16,6 @@ public class CardResponse {
   private String userName;
   private String number;
   private CardStatus status;
-  private String cvv;
   private CardType type;
   private Long limitCredit;
 

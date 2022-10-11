@@ -131,7 +131,6 @@ class CardMapperUnitTest {
 
     assertEquals(CardResponse.class, response.getClass());
     assertEquals(cardDto.getNumber(), response.getNumber());
-    assertEquals(cardDto.getCvv(), response.getCvv());
     assertEquals(cardDto.getStatus(), response.getStatus());
     assertEquals(cardDto.getLimit(), response.getLimitCredit());
     assertEquals(cardDto.getType(), response.getType());
@@ -148,7 +147,6 @@ class CardMapperUnitTest {
     assertEquals(1, response.size());
     assertEquals(CardResponse.class, response.get(0).getClass());
     assertEquals(cardDto.getNumber(), response.get(0).getNumber());
-    assertEquals(cardDto.getCvv(), response.get(0).getCvv());
     assertEquals(cardDto.getStatus(), response.get(0).getStatus());
     assertEquals(cardDto.getLimit(), response.get(0).getLimitCredit());
     assertEquals(cardDto.getType(), response.get(0).getType());
