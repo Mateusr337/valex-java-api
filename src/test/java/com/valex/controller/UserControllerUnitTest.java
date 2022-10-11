@@ -1,12 +1,11 @@
 package com.valex.controller;
 
-import static com.valex.domain.mother.UserMother.getUserDto;
-import static com.valex.domain.mother.UserMother.getUserDtoWithoutId;
-import static com.valex.domain.mother.UserMother.getUserRequest;
-import static com.valex.domain.mother.UserMother.getUserResponse;
+import static com.valex.domain.mother.UserMother.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,14 +16,16 @@ import com.valex.domain.mapper.UserMapper;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.UserResponse;
 import com.valex.service.UserService;
-import org.json.JSONObject;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -67,8 +68,19 @@ public class UserControllerUnitTest {
 
     verify(userMapper).requestToDto(any(UserRequest.class));
     verify(userMapper).dtoToResponse(any(UserDto.class));
+  }
 
+  @Test
+  @WithMockUser
+  void givenFindAllUsersThenReturnArrayOfUsers () throws Exception {
+    UserResponse userResponse = getUserResponse();
 
+    given(userService.findAll()).willReturn(List.of(getUserDto()));
+    given(userMapper.dtoToResponse(anyList())).willReturn(List.of(userResponse));
+
+    mvc.perform(get(BASE_URL))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray());
   }
 
 }
