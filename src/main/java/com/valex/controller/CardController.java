@@ -34,13 +34,13 @@ public class CardController {
 
   @GetMapping
   public List<CardResponse> findAll() {
-    return cardMapper.dtoToResponse(this.cardService.findAll());
+    return cardMapper.dtoToResponse(cardService.findAll());
   }
 
   @PostMapping
   @ResponseStatus (HttpStatus.CREATED)
   public CardResponse create (@RequestBody @Valid CardRequest cardRequest) {
-    CardDto cardDto =  this.cardService.create(this.cardMapper.requestToDto(cardRequest));
+    CardDto cardDto =  cardService.create(cardMapper.requestToDto(cardRequest));
     return cardMapper.dtoToResponse(cardDto);
   }
 
@@ -50,13 +50,13 @@ public class CardController {
       @RequestBody @Valid ActivateCardRequest activateCardDto,
       @PathVariable ("id") Long cardId
   ) {
-    CardDto activatedCard = this.cardService.activate(cardId, activateCardDto.getPasscode());
+    CardDto activatedCard = cardService.activate(cardId, activateCardDto.getPasscode());
     return cardMapper.dtoToResponse(activatedCard);
   }
 
   @GetMapping ("/clients/{id}")
   public List<CardResponse> findByClientId (@PathVariable ("id") Long id) {
-    List<CardDto> cardDtoList = this.cardService.findCardsByUserId(id);
+    List<CardDto> cardDtoList = cardService.findCardsByUserId(id);
     return cardMapper.dtoToResponse(cardDtoList);
   }
 
