@@ -1,18 +1,25 @@
 package com.valex.controller;
 
+import static com.valex.domain.enumeration.CardStatus.ACTIVE;
 import static com.valex.domain.enumeration.CardStatus.DISABLED;
 import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
+import static com.valex.domain.mother.CardMother.getActivatedCardDto;
 import static com.valex.domain.mother.CardMother.getCardDtoWithId;
 import static com.valex.domain.mother.CardMother.getCardDtoWithoutId;
 import static com.valex.domain.mother.CardMother.getCardRequest;
 import static com.valex.domain.mother.CardMother.getCardResponse;
+import static com.valex.domain.mother.CardMother.getPasscode;
+import static com.valex.domain.mother.UserMother.getUser;
 import static com.valex.domain.mother.UserMother.getUserRequest;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,8 +29,11 @@ import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.mapper.CardMapper;
+import com.valex.domain.model.User;
 import com.valex.domain.mother.CardMother;
+import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
+import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.CardResponse;
 import com.valex.service.CardService;
 import java.util.List;
@@ -107,6 +117,67 @@ public class CardControllerUnitTest {
         .andExpect(jsonPath("$.passcode").doesNotHaveJsonPath())
         .andExpect(jsonPath("$.type").value(cardResponse.getType().name()))
         .andExpect(jsonPath("$.limitCredit").value(cardResponse.getLimitCredit()));
+
+    verify(cardMapper).requestToDto(any(CardRequest.class));
+    verify(cardMapper).dtoToResponse(any(CardDto.class));
+    verify(cardService).create(any(CardDto.class));
+  }
+
+  @Test
+  @WithMockUser
+  void givenValidCardActiveCardThenReturnActivatedCard () throws Exception {
+    CardResponse cardResponse = getCardResponse(CREDIT, ACTIVE);
+    CardDto activatedCardDto = getActivatedCardDto(CREDIT);
+    Long cardId = cardResponse.getId();
+
+    given(cardService.activate(anyLong(), anyString())).willReturn(activatedCardDto);
+    given(cardMapper.dtoToResponse(any(CardDto.class))).willReturn(cardResponse);
+
+    String URL = BASE_URL + "/activate/" + cardId;
+    ActivateCardRequest bodyRequest = new ActivateCardRequest(getPasscode());
+
+    mvc.perform(patch(URL)
+            .content(new ObjectMapper().writeValueAsString(bodyRequest))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(cardId))
+        .andExpect(jsonPath("$.userId").value(cardResponse.getUserId()))
+        .andExpect(jsonPath("$.userName").value(cardResponse.getUserName()))
+        .andExpect(jsonPath("$.number").value(cardResponse.getNumber()))
+        .andExpect(jsonPath("$.status").value(ACTIVE.name()))
+        .andExpect(jsonPath("$.type").value(cardResponse.getType().name()))
+        .andExpect(jsonPath("$.limitCredit").value(cardResponse.getLimitCredit()));
+
+    verify(cardService).activate(cardId, getPasscode());
+    verify(cardMapper).dtoToResponse(activatedCardDto);
+  }
+
+  @Test
+  @WithMockUser
+  void givenFindCardsByUserIdReturnCardsList () throws Exception {
+    User user = getUser();
+    CardResponse cardResponse = getCardResponse(DEBIT, DISABLED);
+    List<CardDto> cardDtoList = List.of(getCardDtoWithId(DEBIT));
+
+    given(cardService.findCardsByUserId(anyLong())).willReturn(cardDtoList);
+    given(cardMapper.dtoToResponse(anyList())).willReturn(List.of(cardResponse));
+
+    String URL = BASE_URL + "/clients/" + user.getId();
+
+    mvc.perform(get(URL))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$[0].id").value(cardResponse.getId()))
+        .andExpect(jsonPath("$[0].userId").value(cardResponse.getUserId()))
+        .andExpect(jsonPath("$[0].userName").value(cardResponse.getUserName()))
+        .andExpect(jsonPath("$[0].number").value(cardResponse.getNumber()))
+        .andExpect(jsonPath("$[0].status").value(cardResponse.getStatus().name()))
+        .andExpect(jsonPath("$[0].type").value(cardResponse.getType().name()))
+        .andExpect(jsonPath("$[0].limitCredit").value(cardResponse.getLimitCredit()))
+        .andExpect(jsonPath("$[1]").doesNotHaveJsonPath());
+
+    verify(cardService).findCardsByUserId(user.getId());
+    verify(cardMapper).dtoToResponse(cardDtoList);
   }
 
 }
