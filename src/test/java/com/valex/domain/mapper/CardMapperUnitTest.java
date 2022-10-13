@@ -18,7 +18,7 @@ import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.request.CardRequest;
 import com.valex.domain.response.CardResponse;
-import com.valex.service.UserService;
+import com.valex.service.impl.UserServiceImpl;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class CardMapperUnitTest {
   private CardMapper cardMapper;
 
   @Mock
-  private UserService userService;
+  private UserServiceImpl userService;
 
   @BeforeEach
   void setUp() {

@@ -1,4 +1,4 @@
-package com.valex.service;
+package com.valex.service.impl;
 
 import com.valex.domain.exception.UnauthorizedException;
 import com.valex.domain.model.User;
@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserAuthService implements UserDetailsService {
+public class UserAuthServiceImpl implements UserDetailsService {
 
   private final UserRepository userRepository;
 
-  public UserAuthService(UserRepository userRepository) {
+  public UserAuthServiceImpl(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 

@@ -2,7 +2,7 @@ package com.valex.config;
 
 import com.valex.filter.JWTValidateFilter;
 import com.valex.filter.JWTAuthenticationFilter;
-import com.valex.service.UserAuthService;
+import com.valex.service.impl.UserAuthServiceImpl;
 import com.valex.utils.Encoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -19,9 +19,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final UserAuthService userDetailService;
+  private final UserAuthServiceImpl userDetailService;
 
-  public SecurityConfig(UserAuthService userDetailService) {
+  public SecurityConfig(UserAuthServiceImpl userDetailService) {
     this.userDetailService = userDetailService;
   }
 

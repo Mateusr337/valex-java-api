@@ -2,17 +2,14 @@ package com.valex.service;
 
 import static com.valex.domain.mother.UserMother.*;
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.UserDto;
@@ -21,12 +18,11 @@ import com.valex.domain.mapper.UserMapper;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
+import com.valex.service.impl.UserServiceImpl;
 import java.util.List;
 import java.util.Optional;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class UserServiceUnitTest {
 
   @InjectMocks
-  private UserService userService;
+  private UserServiceImpl userService;
   @Mock
   private UserRepository userRepository;
   @Mock

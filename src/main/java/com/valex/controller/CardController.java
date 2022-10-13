@@ -4,9 +4,8 @@ import com.valex.domain.dto.CardDto;
 import com.valex.domain.mapper.CardMapper;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
-import com.valex.domain.model.Card;
 import com.valex.domain.response.CardResponse;
-import com.valex.service.CardService;
+import com.valex.service.impl.CardServiceImpl;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CardController {
 
   @Autowired
-  private CardService cardService;
+  private CardServiceImpl cardService;
 
   @Autowired
   private CardMapper cardMapper;

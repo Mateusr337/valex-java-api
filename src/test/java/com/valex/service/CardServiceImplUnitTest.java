@@ -12,7 +12,6 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
@@ -22,21 +21,21 @@ import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.CardMapper;
 import com.valex.domain.model.Card;
 import com.valex.repository.CardRepository;
+import com.valex.service.impl.CardServiceImpl;
+import com.valex.service.impl.UserServiceImpl;
 import java.util.List;
 import java.util.Optional;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CardServiceUnitTest {
+class CardServiceImplUnitTest {
 
   @InjectMocks
-  private CardService cardService;
+  private CardServiceImpl cardService;
 
   @Mock
   private CardRepository cardRepository;
@@ -44,7 +43,7 @@ class CardServiceUnitTest {
   private CardMapper cardMapper;
 
   @Mock
-  private UserService userService;
+  private UserServiceImpl userService;
 
   @BeforeEach
   void setUp() { openMocks(this); }

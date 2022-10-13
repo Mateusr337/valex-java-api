@@ -7,7 +7,7 @@ import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.response.CardResponse;
-import com.valex.service.UserService;
+import com.valex.service.impl.UserServiceImpl;
 import com.valex.utils.Encoder;
 import com.valex.utils.GenerateCardData;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CardMapper {
 
   @Autowired
-  private UserService userService;
+  private UserServiceImpl userService;
 
   public CardDto requestToDto(CardRequest cardRequest) {
     User user = this.userService.findByIdOrFail(cardRequest.getUserId());
