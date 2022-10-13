@@ -1,16 +1,16 @@
 package com.valex.service;
 
 import static com.valex.domain.enumeration.CardStatus.ACTIVE;
-import static com.valex.domain.enumeration.CardType.CREDIT;
-import static com.valex.domain.enumeration.CardType.DEBIT;
+import static com.valex.domain.enumeration.CardType.*;
 import static com.valex.domain.mother.CardMother.*;
 import static com.valex.domain.mother.UserMother.getUser;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -24,8 +24,10 @@ import com.valex.domain.model.Card;
 import com.valex.repository.CardRepository;
 import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,28 +51,28 @@ class CardServiceUnitTest {
 
   @Test
   void WhenRequestFindAllUsersThenReturnAnUserList () {
-    when(cardRepository.findAll()).thenReturn(List.of(getCardWithId(DEBIT)));
-    when(cardMapper.modelToDto(anyList()))
-        .thenReturn(List.of(getCardDtoWithoutId(CardType.CREDIT)));
+    given(cardRepository.findAll()).willReturn(List.of(getCardWithId(DEBIT)));
+    given(cardMapper.modelToDto(anyList()))
+        .willReturn(List.of(getCardDtoWithoutId(CREDIT)));
 
     List<CardDto> response = cardService.findAll();
 
-    assertEquals(1, response.size());
-    assertEquals(CardDto.class, response.get(0).getClass());
+    then(response.size()).isEqualTo(1);
+    then(response.get(0).getClass()).isEqualTo(CardDto.class);
   }
 
   @Test
   void whenFindByIdAnEmptyCardThenReturnThrowNotFound () {
-    when(cardRepository.findById(anyLong())).thenReturn(getOptionalCardEmpty());
+    given(cardRepository.findById(anyLong())).willReturn(getOptionalCardEmpty());
 
     try {
       CardDto response = cardService.findByIdOrFail(1L);
-      assertNull(response.getId());
+      then(response.getId()).isNull();
 
     } catch (Exception e) {
 
-      assertEquals(NotFoundException.class, e.getClass());
-      assertEquals("Card Not Found.", e.getMessage());
+      then(e.getClass()).isEqualTo(NotFoundException.class);
+      then(e.getMessage()).isEqualTo("Card Not Found.");
     }
   }
 
@@ -79,29 +81,29 @@ class CardServiceUnitTest {
     CardType cardType = DEBIT;
     Card card = getCardWithId(cardType);
 
-    when(cardRepository.findById(anyLong())).thenReturn(Optional.of(card));
-    when(cardMapper.modelToDto(any(Card.class))).thenReturn(getCardDtoWithId(cardType));
+    given(cardRepository.findById(anyLong())).willReturn(Optional.of(card));
+    given(cardMapper.modelToDto(any(Card.class))).willReturn(getCardDtoWithId(cardType));
 
     CardDto response = cardService.findByIdOrFail(card.getId());
 
-    assertEquals(CardDto.class, response.getClass());
-    assertEquals(response.getId(), card.getId());
+    then(response.getClass()).isEqualTo(CardDto.class);
+    then(card.getId()).isEqualTo(response.getId());
   }
 
   @Test
   void whenCreateValidCardThenReturnThisCard () {
     CardDto expectResponseData = getCardDtoWithId(DEBIT);
 
-    when(userService.findByIdOrFail(anyLong())).thenReturn(getUser());
-    when(cardRepository.save(any(Card.class))).thenReturn(getCardWithId(DEBIT));
+    given(userService.findByIdOrFail(anyLong())).willReturn(getUser());
+    given(cardRepository.save(any(Card.class))).willReturn(getCardWithId(DEBIT));
 
-    when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(getCardWithId(DEBIT));
-    when(cardMapper.modelToDto(any(Card.class))).thenReturn(expectResponseData);
+    given(cardMapper.dtoToModel(any(CardDto.class))).willReturn(getCardWithId(DEBIT));
+    given(cardMapper.modelToDto(any(Card.class))).willReturn(expectResponseData);
 
     CardDto response = cardService.create(getCardDtoWithoutId(DEBIT));
 
-    assertEquals(CardDto.class, response.getClass());
-    assertEquals(expectResponseData, response);
+    then(response.getClass()).isEqualTo(CardDto.class);
+    then(response).isEqualTo(expectResponseData);
   }
 
   @Test
@@ -111,16 +113,16 @@ class CardServiceUnitTest {
     Card cardActivated = getActivatedCard(CREDIT);
     CardDto cardDto = getCardDtoWithId(CREDIT);
 
-    when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(card);
-    when(cardMapper.modelToDto(any(Card.class))).thenReturn(cardDto);
-    when(cardRepository.findById(anyLong())).thenReturn(Optional.of(card));
-    when(cardRepository.save(any(Card.class))).thenReturn(cardActivated);
+    given(cardMapper.dtoToModel(any(CardDto.class))).willReturn(card);
+    given(cardMapper.modelToDto(any(Card.class))).willReturn(cardDto);
+    given(cardRepository.findById(anyLong())).willReturn(Optional.of(card));
+    given(cardRepository.save(any(Card.class))).willReturn(cardActivated);
 
     CardDto response = cardService.activate(card.getId(), passcode);
 
-    assertEquals(CardDto.class, response.getClass());
-    assertEquals(ACTIVE, cardDto.getStatus());
-    assertEquals(cardDto, response);
+    then(response.getClass()).isEqualTo(CardDto.class);
+    then(cardDto.getStatus()).isEqualTo(ACTIVE);
+    then(response).isEqualTo(cardDto);
   }
 
   @Test
@@ -129,17 +131,17 @@ class CardServiceUnitTest {
     Card cardActivated = getActivatedCard(CREDIT);
     CardDto cardDto = getActivatedCardDto(CREDIT);
 
-    when(cardMapper.dtoToModel(any(CardDto.class))).thenReturn(cardActivated);
-    when(cardMapper.modelToDto(any(Card.class))).thenReturn(cardDto);
-    when(cardRepository.findById(anyLong())).thenReturn(Optional.of(cardActivated));
+    given(cardMapper.dtoToModel(any(CardDto.class))).willReturn(cardActivated);
+    given(cardMapper.modelToDto(any(Card.class))).willReturn(cardDto);
+    given(cardRepository.findById(anyLong())).willReturn(Optional.of(cardActivated));
 
     try {
       CardDto response = cardService.activate(cardActivated.getId(), passcode);
-      assertNull(response.getId());
+      then(response.getId()).isNull();
 
     } catch (Exception e) {
-      assertEquals(BadRequestException.class, e.getClass());
-      assertEquals("This card already is activated", e.getMessage());
+      then(e.getClass()).isEqualTo(BadRequestException.class);
+      then(e.getMessage()).isEqualTo("This card already is activated");
     }
   }
 
@@ -148,16 +150,16 @@ class CardServiceUnitTest {
     Card card = getCardWithId(CREDIT);
     CardDto cardDto = getCardDtoWithId(CREDIT);
 
-    when(cardRepository.findByUserId(anyLong())).thenReturn(List.of(card));
-    when(cardMapper.modelToDto(anyList())).thenReturn(List.of(cardDto));
+    given(cardRepository.findByUserId(anyLong())).willReturn(List.of(card));
+    given(cardMapper.modelToDto(anyList())).willReturn(List.of(cardDto));
 
     List<CardDto> response = cardService.findCardsByUserId(cardDto.getUserId());
 
     verify(cardMapper).modelToDto(List.of(card));
 
-    assertEquals(1, response.size());
-    assertEquals(cardDto, response.get(0));
-    assertEquals(CardDto.class, response.get(0).getClass());
+    then(response.size()).isEqualTo(1);
+    then(response.get(0)).isEqualTo(cardDto);
+    then(response.get(0).getClass()).isEqualTo(CardDto.class);
   }
 
 

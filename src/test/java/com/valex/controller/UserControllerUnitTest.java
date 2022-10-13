@@ -106,6 +106,8 @@ public class UserControllerUnitTest {
     mvc.perform(delete(URL))
         .andExpect(status().isNoContent())
         .andExpect(jsonPath("$").doesNotHaveJsonPath());
+
+    verify(userService).delete(userDto.getId());
   }
 
 }

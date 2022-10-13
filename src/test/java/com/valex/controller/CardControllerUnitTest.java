@@ -1,44 +1,26 @@
 package com.valex.controller;
 
-import static com.valex.domain.enumeration.CardStatus.ACTIVE;
-import static com.valex.domain.enumeration.CardStatus.DISABLED;
-import static com.valex.domain.enumeration.CardType.CREDIT;
-import static com.valex.domain.enumeration.CardType.DEBIT;
-import static com.valex.domain.mother.CardMother.getActivatedCardDto;
-import static com.valex.domain.mother.CardMother.getCardDtoWithId;
-import static com.valex.domain.mother.CardMother.getCardDtoWithoutId;
-import static com.valex.domain.mother.CardMother.getCardRequest;
-import static com.valex.domain.mother.CardMother.getCardResponse;
-import static com.valex.domain.mother.CardMother.getPasscode;
+import static com.valex.domain.enumeration.CardStatus.*;
+import static com.valex.domain.enumeration.CardType.*;
+import static com.valex.domain.mother.CardMother.*;
 import static com.valex.domain.mother.UserMother.getUser;
-import static com.valex.domain.mother.UserMother.getUserRequest;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.enumeration.CardStatus;
-import com.valex.domain.enumeration.CardType;
 import com.valex.domain.mapper.CardMapper;
 import com.valex.domain.model.User;
-import com.valex.domain.mother.CardMother;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
-import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.CardResponse;
 import com.valex.service.CardService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,8 +29,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
