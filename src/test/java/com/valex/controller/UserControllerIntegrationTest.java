@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valex.Factory.UserFactory;
 import com.valex.domain.model.User;
 import com.valex.domain.mother.LoginMother;
 import com.valex.domain.request.LoginRequest;
@@ -43,6 +44,9 @@ public class UserControllerIntegrationTest {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private UserFactory userFactory;
+
   @Test
   void givenValidUserRequestThenReturnCreatedUser () throws Exception {
     UserRequest userRequest = getUserRequest();
@@ -56,7 +60,7 @@ public class UserControllerIntegrationTest {
 
   @Test
   void givenValidUserLoginThenReturnToken () throws Exception {
-    createUserInTheDatabase();
+    userFactory.createUserInTheDatabase();
     LoginRequest loginRequest = LoginMother.getLoginRequest();
 
     mvc.perform(post("/login")
@@ -77,21 +81,13 @@ public class UserControllerIntegrationTest {
   @Test
   @WithMockUser
   void givenDeleteExistUserIdThnReturnStatusNoContext () throws Exception {
-    createUserInTheDatabase();
+    userFactory.createUserInTheDatabase();
     User user = userRepository.findAll().get(0);
 
     String URL = BASE_URL + "/" + user.getId();
 
     mvc.perform(delete(URL))
         .andExpect(status().isNoContent());
-  }
-
-  private void createUserInTheDatabase () throws Exception {
-    UserRequest userRequest = getUserRequest();
-
-    mvc.perform(post(BASE_URL)
-        .content(new ObjectMapper().writeValueAsString(userRequest))
-        .contentType(MediaType.APPLICATION_JSON));
   }
 }
 
