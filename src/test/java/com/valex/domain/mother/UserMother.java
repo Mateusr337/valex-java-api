@@ -90,6 +90,16 @@ public final class UserMother {
     return userResponse;
   }
 
+  public static UserRequest getAlternativeUserRequest () {
+    UserRequest user = new UserRequest();
+    user.setName("Beltrano");
+    user.setEmail("beltrano@email.com");
+    user.setCpf("39765329083");
+    user.setPassword("123456");
+
+    return user;
+  }
+
   public static String getPassword () {
     return PASSWORD;
   }

@@ -5,6 +5,7 @@ import static com.valex.domain.enumeration.CardStatus.DISABLED;
 import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.domain.mother.CardMother.getCardRequest;
+import static com.valex.domain.mother.UserMother.getAlternativeUserRequest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valex.Factory.CardFactory;
 import com.valex.Factory.UserFactory;
+import com.valex.domain.mother.UserMother;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
 import com.valex.domain.request.UserRequest;
@@ -121,16 +123,6 @@ public class CardControllerIntegrationTest {
         .andExpect(jsonPath("$[0].userId").value(user1.getId()))
         .andExpect(jsonPath("$[0].id").value(card1.getId()))
         .andExpect(jsonPath("$[1]").doesNotExist());
-  }
-
-  private UserRequest getAlternativeUserRequest () {
-    UserRequest user = new UserRequest();
-    user.setName("Beltrano");
-    user.setEmail("beltrano@email.com");
-    user.setCpf("23454911087");
-    user.setPassword("123456");
-
-    return user;
   }
 
 }
