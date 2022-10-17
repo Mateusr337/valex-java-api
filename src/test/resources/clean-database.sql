@@ -1,2 +1,2 @@
-DELETE FROM users;
 DELETE FROM cards;
+DELETE FROM users;

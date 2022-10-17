@@ -9,11 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valex.Factory.CardFactory;
 import com.valex.Factory.UserFactory;
 import com.valex.domain.model.User;
 import com.valex.domain.mother.LoginMother;
 import com.valex.domain.request.LoginRequest;
 import com.valex.domain.request.UserRequest;
+import com.valex.domain.response.UserResponse;
 import com.valex.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -40,9 +42,6 @@ public class UserControllerIntegrationTest {
 
   @Autowired
   private MockMvc mvc;
-
-  @Autowired
-  private UserRepository userRepository;
 
   @Autowired
   private UserFactory userFactory;
@@ -81,8 +80,7 @@ public class UserControllerIntegrationTest {
   @Test
   @WithMockUser
   void givenDeleteExistUserIdThnReturnStatusNoContext () throws Exception {
-    userFactory.createUserInTheDatabase();
-    User user = userRepository.findAll().get(0);
+    UserResponse user = userFactory.createUserInTheDatabase();
 
     String URL = BASE_URL + "/" + user.getId();
 
