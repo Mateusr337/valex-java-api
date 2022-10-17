@@ -41,6 +41,7 @@ public class CardMapper {
     User user = this.userService.findByIdOrFail(cardDto.getUserId());
 
     Card card = new Card();
+    card.setId(cardDto.getId());
     card.setNumber(cardDto.getNumber());
     card.setCvv(cardDto.getCvv());
     card.setStatus(cardDto.getStatus());

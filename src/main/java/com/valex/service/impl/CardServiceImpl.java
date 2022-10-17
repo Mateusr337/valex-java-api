@@ -30,12 +30,12 @@ public class CardServiceImpl implements CardService {
   private CardMapper cardMapper;
 
   public List<CardDto> findAll() {
-    List<Card> cards =  this.cardRepository.findAll();
+    List<Card> cards =  cardRepository.findAll();
     return cardMapper.modelToDto(cards);
   }
 
   public CardDto findByIdOrFail(Long id) {
-    Optional<Card> card = this.cardRepository.findById(id);
+    Optional<Card> card = cardRepository.findById(id);
 
     if (card.isEmpty()) {
       throw new NotFoundException("Card Not Found.");
@@ -44,15 +44,15 @@ public class CardServiceImpl implements CardService {
   }
 
   public CardDto create (CardDto cardDto) {
-    this.userService.findByIdOrFail(cardDto.getUserId());
+    userService.findByIdOrFail(cardDto.getUserId());
     CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
 
-    Card card = this.cardRepository.save(cardMapper.dtoToModel(cardDto));
+    Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
   }
 
   public CardDto activate (Long cardId, String passcode) {
-    CardDto cardDto = this.findByIdOrFail(cardId);
+    CardDto cardDto = findByIdOrFail(cardId);
     CardPasscodeValidation.valid(passcode);
 
     if (cardDto.getStatus().equals(CardStatus.ACTIVE)) {
@@ -61,12 +61,12 @@ public class CardServiceImpl implements CardService {
     cardDto.setStatus(CardStatus.ACTIVE);
     cardDto.setPasscode(encode(passcode));
 
-    Card card = this.cardRepository.save(cardMapper.dtoToModel(cardDto));
+    Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
   }
 
   public List<CardDto> findCardsByUserId (Long id) {
-    List<Card> cardList =  this.cardRepository.findByUserId(id);
+    List<Card> cardList =  cardRepository.findByUserId(id);
     return cardMapper.modelToDto(cardList);
   }
 

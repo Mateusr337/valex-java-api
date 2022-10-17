@@ -14,8 +14,10 @@ public class CardFactory {
   @Autowired
   private CardController cardController;
 
-  public CardResponse createCardInTheDatabase (CardType type) {
-    CardRequest cardRequest = CardMother.getCardRequest(type);
+  public CardResponse createCardInTheDatabase (CardType cardtype, Long userId) {
+    CardRequest cardRequest = CardMother.getCardRequest(cardtype);
+    cardRequest.setUserId(userId);
+
     return cardController.create(cardRequest);
   }
 }

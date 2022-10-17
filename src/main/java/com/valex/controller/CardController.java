@@ -53,8 +53,8 @@ public class CardController {
     return cardMapper.dtoToResponse(activatedCard);
   }
 
-  @GetMapping ("/clients/{clientId}")
-  public List<CardResponse> findByClientId (@PathVariable ("clientId") Long id) {
+  @GetMapping ("/users/{id}")
+  public List<CardResponse> findByClientId (@PathVariable ("id") Long id) {
     List<CardDto> cardDtoList = cardService.findCardsByUserId(id);
     return cardMapper.dtoToResponse(cardDtoList);
   }

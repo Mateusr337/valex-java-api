@@ -18,4 +18,8 @@ public class UserFactory {
     UserRequest userRequest = getUserRequest();
     return userController.create(userRequest);
   }
+
+  public UserResponse createUserInTheDatabase (UserRequest userRequest) {
+    return userController.create(userRequest);
+  }
 }
