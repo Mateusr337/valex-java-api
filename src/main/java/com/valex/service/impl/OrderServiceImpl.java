@@ -1,10 +1,17 @@
 package com.valex.service.impl;
 
-import com.valex.domain.dto.OrderDto;
+import static com.valex.utils.Encoder.matches;
+
+import com.valex.domain.dto.CardDto;
 import com.valex.domain.mapper.OrderMapper;
+import com.valex.domain.model.Card;
 import com.valex.domain.model.Order;
+import com.valex.domain.request.CreateOrderRequest;
+import com.valex.domain.vo.CreateOrderVo;
 import com.valex.repository.OrderRepository;
+import com.valex.service.CardService;
 import com.valex.service.OrderService;
+import com.valex.utils.Encoder;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +23,23 @@ public class OrderServiceImpl implements OrderService {
   private OrderRepository orderRepository;
 
   @Autowired
+  private CardService cardService;
+
+  @Autowired
   private OrderMapper orderMapper;
 
-  public OrderDto create (OrderDto orderDto) {
-    Order order = orderMapper.dtoToModel(orderDto);
+  public void create (CreateOrderVo createOrderVo) {
+    CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
+
+//    cardDto.
+
+    matches(createOrderVo.getPasscode(), cardDto.getPasscode());
+
+//    Order order = orderMapper.dtoToModel(createOrderVo);
 //    return orderMapper.modelToDto(orderRepository.save(order));
-    return orderDto;
   }
 
   public List<Order> findAll() {
-    return null;
-  }
-
-  public Order findByIdOrFail(Long id) {
     return null;
   }
 

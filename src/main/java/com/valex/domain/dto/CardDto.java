@@ -3,6 +3,7 @@ package com.valex.domain.dto;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,5 +25,6 @@ public class CardDto {
   private String passcode;
   private CardType type;
   private Long limit;
+  private Date expirationDate;
 
 }

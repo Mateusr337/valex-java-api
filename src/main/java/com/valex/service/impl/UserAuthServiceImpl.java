@@ -17,7 +17,7 @@ public class UserAuthServiceImpl implements UserDetailsService {
 
   @Override
   public User loadUserByUsername(String email) throws UnauthorizedException {
-    User user = this.userRepository.findByEmail(email);
+    User user = userRepository.findByEmail(email);
 
     if (user == null) {
       throw new UnauthorizedException("User unauthorized!");

@@ -2,6 +2,7 @@ package com.valex.domain.response;
 
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
+import java.util.Date;
 import lombok.*;
 
 @Getter
@@ -18,5 +19,6 @@ public class CardResponse {
   private CardStatus status;
   private CardType type;
   private Long limitCredit;
+  private Date expirationDate;
 
 }

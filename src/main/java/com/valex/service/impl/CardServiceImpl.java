@@ -13,6 +13,8 @@ import com.valex.domain.validation.CardTypeAndLimitValidation;
 import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.repository.CardRepository;
 import com.valex.service.CardService;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,13 @@ public class CardServiceImpl implements CardService {
   public CardDto create (CardDto cardDto) {
     userService.findByIdOrFail(cardDto.getUserId());
     CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
+
+    Calendar cal = Calendar.getInstance();
+    cal.setTime( new Date() );
+    cal.add(Calendar.YEAR, 5);
+
+    cardDto.setExpirationDate(cal.getTime());
+
 
     Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);

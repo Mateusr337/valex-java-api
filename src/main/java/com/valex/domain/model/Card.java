@@ -2,6 +2,7 @@ package com.valex.domain.model;
 
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
+import java.util.Date;
 import javax.persistence.*;
 import lombok.*;
 
@@ -43,4 +44,7 @@ public class Card {
 
   @Column (nullable = false)
   private Long limitCredit;
+
+  @Column
+  private Date expirationDate;
 }
