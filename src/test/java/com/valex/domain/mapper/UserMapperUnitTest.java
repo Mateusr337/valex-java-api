@@ -8,12 +8,11 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.valex.domain.dto.UserDto;
+import com.valex.domain.mapper.impl.UserMapper;
 import com.valex.domain.model.User;
-import com.valex.domain.mother.UserMother;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.UserResponse;
 import java.util.List;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valex.domain.dto.UserDto;
-import com.valex.domain.mapper.UserMapper;
+import com.valex.domain.mapper.impl.UserMapper;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.UserResponse;
 import com.valex.service.impl.UserServiceImpl;

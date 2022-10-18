@@ -1,9 +1,10 @@
 package com.valex.controller;
 
 import com.valex.domain.dto.UserDto;
-import com.valex.domain.mapper.UserMapper;
+import com.valex.domain.mapper.impl.UserMapper;
 import com.valex.domain.request.UserRequest;
 import com.valex.domain.response.UserResponse;
+import com.valex.service.UserService;
 import com.valex.service.impl.UserServiceImpl;
 import java.util.List;
 import javax.validation.Valid;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
   @Autowired
-  private UserServiceImpl userService;
+  private UserService userService;
 
   @Autowired
   private UserMapper userMapper;

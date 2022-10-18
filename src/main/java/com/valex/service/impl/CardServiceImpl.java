@@ -10,7 +10,7 @@ import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.validation.CardPasscodeValidation;
 import com.valex.domain.validation.CardTypeAndLimitValidation;
-import com.valex.domain.mapper.CardMapper;
+import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.repository.CardRepository;
 import com.valex.service.CardService;
 import java.util.List;

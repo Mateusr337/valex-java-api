@@ -1,4 +1,4 @@
-package com.valex.domain.mapper;
+package com.valex.domain.mapper.impl;
 
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.model.User;

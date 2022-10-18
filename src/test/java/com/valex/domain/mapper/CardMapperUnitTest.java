@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.User;
 import com.valex.domain.request.CardRequest;

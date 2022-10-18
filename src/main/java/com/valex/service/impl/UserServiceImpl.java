@@ -5,7 +5,7 @@ import static com.valex.utils.Encoder.encode;
 import com.valex.domain.dto.UserDto;
 import com.valex.domain.exception.ConflictException;
 import com.valex.domain.exception.NotFoundException;
-import com.valex.domain.mapper.UserMapper;
+import com.valex.domain.mapper.impl.UserMapper;
 import com.valex.domain.model.User;
 import com.valex.repository.UserRepository;
 import com.valex.service.UserService;

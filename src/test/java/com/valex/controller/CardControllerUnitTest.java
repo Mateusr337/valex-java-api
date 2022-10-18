@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.mapper.CardMapper;
+import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.domain.model.User;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;

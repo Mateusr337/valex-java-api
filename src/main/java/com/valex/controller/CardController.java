@@ -1,7 +1,7 @@
 package com.valex.controller;
 
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.mapper.CardMapper;
+import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
 import com.valex.domain.response.CardResponse;

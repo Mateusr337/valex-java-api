@@ -19,7 +19,6 @@ public class Card {
   private Long id;
 
   @ManyToOne
-  @JoinColumn (name = "user_id")
   private User user;
 
   @Column (nullable = false)
@@ -35,6 +34,7 @@ public class Card {
   @Column (nullable = false)
   private String cvv;
 
+  @Column
   private String passcode;
 
   @Column (nullable = false)

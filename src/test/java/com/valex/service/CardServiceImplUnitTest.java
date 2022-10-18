@@ -18,7 +18,7 @@ import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
-import com.valex.domain.mapper.CardMapper;
+import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.domain.model.Card;
 import com.valex.repository.CardRepository;
 import com.valex.service.impl.CardServiceImpl;

@@ -2,6 +2,7 @@ package com.valex.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,9 +50,7 @@ public class User implements UserDetails {
       mappedBy = "user",
       cascade = CascadeType.ALL
   )
-  @Exclude
-  @JsonIgnore
-  private Set<Card> cards;
+  private List<Card> cards;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
