@@ -1,5 +1,6 @@
 package com.valex.service.impl;
 
+import static com.valex.domain.enumeration.CardStatus.ACTIVE;
 import static com.valex.utils.Encoder.encode;
 import static java.lang.String.valueOf;
 
@@ -49,12 +50,7 @@ public class CardServiceImpl implements CardService {
     userService.findByIdOrFail(cardDto.getUserId());
     CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
 
-    Calendar cal = Calendar.getInstance();
-    cal.setTime( new Date() );
-    cal.add(Calendar.YEAR, 5);
-
-    cardDto.setExpirationDate(cal.getTime());
-
+    cardDto.setExpirationDate(generateExpirationDate());
 
     Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
@@ -64,11 +60,12 @@ public class CardServiceImpl implements CardService {
     CardDto cardDto = findByIdOrFail(cardId);
     CardPasscodeValidation.valid(passcode);
 
-    if (cardDto.getStatus().equals(CardStatus.ACTIVE)) {
-      throw new BadRequestException("This card already is activated");
+    if (cardDto.getStatus().equals(ACTIVE)) {
+      throw new BadRequestException("This card already been activated.");
     }
-    cardDto.setStatus(CardStatus.ACTIVE);
+    cardDto.setStatus(ACTIVE);
     cardDto.setPasscode(encode(passcode));
+
 
     Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
@@ -77,6 +74,14 @@ public class CardServiceImpl implements CardService {
   public List<CardDto> findCardsByUserId (Long id) {
     List<Card> cardList =  cardRepository.findByUserId(id);
     return cardMapper.modelToDto(cardList);
+  }
+
+  private Date generateExpirationDate () {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime( new Date() );
+    cal.add(Calendar.YEAR, 5);
+
+    return cal.getTime();
   }
 
 }

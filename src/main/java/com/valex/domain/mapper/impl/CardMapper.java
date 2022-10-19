@@ -32,6 +32,7 @@ public class CardMapper {
     cardDto.setLimit(cardRequest.getLimit());
     cardDto.setType(CardType.valueOf(cardRequest.getType()));
     cardDto.setUserName(user.getName());
+    cardDto.setPasscode(cardDto.getPasscode());
     cardDto.setUserId(cardRequest.getUserId());
 
     return cardDto;
@@ -46,10 +47,11 @@ public class CardMapper {
     card.setCvv(cardDto.getCvv());
     card.setStatus(cardDto.getStatus());
     card.setLimitCredit(cardDto.getLimit());
+    card.setPasscode(cardDto.getPasscode());
     card.setType(cardDto.getType());
     card.setUserName(user.getName());
-    card.setUser(user);
     card.setExpirationDate(cardDto.getExpirationDate());
+    card.setUser(user);
 
     return card;
   }
