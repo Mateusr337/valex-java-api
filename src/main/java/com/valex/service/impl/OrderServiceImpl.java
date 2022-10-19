@@ -38,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
 
     matches(createOrderVo.getPasscode(), cardDto.getPasscode());
 
+    System.out.println(createOrderVo);
+
 //    Order order = orderMapper.dtoToModel(createOrderVo);
 //    return orderMapper.modelToDto(orderRepository.save(order));
   }

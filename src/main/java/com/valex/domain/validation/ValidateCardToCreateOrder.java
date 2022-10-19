@@ -5,6 +5,7 @@ import static com.valex.domain.enumeration.CardStatus.ACTIVE;
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.model.Product;
+import com.valex.domain.request.ProductOrderRequest;
 import com.valex.domain.vo.CreateOrderVo;
 import java.util.Date;
 import java.util.List;
@@ -26,10 +27,10 @@ public final class ValidateCardToCreateOrder {
       }
   }
 
-  private static Long calculateTotalPrice (List<Product> products) {
+  private static Long calculateTotalPrice (List<ProductOrderRequest> products) {
     Long total = 0L;
 
-    for (Product product : products) {
+    for (ProductOrderRequest product : products) {
       total += product.getPrice();
     }
 

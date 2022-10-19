@@ -13,15 +13,17 @@ import org.mapstruct.MappingTarget;
 
 @Mapper (componentModel = "spring", unmappedTargetPolicy = IGNORE)
 public interface OrderMapper {
-
+  
   CreateOrderVo requestToVo (CreateOrderRequest createOrderRequest);
 
   Order voToModel (CreateOrderVo createOrderVo);
 
-//  OrderDto modelToDto (Order order);
-
   @AfterMapping
-  default void setCard(@MappingTarget CreateOrderVo createOrderVo, CreateOrderRequest createOrderRequest) {
+  default void setCard(
+      @MappingTarget
+      CreateOrderVo createOrderVo,
+      CreateOrderRequest createOrderRequest
+  ) {
     Card card = new Card();
     card.setId(createOrderRequest.getCardId());
     createOrderVo.setCard(card);

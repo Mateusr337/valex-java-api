@@ -2,6 +2,7 @@ package com.valex.domain.request;
 
 import com.valex.domain.model.Product;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,7 +30,8 @@ public class CreateOrderRequest {
 
   @NotNull (message = "{products.not.null}")
   @Size (min = 1, message = "{products.not.empty}")
-  private List<Product> products;
+  @Valid
+  private List<ProductOrderRequest> products;
 
   @NotBlank (message = "{passcode.not.null}")
   private String passcode;
