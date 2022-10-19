@@ -9,6 +9,7 @@ import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Order;
 import com.valex.domain.request.CreateOrderRequest;
+import com.valex.domain.validation.ValidateCardToCreateOrder;
 import com.valex.domain.vo.CreateOrderVo;
 import com.valex.repository.OrderRepository;
 import com.valex.service.CardService;
@@ -33,14 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
   public void create (CreateOrderVo createOrderVo) {
     CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
-
-    if (cardDto.getStatus() != ACTIVE) {
-      throw new BadRequestException("This card not been activated.");
-    }
-
-    if (cardDto.getExpirationDate().getTime() < new Date().getTime()) {
-      throw new BadRequestException("this card is expired.");
-    }
+    ValidateCardToCreateOrder.valid(cardDto, createOrderVo);
 
     matches(createOrderVo.getPasscode(), cardDto.getPasscode());
 
@@ -48,11 +42,13 @@ public class OrderServiceImpl implements OrderService {
 //    return orderMapper.modelToDto(orderRepository.save(order));
   }
 
+
+
+
+
   public List<Order> findAll() {
     return null;
   }
 
-  public void delete(Long id) {
-
-  }
+  public void delete(Long id) {}
 }

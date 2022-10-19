@@ -5,7 +5,6 @@ import com.valex.domain.exception.BadRequestException;
 public final class CardPasscodeValidation {
 
   public static void valid (String passcodeStr) {
-
     for (int i = 0; i < passcodeStr.length(); i++) {
       validateCharIsDigit(passcodeStr.charAt(i));
     }

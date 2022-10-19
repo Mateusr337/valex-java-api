@@ -18,20 +18,20 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CreateOrderRequest {
 
-  @NotNull (message = "[ cardId ] cannot be null.")
+  @NotNull (message = "{cardId.not.null}")
   private Long cardId;
 
   @NotBlank (message = "{card.type.null.empty}")
   private String type;
 
-  @NotBlank (message = "[ shopName ] cannot be null.")
+  @NotBlank (message = "{shopName.not.empty}")
   private String shopName;
 
-  @NotNull (message = "[ products ] cannot be null.")
-  @Size (min = 1, message = "In [ products[] ] must have one or more products.")
+  @NotNull (message = "{products.not.null}")
+  @Size (min = 1, message = "{products.not.empty}")
   private List<Product> products;
 
-  @NotBlank (message = "[ passcode ] cannot must be null.")
+  @NotBlank (message = "{passcode.not.null}")
   private String passcode;
 
 }
