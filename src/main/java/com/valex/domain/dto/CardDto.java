@@ -26,5 +26,6 @@ public class CardDto {
   private CardType type;
   private Long limit;
   private Date expirationDate;
+  private Long balance;
 
 }

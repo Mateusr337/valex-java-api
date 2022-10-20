@@ -125,6 +125,7 @@ public class CardControllerUnitTest {
         .andExpect(jsonPath("$.userName").value(cardResponse.getUserName()))
         .andExpect(jsonPath("$.number").value(cardResponse.getNumber()))
         .andExpect(jsonPath("$.status").value(ACTIVE.name()))
+        .andExpect(jsonPath("$.balance").value(0L))
         .andExpect(jsonPath("$.type").value(cardResponse.getType().name()))
         .andExpect(jsonPath("$.limitCredit").value(cardResponse.getLimitCredit()));
 
@@ -154,6 +155,7 @@ public class CardControllerUnitTest {
         .andExpect(jsonPath("$[0].status").value(cardResponse.getStatus().name()))
         .andExpect(jsonPath("$[0].type").value(cardResponse.getType().name()))
         .andExpect(jsonPath("$[0].limitCredit").value(cardResponse.getLimitCredit()))
+        .andExpect(jsonPath("$[0].balance").value(0L))
         .andExpect(jsonPath("$[1]").doesNotHaveJsonPath());
 
     verify(cardService).findCardsByUserId(user.getId());

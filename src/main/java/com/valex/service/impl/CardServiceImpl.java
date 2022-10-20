@@ -1,11 +1,11 @@
 package com.valex.service.impl;
 
 import static com.valex.domain.enumeration.CardStatus.ACTIVE;
+import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.utils.Encoder.encode;
 import static java.lang.String.valueOf;
 
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
@@ -51,6 +51,10 @@ public class CardServiceImpl implements CardService {
     CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
 
     cardDto.setExpirationDate(generateExpirationDate());
+
+    if (cardDto.getType() == DEBIT) {
+      cardDto.setBalance(0L);
+    }
 
     Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
