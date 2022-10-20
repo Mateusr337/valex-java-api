@@ -32,7 +32,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CardServiceImplUnitTest {
+class CardServiceUnitTest {
 
   @InjectMocks
   private CardServiceImpl cardService;
@@ -140,7 +140,7 @@ class CardServiceImplUnitTest {
 
     } catch (Exception e) {
       then(e.getClass()).isEqualTo(BadRequestException.class);
-      then(e.getMessage()).isEqualTo("This card already is activated");
+      then(e.getMessage()).isEqualTo("This card already been activated.");
     }
   }
 

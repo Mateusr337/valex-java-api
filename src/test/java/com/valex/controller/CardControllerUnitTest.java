@@ -142,7 +142,7 @@ public class CardControllerUnitTest {
     given(cardService.findCardsByUserId(anyLong())).willReturn(cardDtoList);
     given(cardMapper.dtoToResponse(anyList())).willReturn(List.of(cardResponse));
 
-    String URL = BASE_URL + "/clients/" + user.getId();
+    String URL = BASE_URL + "/users/" + user.getId();
 
     mvc.perform(get(URL))
         .andExpect(status().isOk())

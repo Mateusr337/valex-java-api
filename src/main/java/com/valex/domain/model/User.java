@@ -49,7 +49,7 @@ public class User implements UserDetails {
       mappedBy = "user",
       cascade = CascadeType.ALL
   )
-  private List<Card> cards;
+  private Set<Card> cards;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

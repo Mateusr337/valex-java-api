@@ -3,8 +3,8 @@ package com.valex.domain.validation;
 import static com.valex.domain.enumeration.CardStatus.ACTIVE;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.BadRequestException;
-import com.valex.domain.model.Product;
 import com.valex.domain.request.ProductOrderRequest;
 import com.valex.domain.vo.CreateOrderVo;
 import java.util.Date;
