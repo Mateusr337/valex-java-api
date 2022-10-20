@@ -36,8 +36,6 @@ public class OrderServiceImpl implements OrderService {
     CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
     ValidateCardToCreateOrder.valid(cardDto, createOrderVo);
 
-    matches(createOrderVo.getPasscode(), cardDto.getPasscode());
-
     System.out.println(createOrderVo);
 
 //    Order order = orderMapper.dtoToModel(createOrderVo);

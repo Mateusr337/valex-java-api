@@ -10,7 +10,7 @@ import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.validation.CardPasscodeValidation;
-import com.valex.domain.validation.CardTypeAndLimitValidation;
+import com.valex.domain.validation.CardTypeAndLimitCardRequestValidation;
 import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.repository.CardRepository;
 import com.valex.service.CardService;
@@ -48,13 +48,10 @@ public class CardServiceImpl implements CardService {
 
   public CardDto create (CardDto cardDto) {
     userService.findByIdOrFail(cardDto.getUserId());
-    CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
+    CardTypeAndLimitCardRequestValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
 
     cardDto.setExpirationDate(generateExpirationDate());
-
-    if (cardDto.getType() == DEBIT) {
-      cardDto.setBalance(0L);
-    }
+    cardDto.setBalance(0L);
 
     Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
