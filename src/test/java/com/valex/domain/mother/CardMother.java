@@ -42,6 +42,7 @@ public final class CardMother {
     cardDto.setStatus(DISABLED);
     cardDto.setPasscode(null);
     cardDto.setType(cardType);
+    cardDto.setBalance(0L);
     cardDto.setLimit(getCardLimit(cardType));
 
     return cardDto;
@@ -58,6 +59,7 @@ public final class CardMother {
     cardDto.setStatus(DISABLED);
     cardDto.setPasscode(null);
     cardDto.setType(cardType);
+    cardDto.setBalance(0L);
     cardDto.setLimit(getCardLimit(cardType));
 
     return cardDto;
@@ -67,14 +69,16 @@ public final class CardMother {
     CardDto cardDto = getCardDtoWithId(cardType);
     cardDto.setPasscode(getEncodedPasscode());
     cardDto.setStatus(ACTIVE);
+    cardDto.setBalance(0L);
     return cardDto;
   }
 
   public static Card getActivatedCard (CardType cardType) {
-    Card cardDto = getCardWithId(cardType);
-    cardDto.setPasscode(getEncodedPasscode());
-    cardDto.setStatus(ACTIVE);
-    return cardDto;
+    Card card = getCardWithId(cardType);
+    card.setPasscode(getEncodedPasscode());
+    card.setStatus(ACTIVE);
+    card.setBalance(0L);
+    return card;
   }
 
   public static Optional<Card> getOptionalCardEmpty () {
@@ -93,6 +97,7 @@ public final class CardMother {
     card.setPasscode(null);
     card.setType(cardType);
     card.setLimitCredit(getCardLimit(cardType));
+    card.setBalance(0L);
 
     return card;
   }
@@ -119,6 +124,7 @@ public final class CardMother {
     cardResponse.setStatus(status);
     cardResponse.setType(type);
     cardResponse.setLimitCredit(getCardLimit(type));
+    cardResponse.setBalance(0L);
 
     return cardResponse;
   }

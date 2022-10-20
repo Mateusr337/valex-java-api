@@ -51,6 +51,7 @@ public class CardMapper {
     card.setType(cardDto.getType());
     card.setUserName(user.getName());
     card.setExpirationDate(cardDto.getExpirationDate());
+    card.setBalance(cardDto.getBalance());
     card.setUser(user);
 
     return card;
@@ -71,6 +72,7 @@ public class CardMapper {
       cardDto.setLimit(card.getLimitCredit());
       cardDto.setPasscode(card.getPasscode());
       cardDto.setExpirationDate(card.getExpirationDate());
+      cardDto.setBalance(card.getBalance());
       cardDtoList.add(cardDto);
     }
     return cardDtoList;
@@ -89,6 +91,8 @@ public class CardMapper {
     cardDto.setLimit(card.getLimitCredit());
     cardDto.setPasscode(card.getPasscode());
     cardDto.setExpirationDate(card.getExpirationDate());
+    cardDto.setBalance(card.getBalance());
+
 
     return cardDto;
   }
@@ -106,6 +110,7 @@ public class CardMapper {
       cardResponse.setUserId(cardDto.getUserId());
       cardResponse.setLimitCredit(cardDto.getLimit());
       cardResponse.setExpirationDate(cardDto.getExpirationDate());
+      cardResponse.setBalance(cardDto.getBalance());
       CardResponseList.add(cardResponse);
     }
     ;
@@ -123,6 +128,7 @@ public class CardMapper {
     cardResponse.setUserId(cardDto.getUserId());
     cardResponse.setLimitCredit(cardDto.getLimit());
     cardResponse.setExpirationDate(cardDto.getExpirationDate());
+    cardResponse.setBalance(cardDto.getBalance());
 
     return cardResponse;
   }

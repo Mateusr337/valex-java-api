@@ -47,4 +47,7 @@ public class Card {
 
   @Column
   private Date expirationDate;
+
+  @Column
+  private Long balance;
 }

@@ -20,5 +20,6 @@ public class CardResponse {
   private CardType type;
   private Long limitCredit;
   private Date expirationDate;
+  private Long balance;
 
 }
