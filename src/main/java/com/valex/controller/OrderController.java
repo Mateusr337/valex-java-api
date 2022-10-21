@@ -1,5 +1,6 @@
 package com.valex.controller;
 
+import com.valex.domain.dto.OrderDto;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.request.CreateOrderRequest;
 import com.valex.service.OrderService;
@@ -24,7 +25,7 @@ public class OrderController {
 
   @PostMapping
   @ResponseStatus (code = HttpStatus.CREATED)
-  public void create (@RequestBody @Valid CreateOrderRequest createOrderRequest) {
-    orderService.create(orderMapper.requestToVo(createOrderRequest));
+  public OrderDto create (@RequestBody @Valid CreateOrderRequest createOrderRequest) {
+    return orderService.create(orderMapper.requestToVo(createOrderRequest));
   }
 }

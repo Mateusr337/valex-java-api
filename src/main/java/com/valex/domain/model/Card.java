@@ -3,15 +3,17 @@ package com.valex.domain.model;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.*;
+import lombok.ToString.Exclude;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table
+@Table (name = "cards")
 @Entity (name = "cards")
 public class Card {
 
@@ -20,6 +22,10 @@ public class Card {
   private Long id;
 
   @ManyToOne
+  @JoinColumn (
+      name = "user_id",
+      nullable = false
+  )
   private User user;
 
   @Column (nullable = false)
@@ -50,4 +56,12 @@ public class Card {
 
   @Column
   private Long balance;
+
+  @OneToMany (
+      mappedBy = "card",
+      cascade = { CascadeType.ALL },
+      fetch = FetchType.LAZY
+  )
+  @Column (name = "orders")
+  private Set<Order> orders;
 }

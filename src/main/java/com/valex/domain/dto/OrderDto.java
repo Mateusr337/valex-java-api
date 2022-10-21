@@ -1,17 +1,17 @@
-package com.valex.domain.model;
+package com.valex.domain.dto;
 
 import com.valex.domain.enumeration.CardType;
+import com.valex.domain.model.Card;
+import com.valex.domain.model.Product;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,42 +20,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.ToString.Exclude;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table (name = "orders")
-@Entity (name = "orders")
-public class Order {
+public class OrderDto {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(
-      name = "card_id",
-      nullable = false
-  )
   private Card card;
 
-  @Column (nullable = false)
-  @Enumerated (EnumType.STRING)
   private CardType type;
 
-  @Column (nullable = false)
   private String shopName;
 
-  @OneToMany (
-      mappedBy = "order",
-      cascade = { CascadeType.ALL },
-      fetch = FetchType.LAZY
-  )
-  @Column (name = "products")
-  private List<Product> products;
+  private List<ProductDto> products;
 
 }

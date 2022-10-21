@@ -5,6 +5,7 @@ import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.request.ProductOrderRequest;
 import com.valex.domain.vo.CreateOrderVo;
@@ -24,6 +25,7 @@ public final class ValidateCardToCreateOrder {
       }
 
       if (requestData.getPasscode() != null) validateInPersonShop(databaseCard, requestData);
+      //call virtual purchase validations
 
       Long totalPrice = calculateTotalPrice(requestData.getProducts());
       if (requestData.getType() == DEBIT) validateAmount(databaseCard.getBalance(), totalPrice);
@@ -49,8 +51,11 @@ public final class ValidateCardToCreateOrder {
     Encoder.matches(requestData.getPasscode(), databaseCard.getPasscode());
   }
 
-  private static void validateVirtualShop () {
+  private static void validateVirtualShop (CardDto databaseCard, CreateOrderVo requestData) {
     // validar o cvv
-    // Aceitar credito apenas!
+
+    if (databaseCard.getType() != CREDIT || requestData.getType() != CREDIT) {
+      throw new BadRequestException("Transaction type invalid.");
+    }
   }
 }

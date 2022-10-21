@@ -2,6 +2,7 @@ package com.valex.domain.mapper;
 
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
+import com.valex.domain.dto.OrderDto;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Order;
 import com.valex.domain.request.CreateOrderRequest;
@@ -16,7 +17,10 @@ public interface OrderMapper {
   
   CreateOrderVo requestToVo (CreateOrderRequest createOrderRequest);
 
+  @Mapping(target = "id", ignore = true)
   Order voToModel (CreateOrderVo createOrderVo);
+
+  OrderDto modelToDto (Order order);
 
   @AfterMapping
   default void setCard(
