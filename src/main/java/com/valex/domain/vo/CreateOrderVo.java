@@ -4,6 +4,7 @@ import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Product;
 import com.valex.domain.request.ProductOrderRequest;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,5 +28,7 @@ public class CreateOrderVo {
   private List<ProductOrderRequest> products;
 
   private String passcode;
+
+  private Date date;
 
 }

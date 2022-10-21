@@ -13,6 +13,7 @@ import com.valex.repository.OrderRepository;
 import com.valex.repository.ProductRepository;
 import com.valex.service.CardService;
 import com.valex.service.OrderService;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
   public OrderDto create (CreateOrderVo createOrderVo) {
     CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
     ValidateCardToCreateOrder.valid(cardDto, createOrderVo);
+
+    createOrderVo.setDate(new Date());
     createOrderVo.setPasscode(encode(createOrderVo.getPasscode()));
 
     Order order = orderRepository.save(orderMapper.voToModel(createOrderVo));

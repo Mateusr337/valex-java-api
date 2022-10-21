@@ -1,6 +1,7 @@
 package com.valex.domain.model;
 
 import com.valex.domain.enumeration.CardType;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,5 +58,8 @@ public class Order {
   )
   @Column (name = "products")
   private List<Product> products;
+
+  @Column (nullable = false)
+  private Date date;
 
 }

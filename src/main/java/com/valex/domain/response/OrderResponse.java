@@ -3,6 +3,7 @@ package com.valex.domain.response;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Product;
+import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +27,7 @@ public class OrderResponse {
   private String shopName;
 
   private List<Product> products;
+
+  private Date date;
 
 }

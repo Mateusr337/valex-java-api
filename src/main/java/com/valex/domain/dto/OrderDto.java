@@ -3,6 +3,7 @@ package com.valex.domain.dto;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Product;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,4 +39,5 @@ public class OrderDto {
 
   private List<Product> products;
 
+  private Date date;
 }
