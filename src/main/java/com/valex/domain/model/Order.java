@@ -52,7 +52,7 @@ public class Order {
 
   @OneToMany (
       mappedBy = "order",
-      cascade = { CascadeType.ALL },
+      cascade = { CascadeType.DETACH },
       fetch = FetchType.LAZY
   )
   @Column (name = "products")

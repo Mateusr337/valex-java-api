@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
   @OneToMany(
       mappedBy = "user",
-      cascade = { CascadeType.ALL },
+      cascade = { CascadeType.DETACH },
       fetch = FetchType.LAZY
   )
   @Column (name = "cards")

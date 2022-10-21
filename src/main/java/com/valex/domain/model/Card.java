@@ -59,7 +59,7 @@ public class Card {
 
   @OneToMany (
       mappedBy = "card",
-      cascade = { CascadeType.ALL },
+      cascade = { CascadeType.DETACH },
       fetch = FetchType.LAZY
   )
   @Column (name = "orders")

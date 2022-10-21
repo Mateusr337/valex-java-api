@@ -1,5 +1,6 @@
 package com.valex.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,6 +43,7 @@ public class Product {
       name = "order_id",
       nullable = false
   )
+  @JsonIgnore
   private Order order;
 
 }

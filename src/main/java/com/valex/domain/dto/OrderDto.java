@@ -36,6 +36,6 @@ public class OrderDto {
 
   private String shopName;
 
-  private List<ProductDto> products;
+  private List<Product> products;
 
 }
