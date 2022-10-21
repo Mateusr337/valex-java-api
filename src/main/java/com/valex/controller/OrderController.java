@@ -3,6 +3,7 @@ package com.valex.controller;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.request.CreateOrderRequest;
+import com.valex.domain.response.OrderResponse;
 import com.valex.service.OrderService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class OrderController {
 
   @PostMapping
   @ResponseStatus (code = HttpStatus.CREATED)
-  public OrderDto create (@RequestBody @Valid CreateOrderRequest createOrderRequest) {
-    return orderService.create(orderMapper.requestToVo(createOrderRequest));
+  public OrderResponse create (@RequestBody @Valid CreateOrderRequest createOrderRequest) {
+    OrderDto orderDto = orderService.create(orderMapper.requestToVo(createOrderRequest));
+    return  orderMapper.dtoToResponse(orderDto);
   }
 }
