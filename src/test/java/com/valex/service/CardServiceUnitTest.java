@@ -5,8 +5,6 @@ import static com.valex.domain.enumeration.CardType.*;
 import static com.valex.domain.mother.CardMother.*;
 import static com.valex.domain.mother.UserMother.getUser;
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -46,6 +47,7 @@ public class CardServiceImpl implements CardService {
     return cardMapper.modelToDto(card.get());
   }
 
+  @Transactional
   public CardDto create (CardDto cardDto) {
     userService.findByIdOrFail(cardDto.getUserId());
     CardTypeAndLimitCardRequestValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
@@ -57,6 +59,7 @@ public class CardServiceImpl implements CardService {
     return cardMapper.modelToDto(card);
   }
 
+  @Transactional
   public CardDto activate (Long cardId, String passcode) {
     CardDto cardDto = findByIdOrFail(cardId);
     CardPasscodeValidation.valid(passcode);

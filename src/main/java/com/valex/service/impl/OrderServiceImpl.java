@@ -18,6 +18,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -34,13 +35,12 @@ public class OrderServiceImpl implements OrderService {
   @Autowired
   private OrderMapper orderMapper;
 
+  @Transactional
   public OrderDto create (CreateOrderVo createOrderVo) {
     CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
     ValidateCardToCreateOrder.valid(cardDto, createOrderVo);
 
     createOrderVo.setDate(new Date());
-    createOrderVo.setPasscode(encode(createOrderVo.getPasscode()));
-
     Order order = orderRepository.save(orderMapper.voToModel(createOrderVo));
 
     for (Product product: order.getProducts()) { product.setOrder(order); }
