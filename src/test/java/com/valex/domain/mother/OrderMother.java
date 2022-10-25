@@ -52,7 +52,7 @@ public final class OrderMother {
 
     order.setId(ID);
     order.setCard(card);
-    order.setType(type);
+    order.setPurchaseType(type);
     order.setDate(new Date());
     order.setShopName(SHOP_NAME);
     order.setProducts(List.of(getProduct(card.getId())));

@@ -5,7 +5,6 @@ import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
 
 import com.valex.domain.dto.CardDto;
-import com.valex.domain.enumeration.CardType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.request.ProductOrderRequest;
 import com.valex.domain.vo.CreateOrderVo;
@@ -21,6 +20,8 @@ public final class ValidateCardToCreateOrder {
       }
 
       if (databaseCard.getExpirationDate().getTime() < new Date().getTime()) {
+        System.out.println("///////");
+        System.out.println(databaseCard.getExpirationDate().getTime() < new Date().getTime());
         throw new BadRequestException("Card is expired.");
       }
 

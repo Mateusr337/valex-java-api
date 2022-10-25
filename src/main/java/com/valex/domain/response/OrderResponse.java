@@ -1,6 +1,7 @@
 package com.valex.domain.response;
 
 import com.valex.domain.enumeration.CardType;
+import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Product;
 import java.util.Date;
@@ -19,15 +20,11 @@ import lombok.ToString;
 public class OrderResponse {
 
   private Long id;
-
   private Long cardId;
-
-  private CardType type;
-
+  private CardType purchaseType;
+  private OrderType orderType;
   private String shopName;
-
   private List<Product> products;
-
   private Date date;
 
 }

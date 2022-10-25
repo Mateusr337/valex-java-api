@@ -11,17 +11,14 @@ import static com.valex.domain.mother.OrderMother.getOrderDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.exception.BadRequestException;
-import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Order;
@@ -31,12 +28,10 @@ import com.valex.domain.vo.CreateOrderVo;
 import com.valex.repository.OrderRepository;
 import com.valex.repository.ProductRepository;
 import com.valex.service.impl.OrderServiceImpl;
-import com.valex.utils.Encoder;
 import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,16 +41,12 @@ public class OrderServiceUnitTest {
 
   @InjectMocks
   private OrderServiceImpl orderService;
-
   @Mock
   private OrderRepository orderRepository;
-
   @Mock
   private OrderMapper orderMapper;
-
   @Mock
   private CardService cardService;
-
   @Mock
   private ProductRepository productRepository;
 
@@ -102,7 +93,6 @@ public class OrderServiceUnitTest {
       then(e.getClass()).isEqualTo(BadRequestException.class);
       then(e.getMessage()).isEqualTo("Card not been activated.");
     }
-
   }
 
   @Test
@@ -123,7 +113,6 @@ public class OrderServiceUnitTest {
       then(e.getClass()).isEqualTo(BadRequestException.class);
       then(e.getMessage()).isEqualTo("Card is expired.");
     }
-
   }
 
   @Test
@@ -142,7 +131,6 @@ public class OrderServiceUnitTest {
       then(e.getClass()).isEqualTo(BadRequestException.class);
       then(e.getMessage()).isEqualTo("Transaction type invalid.");
     }
-
   }
 
   @Test
@@ -166,10 +154,10 @@ public class OrderServiceUnitTest {
 
   @Test
   void givenInvalidAmountDebitCardThenReturnBadRequest () {
-    Card card = getActivatedCard(CREDIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
+    Card card = getActivatedCard(DEBIT);
+    CreateOrderVo createOrderVo = getCreateOrderVo(DEBIT, card);
 
-    CardDto cardDto = getActivatedCardDto(CREDIT);
+    CardDto cardDto = getActivatedCardDto(DEBIT);
     cardDto.setBalance(0L);
     given(cardService.findByIdOrFail(anyLong())).willReturn(cardDto);
 
@@ -182,5 +170,4 @@ public class OrderServiceUnitTest {
       then(e.getMessage()).isEqualTo("Amount unauthorized.");
     }
   }
-
 }

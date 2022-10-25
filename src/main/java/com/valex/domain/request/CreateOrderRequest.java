@@ -1,7 +1,10 @@
 package com.valex.domain.request;
 
+import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.model.Product;
 import java.util.List;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,14 +26,17 @@ public class CreateOrderRequest {
   private Long cardId;
 
   @NotBlank (message = "{card.type.null.empty}")
-  private String type;
+  private String purchaseType;
+
+  @NotBlank (message = "")
+  private OrderType orderType;
 
   @NotBlank (message = "{shopName.not.empty}")
   private String shopName;
 
+  @Valid
   @NotNull (message = "{products.not.null}")
   @Size (min = 1, message = "{products.not.empty}")
-  @Valid
   private List<ProductOrderRequest> products;
 
   @NotBlank (message = "{passcode.not.null}")
