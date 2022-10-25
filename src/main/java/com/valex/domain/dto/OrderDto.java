@@ -1,6 +1,7 @@
 package com.valex.domain.dto;
 
 import com.valex.domain.enumeration.CardType;
+import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Product;
 import java.util.Date;
@@ -33,7 +34,9 @@ public class OrderDto {
 
   private Card card;
 
-  private CardType type;
+  private CardType purchaseType;
+
+  private OrderType orderType;
 
   private String shopName;
 

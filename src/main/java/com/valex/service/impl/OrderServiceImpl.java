@@ -1,9 +1,12 @@
 package com.valex.service.impl;
 
+import static com.valex.domain.enumeration.OrderType.IN_PERSON;
+import static com.valex.domain.enumeration.OrderType.VIRTUAL;
 import static com.valex.utils.Encoder.encode;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
+import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Order;
 import com.valex.domain.model.Product;
@@ -38,8 +41,8 @@ public class OrderServiceImpl implements OrderService {
   public OrderDto create (CreateOrderVo createOrderVo) {
     CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
     ValidateCardToCreateOrder.valid(cardDto, createOrderVo);
+    formatNewOrderData(createOrderVo);
 
-    createOrderVo.setDate(new Date());
     Order order = orderRepository.save(orderMapper.voToModel(createOrderVo));
 
     for (Product product: order.getProducts()) { product.setOrder(order); }
@@ -54,4 +57,14 @@ public class OrderServiceImpl implements OrderService {
   }
 
   public void delete(Long id) {}
+
+  private void formatNewOrderData (CreateOrderVo orderVo) {
+    orderVo.setDate(new Date());
+
+    if (orderVo.getPasscode() != null) {
+      orderVo.setOrderType(IN_PERSON);
+    } else {
+      orderVo.setOrderType(VIRTUAL);
+    }
+  }
 }

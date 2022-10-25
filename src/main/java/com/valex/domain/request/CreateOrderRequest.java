@@ -25,11 +25,8 @@ public class CreateOrderRequest {
   @NotNull (message = "{cardId.not.null}")
   private Long cardId;
 
-  @NotBlank (message = "{card.type.null.empty}")
+  @NotBlank (message = "{order.purchaseType.null.empty}")
   private String purchaseType;
-
-  @NotBlank (message = "")
-  private OrderType orderType;
 
   @NotBlank (message = "{shopName.not.empty}")
   private String shopName;

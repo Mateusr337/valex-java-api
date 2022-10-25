@@ -25,7 +25,7 @@ public final class OrderMother {
     CreateOrderVo createOrderVo = new CreateOrderVo();
 
     createOrderVo.setCard(card);
-    createOrderVo.setType(type);
+    createOrderVo.setPurchaseType(type);
     createOrderVo.setShopName(SHOP_NAME);
     createOrderVo.setPasscode(PASSCODE);
     createOrderVo.setProducts(List.of(product));
@@ -39,7 +39,7 @@ public final class OrderMother {
     CreateOrderRequest createOrderRequest = new CreateOrderRequest();
 
     createOrderRequest.setCardId(cardId);
-    createOrderRequest.setType(type.name());
+    createOrderRequest.setPurchaseType(type.name());
     createOrderRequest.setPasscode(PASSCODE);
     createOrderRequest.setShopName(SHOP_NAME);
     createOrderRequest.setProducts(List.of(product));
@@ -65,7 +65,7 @@ public final class OrderMother {
 
     orderDto.setId(ID);
     orderDto.setCard(card);
-    orderDto.setType(type);
+    orderDto.setPurchaseType(type);
     orderDto.setDate(new Date());
     orderDto.setShopName(SHOP_NAME);
     orderDto.setProducts(List.of(getProduct(card.getId())));

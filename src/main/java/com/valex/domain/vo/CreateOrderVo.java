@@ -24,11 +24,17 @@ import lombok.ToString;
 public class CreateOrderVo {
 
   private Card card;
+
   private CardType purchaseType;
+
   private OrderType orderType;
+
   private String shopName;
+
   private List<ProductOrderRequest> products;
+
   private String passcode;
+
   private Date date;
 
 }

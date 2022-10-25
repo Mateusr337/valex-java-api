@@ -29,8 +29,8 @@ public final class ValidateCardToCreateOrder {
       //call virtual purchase validations
 
       Long totalPrice = calculateTotalPrice(requestData.getProducts());
-      if (requestData.getType() == DEBIT) validateAmount(databaseCard.getBalance(), totalPrice);
-      if (requestData.getType() == CREDIT) validateAmount(databaseCard.getLimit(), totalPrice);
+      if (requestData.getPurchaseType() == DEBIT) validateAmount(databaseCard.getBalance(), totalPrice);
+      if (requestData.getPurchaseType() == CREDIT) validateAmount(databaseCard.getLimit(), totalPrice);
   }
 
   private static Long calculateTotalPrice (List<ProductOrderRequest> products) {
@@ -46,7 +46,7 @@ public final class ValidateCardToCreateOrder {
   }
 
   private static void validateInPersonShop(CardDto databaseCard, CreateOrderVo requestData) {
-    if (databaseCard.getType() != requestData.getType()) {
+    if (databaseCard.getType() != requestData.getPurchaseType()) {
       throw new BadRequestException("Transaction type invalid.");
     }
     Encoder.matches(requestData.getPasscode(), databaseCard.getPasscode());
@@ -55,7 +55,7 @@ public final class ValidateCardToCreateOrder {
   private static void validateVirtualShop (CardDto databaseCard, CreateOrderVo requestData) {
     // validar o cvv
 
-    if (databaseCard.getType() != CREDIT || requestData.getType() != CREDIT) {
+    if (databaseCard.getType() != CREDIT || requestData.getPurchaseType() != CREDIT) {
       throw new BadRequestException("Transaction type invalid.");
     }
   }
