@@ -2,6 +2,7 @@ package com.valex.service;
 
 import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
+import static com.valex.domain.enumeration.OrderType.IN_PERSON;
 import static com.valex.domain.mother.CardMother.getActivatedCard;
 import static com.valex.domain.mother.CardMother.getActivatedCardDto;
 import static com.valex.domain.mother.CardMother.getCardDtoWithId;
@@ -18,6 +19,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
+import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Card;
@@ -56,9 +58,9 @@ public class OrderServiceUnitTest {
   @Test
   void givenValidCreateCreditInPersonOrderThenReturnCreatedOrder () {
     Card card = getActivatedCard(CREDIT);
-    Order order = getOrder(card, card.getType());
+    Order order = getOrder(card, card.getType(), IN_PERSON);
     Product product = ProductMother.getProduct(card.getId());
-    OrderDto orderDto = getOrderDto(card, CREDIT);
+    OrderDto orderDto = getOrderDto(card, CREDIT, IN_PERSON);
     CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
 
     given(cardService.findByIdOrFail(anyLong())).willReturn(getActivatedCardDto(CREDIT));

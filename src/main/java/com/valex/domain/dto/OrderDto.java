@@ -40,7 +40,8 @@ public class OrderDto {
 
   private String shopName;
 
-  private List<Product> products;
+  private List<ProductDto> products;
 
   private Date date;
+
 }

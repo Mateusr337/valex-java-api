@@ -1,10 +1,6 @@
 package com.valex.domain.request;
 
-import com.valex.domain.enumeration.OrderType;
-import com.valex.domain.model.Product;
 import java.util.List;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -34,7 +30,7 @@ public class CreateOrderRequest {
   @Valid
   @NotNull (message = "{products.not.null}")
   @Size (min = 1, message = "{products.not.empty}")
-  private List<ProductOrderRequest> products;
+  private List<ProductRequest> products;
 
   @NotBlank (message = "{passcode.not.null}")
   private String passcode;

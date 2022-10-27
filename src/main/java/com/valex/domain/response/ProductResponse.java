@@ -1,4 +1,4 @@
-package com.valex.domain.dto;
+package com.valex.domain.response;
 
 import com.valex.domain.model.Order;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductDto {
+public class ProductResponse {
 
   private Long id;
 
@@ -22,6 +22,6 @@ public class ProductDto {
 
   private Long price;
 
-  private OrderDto order;
+  private Long orderId;
 
 }

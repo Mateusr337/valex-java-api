@@ -6,36 +6,43 @@ import static com.valex.domain.enumeration.CardType.DEBIT;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.exception.BadRequestException;
-import com.valex.domain.request.ProductOrderRequest;
+import com.valex.domain.request.ProductRequest;
 import com.valex.domain.vo.CreateOrderVo;
 import com.valex.utils.Encoder;
 import java.util.Date;
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 public final class ValidateCardToCreateOrder {
 
-  public static void valid (CardDto databaseCard, CreateOrderVo requestData) {
-      if (databaseCard.getStatus() != ACTIVE) {
-        throw new BadRequestException("Card not been activated.");
-      }
+  public static void valid (CardDto card, CreateOrderVo request
+  ) {
+      validateCardValidity(card);
 
-      if (databaseCard.getExpirationDate().getTime() < new Date().getTime()) {
-        System.out.println("///////");
-        System.out.println(databaseCard.getExpirationDate().getTime() < new Date().getTime());
-        throw new BadRequestException("Card is expired.");
-      }
-
-      if (requestData.getPasscode() != null) validateInPersonShop(databaseCard, requestData);
+      if (request
+          .getPasscode() != null) validateInPersonShop(card, request);
       //call virtual purchase validations
 
-      Long totalPrice = calculateTotalPrice(requestData.getProducts());
-      if (requestData.getPurchaseType() == DEBIT) validateAmount(databaseCard.getBalance(), totalPrice);
-      if (requestData.getPurchaseType() == CREDIT) validateAmount(databaseCard.getLimit(), totalPrice);
+      Long totalPrice = calculateTotalPrice(request);
+      if (request
+          .getPurchaseType() == DEBIT) validateAmount(card.getBalance(), totalPrice);
+      if (request
+          .getPurchaseType() == CREDIT) validateAmount(card.getLimit(), totalPrice);
   }
 
-  private static Long calculateTotalPrice (List<ProductOrderRequest> products) {
+  private static void validateCardValidity (CardDto card) {
+    if (card.getStatus() != ACTIVE) {
+      throw new BadRequestException("Card not been activated.");
+    }
+
+    if (card.getExpirationDate().getTime() <= new Date().getTime()) {
+      throw new BadRequestException("Card is expired.");
+    }
+  }
+
+  private static Long calculateTotalPrice (CreateOrderVo request) {
     Long total = 0L;
-    for (ProductOrderRequest product : products) {
+    for (ProductRequest product : request
+        .getProducts()) {
       total += product.getPrice();
     }
     return total;
@@ -45,17 +52,20 @@ public final class ValidateCardToCreateOrder {
     if (amountPurchase > amountCard) throw new BadRequestException("Amount unauthorized.");
   }
 
-  private static void validateInPersonShop(CardDto databaseCard, CreateOrderVo requestData) {
-    if (databaseCard.getType() != requestData.getPurchaseType()) {
+  private static void validateInPersonShop(CardDto card, CreateOrderVo request) {
+    if (card.getType() != request
+        .getPurchaseType()) {
       throw new BadRequestException("Transaction type invalid.");
     }
-    Encoder.matches(requestData.getPasscode(), databaseCard.getPasscode());
+    Encoder.matches(request
+        .getPasscode(), card.getPasscode());
   }
 
-  private static void validateVirtualShop (CardDto databaseCard, CreateOrderVo requestData) {
+  private static void validateVirtualShop (CardDto card, CreateOrderVo request) {
     // validar o cvv
 
-    if (databaseCard.getType() != CREDIT || requestData.getPurchaseType() != CREDIT) {
+    if (card.getType() != CREDIT || request
+        .getPurchaseType() != CREDIT) {
       throw new BadRequestException("Transaction type invalid.");
     }
   }

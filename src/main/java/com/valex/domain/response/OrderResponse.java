@@ -20,11 +20,17 @@ import lombok.ToString;
 public class OrderResponse {
 
   private Long id;
+
   private Long cardId;
+
   private CardType purchaseType;
+
   private OrderType orderType;
+
   private String shopName;
-  private List<Product> products;
+
+  private List<ProductResponse> products;
+
   private Date date;
 
 }

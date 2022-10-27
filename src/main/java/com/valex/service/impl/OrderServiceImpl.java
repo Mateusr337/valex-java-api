@@ -63,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
 
     if (orderVo.getPasscode() != null) {
       orderVo.setOrderType(IN_PERSON);
+
     } else {
       orderVo.setOrderType(VIRTUAL);
     }

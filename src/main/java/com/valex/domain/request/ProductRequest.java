@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductOrderRequest {
+public class ProductRequest {
 
   @NotBlank (message = "{order.product.title.not.empty}")
   private String title;

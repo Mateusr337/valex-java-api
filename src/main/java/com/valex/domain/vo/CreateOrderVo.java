@@ -3,13 +3,9 @@ package com.valex.domain.vo;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.model.Card;
-import com.valex.domain.model.Product;
-import com.valex.domain.request.ProductOrderRequest;
+import com.valex.domain.request.ProductRequest;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +27,7 @@ public class CreateOrderVo {
 
   private String shopName;
 
-  private List<ProductOrderRequest> products;
+  private List<ProductRequest> products;
 
   private String passcode;
 
