@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
   public void delete(Long id) {}
 
-  private void formatNewOrderData (CreateOrderVo orderVo) {
+  private CreateOrderVo formatNewOrderData (CreateOrderVo orderVo) {
     orderVo.setDate(new Date());
 
     if (orderVo.getPasscode() != null) {
@@ -67,5 +67,7 @@ public class OrderServiceImpl implements OrderService {
     } else {
       orderVo.setOrderType(VIRTUAL);
     }
+
+    return orderVo;
   }
 }

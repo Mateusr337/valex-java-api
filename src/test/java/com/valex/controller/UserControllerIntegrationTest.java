@@ -76,16 +76,5 @@ public class UserControllerIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$"). isArray());
   }
-
-  @Test
-  @WithMockUser
-  void givenDeleteExistUserIdThnReturnStatusNoContext () throws Exception {
-    UserResponse user = userFactory.createUserInTheDatabase();
-
-    String URL = BASE_URL + "/" + user.getId();
-
-    mvc.perform(delete(URL))
-        .andExpect(status().isNoContent());
-  }
 }
 

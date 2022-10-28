@@ -5,7 +5,7 @@ import static com.valex.domain.enumeration.CardStatus.DISABLED;
 import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.domain.mother.CardMother.getCardRequest;
-import static com.valex.domain.mother.UserMother.getAlternativeUserRequest;
+import static com.valex.domain.mother.UserMother.getAlternativeUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,17 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valex.Factory.CardFactory;
 import com.valex.Factory.UserFactory;
-import com.valex.domain.mother.UserMother;
+import com.valex.domain.model.Card;
+import com.valex.domain.model.User;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
-import com.valex.domain.request.UserRequest;
-import com.valex.domain.response.CardResponse;
-import com.valex.domain.response.UserResponse;
 import com.valex.repository.CardRepository;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.br.CPF;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +58,7 @@ public class CardControllerIntegrationTest {
   @Test
   @WithMockUser
   void givenCreateCardThenReturnCreatedCard () throws Exception {
-    UserResponse user = userFactory.createUserInTheDatabase();
+    User user = userFactory.createUserInTheDatabase();
     CardRequest cardRequest = getCardRequest(CREDIT);
     cardRequest.setUserId(user.getId());
 
@@ -91,8 +85,8 @@ public class CardControllerIntegrationTest {
   @Test
   @WithMockUser
   void givenActivatedCardReturnActivatedCard () throws Exception {
-    UserResponse user = userFactory.createUserInTheDatabase();
-    CardResponse card = cardFactory.createCardInTheDatabase(DEBIT, user.getId());
+    User user = userFactory.createUserInTheDatabase();
+    Card card = cardFactory.createCardInTheDatabase(DEBIT, user);
 
     String URL = BASE_URL + "/activate/" + card.getId();
     ActivateCardRequest activateRequest = new ActivateCardRequest("1234");
@@ -109,11 +103,11 @@ public class CardControllerIntegrationTest {
   @Test
   @WithMockUser
   void givenFindCardsByUserIdThenReturnCardListOfUser () throws Exception {
-    UserResponse user1 = userFactory.createUserInTheDatabase();
-    UserResponse user2 = userFactory.createUserInTheDatabase(getAlternativeUserRequest());
+    User user1 = userFactory.createUserInTheDatabase();
+    User user2 = userFactory.createUserInTheDatabase(getAlternativeUser());
 
-    CardResponse card1 = cardFactory.createCardInTheDatabase(DEBIT, user1.getId());
-    cardFactory.createCardInTheDatabase(DEBIT, user2.getId());
+    Card card1 = cardFactory.createCardInTheDatabase(DEBIT, user1);
+    cardFactory.createCardInTheDatabase(DEBIT, user2);
 
     String URL = BASE_URL + "/users/" + user1.getId();
 

@@ -90,8 +90,8 @@ public final class UserMother {
     return userResponse;
   }
 
-  public static UserRequest getAlternativeUserRequest () {
-    UserRequest user = new UserRequest();
+  public static User getAlternativeUser() {
+    User user = new User();
     user.setName("Beltrano");
     user.setEmail("beltrano@email.com");
     user.setCpf("39765329083");
