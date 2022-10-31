@@ -15,7 +15,7 @@ public final class Encoder {
     boolean match = passwordEncoder.matches(string, encoded);
 
     if (!match) {
-      throw new UnauthorizedException("wrong password");
+      throw new UnauthorizedException("Wrong password.");
     }
   }
 

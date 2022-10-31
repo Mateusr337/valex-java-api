@@ -17,15 +17,25 @@ import lombok.*;
 public class CardDto {
 
   private Long id;
+
   private Long userId;
+
   private String userName;
+
   private String number;
+
   private String cvv;
+
   private CardStatus status;
+
   private String passcode;
+
   private CardType type;
+
   private Long limit;
+
   private Date expirationDate;
+
   private Long balance;
 
 }

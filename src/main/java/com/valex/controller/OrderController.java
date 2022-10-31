@@ -1,11 +1,16 @@
 package com.valex.controller;
 
+import com.valex.domain.dto.OrderDto;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.request.CreateOrderRequest;
+import com.valex.domain.response.OrderResponse;
+import com.valex.domain.vo.CreateOrderVo;
 import com.valex.service.OrderService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +29,15 @@ public class OrderController {
 
   @PostMapping
   @ResponseStatus (code = HttpStatus.CREATED)
-  public void create (@RequestBody @Valid CreateOrderRequest createOrderRequest) {
-    orderService.create(orderMapper.requestToVo(createOrderRequest));
+  public OrderResponse create (@RequestBody @Valid CreateOrderRequest createOrderRequest) {
+    CreateOrderVo orderVo = orderMapper.requestToVo(createOrderRequest);
+    OrderDto orderDto = orderService.create(orderVo);
+    return orderMapper.dtoToResponse(orderDto);
+  }
+
+  @DeleteMapping ("/{id}")
+  @ResponseStatus (code = HttpStatus.NO_CONTENT)
+  public void delete (@PathVariable Long id) {
+    orderService.delete(id);
   }
 }

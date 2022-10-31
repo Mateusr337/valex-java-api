@@ -1,8 +1,6 @@
-package com.valex.domain.vo;
+package com.valex.domain.response;
 
 import com.valex.domain.enumeration.CardType;
-import com.valex.domain.model.Card;
-import com.valex.domain.request.ProductRequest;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -16,17 +14,17 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateOrderVo {
+public class OrderResponse {
 
-  private Card card;
+  private Long id;
+
+  private Long cardId;
 
   private CardType purchaseType;
 
   private String shopName;
 
-  private List<ProductRequest> products;
-
-  private String passcode;
+  private List<ProductResponse> products;
 
   private Date date;
 

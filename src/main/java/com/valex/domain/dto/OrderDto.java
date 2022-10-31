@@ -1,8 +1,7 @@
-package com.valex.domain.vo;
+package com.valex.domain.dto;
 
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
-import com.valex.domain.request.ProductRequest;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,9 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateOrderVo {
+public class OrderDto {
+
+  private Long id;
 
   private Card card;
 
@@ -24,9 +25,7 @@ public class CreateOrderVo {
 
   private String shopName;
 
-  private List<ProductRequest> products;
-
-  private String passcode;
+  private List<ProductDto> products;
 
   private Date date;
 

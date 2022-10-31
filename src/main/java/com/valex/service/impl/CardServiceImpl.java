@@ -1,8 +1,8 @@
 package com.valex.service.impl;
 
 import static com.valex.domain.enumeration.CardStatus.ACTIVE;
-import static com.valex.domain.enumeration.CardType.DEBIT;
 import static com.valex.utils.Encoder.encode;
+import static com.valex.utils.GenerateCardData.expirationDate;
 import static java.lang.String.valueOf;
 
 import com.valex.domain.dto.CardDto;
@@ -10,16 +10,15 @@ import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.model.Card;
 import com.valex.domain.validation.CardPasscodeValidation;
-import com.valex.domain.validation.CardTypeAndLimitValidation;
+import com.valex.domain.validation.CardTypeAndLimitCardRequestValidation;
 import com.valex.domain.mapper.impl.CardMapper;
 import com.valex.repository.CardRepository;
 import com.valex.service.CardService;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -46,20 +45,19 @@ public class CardServiceImpl implements CardService {
     return cardMapper.modelToDto(card.get());
   }
 
+  @Transactional
   public CardDto create (CardDto cardDto) {
     userService.findByIdOrFail(cardDto.getUserId());
-    CardTypeAndLimitValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
+    CardTypeAndLimitCardRequestValidation.valid(valueOf(cardDto.getType()), cardDto.getLimit());
 
-    cardDto.setExpirationDate(generateExpirationDate());
-
-    if (cardDto.getType() == DEBIT) {
-      cardDto.setBalance(0L);
-    }
+    cardDto.setExpirationDate(expirationDate());
+    cardDto.setBalance(0L);
 
     Card card = cardRepository.save(cardMapper.dtoToModel(cardDto));
     return cardMapper.modelToDto(card);
   }
 
+  @Transactional
   public CardDto activate (Long cardId, String passcode) {
     CardDto cardDto = findByIdOrFail(cardId);
     CardPasscodeValidation.valid(passcode);
@@ -80,12 +78,12 @@ public class CardServiceImpl implements CardService {
     return cardMapper.modelToDto(cardList);
   }
 
-  private Date generateExpirationDate () {
-    Calendar cal = Calendar.getInstance();
-    cal.setTime( new Date() );
-    cal.add(Calendar.YEAR, 5);
+  @Transactional
+  public CardDto updateBalance (Long cardId, Long newBalance) {
+    Card card = cardMapper.dtoToModel(findByIdOrFail(cardId));
 
-    return cal.getTime();
+    card.setBalance(newBalance);
+    return cardMapper.modelToDto(cardRepository.save(card));
   }
 
 }

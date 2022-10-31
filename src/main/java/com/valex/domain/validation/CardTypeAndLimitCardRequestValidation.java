@@ -2,7 +2,7 @@ package com.valex.domain.validation;
 
 import com.valex.domain.exception.BadRequestException;
 
-public final class CardTypeAndLimitValidation {
+public final class CardTypeAndLimitCardRequestValidation {
 
   public static void valid(String type, long limit) {
 

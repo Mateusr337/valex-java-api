@@ -13,6 +13,7 @@ import com.valex.domain.model.User;
 import com.valex.domain.request.CardRequest;
 import com.valex.domain.response.CardResponse;
 import com.valex.utils.GenerateCardData;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public final class CardMother {
     cardDto.setType(cardType);
     cardDto.setBalance(0L);
     cardDto.setLimit(getCardLimit(cardType));
+    cardDto.setExpirationDate(generateExpirationDate());
 
     return cardDto;
   }
@@ -61,6 +63,7 @@ public final class CardMother {
     cardDto.setType(cardType);
     cardDto.setBalance(0L);
     cardDto.setLimit(getCardLimit(cardType));
+    cardDto.setExpirationDate(generateExpirationDate());
 
     return cardDto;
   }
@@ -78,6 +81,7 @@ public final class CardMother {
     card.setPasscode(getEncodedPasscode());
     card.setStatus(ACTIVE);
     card.setBalance(0L);
+    card.setExpirationDate(generateExpirationDate());
     return card;
   }
 
@@ -97,6 +101,7 @@ public final class CardMother {
     card.setPasscode(null);
     card.setType(cardType);
     card.setLimitCredit(getCardLimit(cardType));
+    card.setExpirationDate(generateExpirationDate());
     card.setBalance(0L);
 
     return card;
@@ -133,6 +138,14 @@ public final class CardMother {
     if (cardType == CardType.CREDIT) return 5000000L;
     if (cardType == CardType.DEBIT) return 0L;
     return null;
+  }
+
+  private static Date generateExpirationDate () {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime( new Date() );
+    cal.add(Calendar.YEAR, 5);
+
+    return cal.getTime();
   }
 
   private static String getEncodedPasscode() {

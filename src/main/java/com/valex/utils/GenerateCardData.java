@@ -1,5 +1,7 @@
 package com.valex.utils;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 public final class GenerateCardData {
@@ -24,6 +26,14 @@ public final class GenerateCardData {
       CVV.append(Integer.toString(randomNumber));
     }
     return CVV.toString();
+  }
+
+  public static Date expirationDate() {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime( new Date() );
+    cal.add(Calendar.YEAR, 5);
+
+    return cal.getTime();
   }
 
 }
