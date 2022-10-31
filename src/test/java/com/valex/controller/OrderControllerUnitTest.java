@@ -56,7 +56,7 @@ public class OrderControllerUnitTest {
 
   @Test
   @WithMockUser
-  void givenCreateOrderRequestReturnCreatedOrder () throws Exception {
+  void givenCreateCreditOrderRequestReturnCreatedOrder () throws Exception {
     Card card = getActivatedCard(CREDIT);
     CreateOrderRequest createOrderRequest = getCreateOrderRequest(card.getId(), card.getType());
     CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), card);
@@ -70,6 +70,30 @@ public class OrderControllerUnitTest {
     mvc.perform(post(BASE_URL)
         .content(new ObjectMapper().writeValueAsString(createOrderRequest))
         .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(orderResponse.getId()));
+
+    verify(orderMapper).requestToVo(any(CreateOrderRequest.class));
+    verify(orderService).create(any(CreateOrderVo.class));
+    verify(orderMapper).dtoToResponse(any(OrderDto.class));
+  }
+
+  @Test
+  @WithMockUser
+  void givenCreateDebitOrderRequestReturnCreatedOrder () throws Exception {
+    Card card = getActivatedCard(DEBIT);
+    CreateOrderRequest createOrderRequest = getCreateOrderRequest(card.getId(), card.getType());
+    CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), card);
+    OrderDto orderDto = getOrderDto(card, card.getType(), IN_PERSON);
+    OrderResponse orderResponse = getOrderResponse(card, card.getType(), IN_PERSON);
+
+    given(orderMapper.requestToVo(any())).willReturn(createOrderVo);
+    given(orderMapper.dtoToResponse(any())).willReturn(orderResponse);
+    given(orderService.create(any())).willReturn(orderDto);
+
+    mvc.perform(post(BASE_URL)
+            .content(new ObjectMapper().writeValueAsString(createOrderRequest))
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").value(orderResponse.getId()));
 

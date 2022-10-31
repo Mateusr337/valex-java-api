@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 @Getter
 @Setter
@@ -43,6 +44,7 @@ public class Product {
       name = "order_id",
       nullable = false
   )
+  @Exclude
   @JsonIgnore
   private Order order;
 

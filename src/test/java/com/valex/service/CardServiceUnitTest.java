@@ -159,5 +159,28 @@ class CardServiceUnitTest {
     then(response.get(0).getClass()).isEqualTo(CardDto.class);
   }
 
+  @Test
+  void givenNewBalanceRequestReturnUpdatedCardBalance () {
 
+    CardDto cardDto = getActivatedCardDto(DEBIT);
+    Card card = getActivatedCard(DEBIT);
+    Card cardWithNewBalance = card;
+
+    long balance = 50000L;
+    cardDto.setBalance(balance);
+    card.setBalance(balance);
+    cardWithNewBalance.setBalance(balance - 100L);
+
+    given(cardMapper.dtoToModel(cardDto)).willReturn(card);
+    given(cardRepository.findById(cardDto.getId())).willReturn(Optional.of(card));
+    given(cardMapper.modelToDto(any(Card.class))).willReturn(cardDto);
+    given(cardRepository.save(cardWithNewBalance)).willReturn(cardWithNewBalance);
+
+
+    CardDto response = cardService.updateBalance(cardDto.getId(), cardWithNewBalance.getBalance());
+
+    cardDto.setBalance(balance - 100L);
+    then(response.getId()).isEqualTo(cardDto.getId());
+    then(response.getBalance()).isEqualTo(cardWithNewBalance.getBalance());
+  }
 }

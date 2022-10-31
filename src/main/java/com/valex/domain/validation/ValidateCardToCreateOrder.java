@@ -23,10 +23,8 @@ public final class ValidateCardToCreateOrder {
       //call virtual purchase validations
 
       Long totalPrice = calculateTotalPrice(request);
-      if (request
-          .getPurchaseType() == DEBIT) validateAmount(card.getBalance(), totalPrice);
-      if (request
-          .getPurchaseType() == CREDIT) validateAmount(card.getLimit(), totalPrice);
+      if (request.getPurchaseType() == DEBIT) validateAmount(card.getBalance(), totalPrice);
+      if (request.getPurchaseType() == CREDIT) validateAmount(card.getLimit(), totalPrice);
   }
 
   private static void validateCardValidity (CardDto card) {
@@ -39,7 +37,7 @@ public final class ValidateCardToCreateOrder {
     }
   }
 
-  private static Long calculateTotalPrice (CreateOrderVo request) {
+  public static Long calculateTotalPrice (CreateOrderVo request) {
     Long total = 0L;
     for (ProductRequest product : request
         .getProducts()) {

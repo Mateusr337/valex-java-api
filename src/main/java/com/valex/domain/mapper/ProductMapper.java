@@ -12,6 +12,7 @@ import com.valex.domain.vo.CreateOrderVo;
 import java.util.List;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper (componentModel = "spring", unmappedTargetPolicy = IGNORE)

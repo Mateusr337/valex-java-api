@@ -78,4 +78,12 @@ public class CardServiceImpl implements CardService {
     return cardMapper.modelToDto(cardList);
   }
 
+  @Transactional
+  public CardDto updateBalance (Long cardId, Long newBalance) {
+    Card card = cardMapper.dtoToModel(findByIdOrFail(cardId));
+
+    card.setBalance(newBalance);
+    return cardMapper.modelToDto(cardRepository.save(card));
+  }
+
 }

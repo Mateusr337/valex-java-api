@@ -63,5 +63,6 @@ public class Card {
       fetch = FetchType.LAZY
   )
   @Column (name = "orders")
+  @Exclude
   private Set<Order> orders;
 }

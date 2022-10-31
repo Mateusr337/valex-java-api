@@ -34,6 +34,7 @@ public class CardMapper {
     cardDto.setUserName(user.getName());
     cardDto.setPasscode(cardDto.getPasscode());
     cardDto.setUserId(cardRequest.getUserId());
+    cardDto.setBalance(cardDto.getBalance());
 
     return cardDto;
   }

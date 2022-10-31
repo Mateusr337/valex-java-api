@@ -11,4 +11,5 @@ public interface CardService {
   CardDto create (CardDto cardDto);
   CardDto activate (Long cardId, String passcode);
   List<CardDto> findCardsByUserId (Long id);
+  CardDto updateBalance (Long cardId, Long newBalance);
 }
