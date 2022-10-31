@@ -9,6 +9,8 @@ import com.valex.service.OrderService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,5 +33,11 @@ public class OrderController {
     CreateOrderVo orderVo = orderMapper.requestToVo(createOrderRequest);
     OrderDto orderDto = orderService.create(orderVo);
     return orderMapper.dtoToResponse(orderDto);
+  }
+
+  @DeleteMapping ("/{id}")
+  @ResponseStatus (code = HttpStatus.NO_CONTENT)
+  public void delete (@PathVariable Long id) {
+    orderService.delete(id);
   }
 }

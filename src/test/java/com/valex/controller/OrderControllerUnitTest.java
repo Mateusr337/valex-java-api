@@ -1,6 +1,5 @@
 package com.valex.controller;
 
-import static com.valex.domain.enumeration.OrderType.IN_PERSON;
 import static com.valex.domain.mother.OrderMother.getCreateOrderRequest;
 import static com.valex.domain.mother.OrderMother.getCreateOrderVo;
 import static com.valex.domain.mother.OrderMother.getOrderDto;
@@ -10,6 +9,7 @@ import static com.valex.domain.enumeration.CardType.*;
 import static com.valex.domain.mother.CardMother.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,12 +22,9 @@ import com.valex.domain.model.Card;
 import com.valex.domain.request.CreateOrderRequest;
 import com.valex.domain.response.OrderResponse;
 import com.valex.domain.vo.CreateOrderVo;
-import com.valex.service.OrderService;
 import com.valex.service.impl.OrderServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,8 +57,8 @@ public class OrderControllerUnitTest {
     Card card = getActivatedCard(CREDIT);
     CreateOrderRequest createOrderRequest = getCreateOrderRequest(card.getId(), card.getType());
     CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), card);
-    OrderDto orderDto = getOrderDto(card, card.getType(), IN_PERSON);
-    OrderResponse orderResponse = getOrderResponse(card, card.getType(), IN_PERSON);
+    OrderDto orderDto = getOrderDto(card, card.getType());
+    OrderResponse orderResponse = getOrderResponse(card, card.getType());
 
     given(orderMapper.requestToVo(any())).willReturn(createOrderVo);
     given(orderMapper.dtoToResponse(any())).willReturn(orderResponse);
@@ -84,8 +81,8 @@ public class OrderControllerUnitTest {
     Card card = getActivatedCard(DEBIT);
     CreateOrderRequest createOrderRequest = getCreateOrderRequest(card.getId(), card.getType());
     CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), card);
-    OrderDto orderDto = getOrderDto(card, card.getType(), IN_PERSON);
-    OrderResponse orderResponse = getOrderResponse(card, card.getType(), IN_PERSON);
+    OrderDto orderDto = getOrderDto(card, card.getType());
+    OrderResponse orderResponse = getOrderResponse(card, card.getType());
 
     given(orderMapper.requestToVo(any())).willReturn(createOrderVo);
     given(orderMapper.dtoToResponse(any())).willReturn(orderResponse);
@@ -100,6 +97,17 @@ public class OrderControllerUnitTest {
     verify(orderMapper).requestToVo(any(CreateOrderRequest.class));
     verify(orderService).create(any(CreateOrderVo.class));
     verify(orderMapper).dtoToResponse(any(OrderDto.class));
+  }
+
+  @Test
+  @WithMockUser
+  void givenDeleteOrderRequestThenCallOderServiceDelete () throws Exception {
+    Long id = 10L;
+
+    doNothing().when(orderService).delete(id);
+
+    mvc.perform(delete(BASE_URL + "/" + id))
+        .andExpect(status().isNoContent());
   }
 
 }

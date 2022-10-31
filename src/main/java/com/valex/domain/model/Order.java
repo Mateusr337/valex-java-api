@@ -1,7 +1,6 @@
 package com.valex.domain.model;
 
 import com.valex.domain.enumeration.CardType;
-import com.valex.domain.enumeration.OrderType;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -47,10 +46,6 @@ public class Order {
   @Column (nullable = false)
   @Enumerated (EnumType.STRING)
   private CardType purchaseType;
-
-  @Column (nullable = false)
-  @Enumerated (EnumType.STRING)
-  private OrderType orderType;
 
   @Column (nullable = false)
   private String shopName;

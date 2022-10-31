@@ -1,9 +1,6 @@
 package com.valex.domain.response;
 
 import com.valex.domain.enumeration.CardType;
-import com.valex.domain.enumeration.OrderType;
-import com.valex.domain.model.Card;
-import com.valex.domain.model.Product;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -24,8 +21,6 @@ public class OrderResponse {
   private Long cardId;
 
   private CardType purchaseType;
-
-  private OrderType orderType;
 
   private String shopName;
 

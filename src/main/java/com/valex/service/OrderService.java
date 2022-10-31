@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface OrderService {
 
-  List<Order> findAll();
-
   OrderDto create (CreateOrderVo createOrderVo);
 
   void delete (Long id);

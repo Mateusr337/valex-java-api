@@ -2,7 +2,6 @@ package com.valex.service;
 
 import static com.valex.domain.enumeration.CardType.CREDIT;
 import static com.valex.domain.enumeration.CardType.DEBIT;
-import static com.valex.domain.enumeration.OrderType.IN_PERSON;
 import static com.valex.domain.mother.CardMother.getActivatedCard;
 import static com.valex.domain.mother.CardMother.getActivatedCardDto;
 import static com.valex.domain.mother.CardMother.getCardDtoWithId;
@@ -14,12 +13,13 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
-import com.valex.domain.enumeration.OrderType;
 import com.valex.domain.exception.BadRequestException;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Card;
@@ -32,8 +32,10 @@ import com.valex.repository.ProductRepository;
 import com.valex.service.impl.OrderServiceImpl;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,9 +60,9 @@ public class OrderServiceUnitTest {
   @Test
   void givenValidCreateCreditInPersonOrderThenReturnCreatedOrder () {
     Card card = getActivatedCard(CREDIT);
-    Order order = getOrder(card, card.getType(), IN_PERSON);
+    Order order = getOrder(card, card.getType());
     Product product = ProductMother.getProduct(card.getId());
-    OrderDto orderDto = getOrderDto(card, CREDIT, IN_PERSON);
+    OrderDto orderDto = getOrderDto(card, CREDIT);
     CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
 
     given(cardService.findByIdOrFail(anyLong())).willReturn(getActivatedCardDto(CREDIT));
@@ -171,5 +173,17 @@ public class OrderServiceUnitTest {
       then(e.getClass()).isEqualTo(BadRequestException.class);
       then(e.getMessage()).isEqualTo("Amount unauthorized.");
     }
+  }
+
+  @Test
+  void givenValidIdThenDeleteOrder () {
+    Card card = getActivatedCard(DEBIT);
+    Order order = getOrder(card, card.getType());
+    given(orderRepository.findById(order.getId())).willReturn(Optional.of(order));
+    doNothing().when(orderRepository).deleteById(order.getId());
+
+    orderService.delete(order.getId());
+
+    verify(orderRepository).findById(order.getId());
   }
 }
