@@ -13,6 +13,7 @@ import com.valex.domain.vo.CreateOrderVo;
 import java.util.ArrayList;
 import java.util.List;
 import org.mapstruct.AfterMapping;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -25,8 +26,10 @@ public interface OrderMapper {
   @Mapping(target = "id", ignore = true)
   Order voToModel (CreateOrderVo createOrderVo);
 
-  @Mapping(target = "products", ignore = true)
+//  @Mapping (target = "products", ignore = true)
   OrderDto modelToDto (Order order);
+
+  List<OrderDto> modelToDto (List<Order> orders);
 
   @Mapping (target = "cardId", ignore = true)
   OrderResponse dtoToResponse (OrderDto orderDto);
@@ -42,7 +45,7 @@ public interface OrderMapper {
   }
 
   @AfterMapping
-  default void setCardId(
+  default void setCardId (
       @MappingTarget OrderResponse orderResponse,
       OrderDto orderDto
   ) {
@@ -50,7 +53,7 @@ public interface OrderMapper {
   }
 
   @AfterMapping
-  default void setProductsDto(
+  default void setProductsDto (
       @MappingTarget Order order,
       OrderDto orderDto
   ) {
@@ -58,10 +61,10 @@ public interface OrderMapper {
     for (Product product : order.getProducts() ) {
 
       ProductDto productDto = new ProductDto();
-      productDto.setId(productDto.getId());
-      productDto.setTitle(productDto.getTitle());
-      productDto.setDescription(productDto.getDescription());
-      productDto.setPrice(productDto.getPrice());
+      productDto.setId(product.getId());
+      productDto.setTitle(product.getTitle());
+      productDto.setDescription(product.getDescription());
+      productDto.setPrice(product.getPrice());
       products.add(productDto);
     }
     orderDto.setProducts(products);

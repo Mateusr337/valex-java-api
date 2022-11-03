@@ -22,6 +22,4 @@ public class ProductResponse {
 
   private Long price;
 
-  private Long orderId;
-
 }

@@ -1,25 +1,25 @@
 package com.valex.domain.dto;
 
 import com.valex.domain.model.Order;
+import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductDto {
+public class InvoiceDto {
 
-  private Long id;
-
-  private String title;
-
-  private String description;
-
-  private Long price;
+  private Long totalPrice;
+  private Date paymentDateLimit;
+  private Date startDate;
+  private Date endDate;
+  private List<OrderDto> orders;
 
 }

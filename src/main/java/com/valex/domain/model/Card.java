@@ -1,5 +1,6 @@
 package com.valex.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.valex.domain.enumeration.CardStatus;
 import com.valex.domain.enumeration.CardType;
 import java.util.Date;
@@ -64,5 +65,6 @@ public class Card {
   )
   @Column (name = "orders")
   @Exclude
+  @JsonIgnore
   private Set<Order> orders;
 }
