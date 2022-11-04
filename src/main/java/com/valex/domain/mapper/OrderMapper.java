@@ -13,7 +13,6 @@ import com.valex.domain.vo.CreateOrderVo;
 import java.util.ArrayList;
 import java.util.List;
 import org.mapstruct.AfterMapping;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -26,16 +25,16 @@ public interface OrderMapper {
   @Mapping(target = "id", ignore = true)
   Order voToModel (CreateOrderVo createOrderVo);
 
-//  @Mapping (target = "products", ignore = true)
   OrderDto modelToDto (Order order);
 
   List<OrderDto> modelToDto (List<Order> orders);
 
-  @Mapping (target = "cardId", ignore = true)
   OrderResponse dtoToResponse (OrderDto orderDto);
 
+  List<OrderResponse> dtoToResponse (List<OrderDto> orderDtoList);
+
   @AfterMapping
-  default void setCard (
+  default void setCardIdRequestToVo (
       @MappingTarget CreateOrderVo createOrderVo,
       CreateOrderRequest createOrderRequest
   ) {
@@ -45,29 +44,18 @@ public interface OrderMapper {
   }
 
   @AfterMapping
-  default void setCardId (
+  default void setCardIdDtoToResponse (
       @MappingTarget OrderResponse orderResponse,
       OrderDto orderDto
-  ) {
-    orderResponse.setCardId(orderDto.getCard().getId());
-  }
+  ) { orderResponse.setCardId(orderDto.getCard().getId()); }
 
   @AfterMapping
-  default void setProductsDto (
-      @MappingTarget Order order,
-      OrderDto orderDto
+  default void setCardIdDtoListToResponseList (
+      @MappingTarget List<OrderResponse> orderResponseList,
+      List<OrderDto> orderDtoList
   ) {
-    List<ProductDto> products = new ArrayList<>();
-    for (Product product : order.getProducts() ) {
-
-      ProductDto productDto = new ProductDto();
-      productDto.setId(product.getId());
-      productDto.setTitle(product.getTitle());
-      productDto.setDescription(product.getDescription());
-      productDto.setPrice(product.getPrice());
-      products.add(productDto);
+    for (int i = 0; i < orderDtoList.size(); i++) {
+      orderResponseList.get(i).setCardId(orderDtoList.get(i).getCard().getId());
     }
-    orderDto.setProducts(products);
-
   }
 }

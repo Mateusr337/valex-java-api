@@ -31,12 +31,12 @@ public interface ProductMapper {
 
   List<ProductResponse> dtoToResponse (List<ProductDto> productDtoList);
 
-//  @AfterMapping
-//  default void setOrderId (
-//      @MappingTarget ProductDto dto,
-//      ProductResponse response
-//  ) {
-//    response.setOrderId(dto.getOrder().getId());
-//  }
+  @AfterMapping
+  default void setOrderId (
+      @MappingTarget ProductDto dto,
+      ProductResponse response
+  ) {
+    response.setOrderId(dto.getOrderId());
+  }
 
 }

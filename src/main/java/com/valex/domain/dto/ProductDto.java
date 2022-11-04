@@ -22,4 +22,6 @@ public class ProductDto {
 
   private Long price;
 
+  private Long orderId;
+
 }

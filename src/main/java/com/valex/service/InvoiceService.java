@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface InvoiceService {
 
-  InvoiceDto getInvoiceByMonth(Long cardId, Integer month);
+  InvoiceDto getInvoiceByCardIdAndMonth(Long cardId, Integer month, Integer year);
 
 }
