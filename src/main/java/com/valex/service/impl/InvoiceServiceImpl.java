@@ -19,6 +19,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 
+  private static final Integer INVOICE_INITIAL_DAY = 9;
+  private static final Integer INVOICE_FINAL_DAY = 9;
+  private static final Integer INVOICE_VALIDATE_DAY = 18;
+
   @Autowired
   private CardService cardService;
 
@@ -27,8 +31,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   public InvoiceDto getInvoiceByCardIdAndMonth (Long cardId, Integer month, Integer year) {
     cardService.findByIdOrFail(cardId);
-    Calendar startDate = getStartDate(month, year);
-    Calendar finalDate = getFinalDate(month, year);
+    Calendar startDate = getDate(INVOICE_INITIAL_DAY, month, year, 2);
+    Calendar finalDate = getDate(INVOICE_FINAL_DAY, month, year, 1);
+    Calendar paymentDate = getDate(INVOICE_VALIDATE_DAY, month, year, 1);
 
     List<OrderDto> orders = orderService.findOrderByPeriodAndCardId(
         cardId,
@@ -41,35 +46,17 @@ public class InvoiceServiceImpl implements InvoiceService {
     invoiceDto.setTotalPrice(calculateInvoiceTotalPrice(orders));
     invoiceDto.setStartDate(startDate.getTime());
     invoiceDto.setEndDate(finalDate.getTime());
-    invoiceDto.setPaymentDateLimit(formatPaymentLimitDate(finalDate).getTime());
+    invoiceDto.setPaymentDateLimit(paymentDate.getTime());
     return invoiceDto;
   }
 
-  private Calendar getStartDate (Integer month, Integer year) {
-    Calendar startDate = Calendar.getInstance();
-    int monthStartDate = formatMonth(month, 2);
-    if (monthStartDate > month) year --;
+  private Calendar getDate (int day, int month, int year, int decreaseMonth) {
+    Calendar date = Calendar.getInstance();
+    int calendarMonth = formatMonth(month, decreaseMonth);
+    if (calendarMonth > month) year --;
 
-    startDate.set(year, monthStartDate, 10, 0, 0, 0);
-    return startDate;
-  }
-
-  private Calendar getFinalDate (Integer month, Integer year) {
-    Calendar finalDate = Calendar.getInstance();
-    int monthFinalDate = formatMonth(month, 1);
-    if (monthFinalDate > month) year --;
-
-    finalDate.set(year, monthFinalDate, 9, 0, 0, 0);
-    return finalDate;
-  }
-
-  private Calendar formatPaymentLimitDate (Calendar finalDate) {
-    Calendar paymentLimitDate = finalDate;
-    paymentLimitDate.set(DAY_OF_MONTH, 18);
-    paymentLimitDate.set(HOUR_OF_DAY, 23);
-    paymentLimitDate.set(MINUTE, 59);
-    paymentLimitDate.set(SECOND, 59);
-    return paymentLimitDate;
+    date.set(year, calendarMonth, day, 0, 0, 0);
+    return date;
   }
 
   private Long calculateInvoiceTotalPrice (List<OrderDto> orders) {
