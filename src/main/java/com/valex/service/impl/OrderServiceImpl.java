@@ -64,17 +64,15 @@ public class OrderServiceImpl implements OrderService {
     if (optionalOrder.isEmpty()) {
       throw new NotFoundException("Order Not Found.");
     }
-
     Order order = optionalOrder.get();
     orderRepository.deleteById(order.getId());
   }
 
-  public List<OrderDto> findOrderByPeriodAndCardId (Long cardId, Date startDate, Date finalDate) {
+  public List<OrderDto> findOrderByPeriodAndCardId (
+      Long cardId, Date startDate, Date finalDate
+  ) {
     List<Order> orders = orderRepository.findByCardIdAndByDateBetween(
-        cardId,
-        startDate,
-        finalDate
-    );
+        cardId, startDate, finalDate);
     return orderMapper.modelToDto(orders);
   }
 }

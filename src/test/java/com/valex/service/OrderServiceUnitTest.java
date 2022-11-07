@@ -19,8 +19,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.valex.domain.dto.CardDto;
+import com.valex.domain.dto.InvoiceDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.exception.BadRequestException;
+import com.valex.domain.exception.NotFoundException;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Card;
 import com.valex.domain.model.Order;
@@ -67,6 +69,33 @@ public class OrderServiceUnitTest {
     CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, cardDto);
 
     given(cardService.findByIdOrFail(anyLong())).willReturn(getActivatedCardDto(CREDIT));
+    given(orderMapper.voToModel(any())).willReturn(order);
+    given(orderRepository.save(any())).willReturn(order);
+    given(productRepository.saveAll(anyList())).willReturn(List.of(product));
+    given(orderMapper.modelToDto(any(Order.class))).willReturn(orderDto);
+
+    OrderDto response = orderService.create(createOrderVo);
+
+    verify(cardService).findByIdOrFail(createOrderVo.getCard().getId());
+    verify(orderMapper).voToModel(createOrderVo);
+    verify(orderRepository).save(order);
+    verify(productRepository).saveAll(any());
+    verify(orderMapper).modelToDto(order);
+
+    then(response).isEqualTo(orderDto);
+  }
+
+  @Test
+  void givenValidCreateDebitInPersonOrderThenReturnCreatedOrder () {
+    Long amount = 1000000000L;
+    Card card = getActivatedCard(DEBIT, amount);
+    CardDto cardDto = getActivatedCardDto(card.getType(), amount);
+    Order order = getOrder(card, card.getType());
+    Product product = ProductMother.getProduct(card.getId());
+    OrderDto orderDto = getOrderDto(cardDto, card.getType());
+    CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), cardDto);
+
+    given(cardService.findByIdOrFail(anyLong())).willReturn(cardDto);
     given(orderMapper.voToModel(any())).willReturn(order);
     given(orderRepository.save(any())).willReturn(order);
     given(productRepository.saveAll(anyList())).willReturn(List.of(product));
@@ -181,5 +210,47 @@ public class OrderServiceUnitTest {
     orderService.delete(order.getId());
 
     verify(orderRepository).findById(order.getId());
+  }
+
+  @Test
+  void givenInvalidIdThenReturnThrow () {
+    Card card = getActivatedCard(DEBIT);
+    Order order = getOrder(card, card.getType());
+    given(orderRepository.findById(order.getId())).willReturn(Optional.empty());
+
+    doNothing().when(orderRepository).deleteById(order.getId());
+
+    try {
+      orderService.delete(order.getId());
+    } catch (Exception e) {
+      then(e.getClass()).isEqualTo(NotFoundException.class);
+      then(e.getMessage()).isEqualTo("Order Not Found.");
+    }
+  }
+
+  @Test
+  void givenFindOrderByPeriodAndCardIdThenReturnOrderListDto () {
+    Card card = getActivatedCard(DEBIT);
+    CardDto cardDto = getCardDtoWithId(card.getType());
+    Order order = getOrder(card, card.getType());
+    OrderDto orderDto = getOrderDto(cardDto, cardDto.getType());
+
+    Date date = new Date();
+
+    given(orderRepository.findByCardIdAndByDateBetween(
+        anyLong(), any(Date.class), any(Date.class)))
+        .willReturn(List.of(order));
+
+    given(orderMapper.modelToDto(anyList()))
+        .willReturn(List.of(orderDto));
+
+    List<OrderDto> response = orderService.findOrderByPeriodAndCardId(
+        card.getId(), date, date);
+
+    verify(orderRepository).
+        findByCardIdAndByDateBetween(card.getId(), date, date);
+    verify(orderMapper).modelToDto(List.of(order));
+
+    then(response.get(0)).isEqualTo(orderDto);
   }
 }

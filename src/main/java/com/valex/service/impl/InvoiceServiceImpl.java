@@ -1,10 +1,5 @@
 package com.valex.service.impl;
 
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.HOUR_OF_DAY;
-import static java.util.Calendar.MINUTE;
-import static java.util.Calendar.SECOND;
-
 import com.valex.domain.dto.InvoiceDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.dto.ProductDto;
