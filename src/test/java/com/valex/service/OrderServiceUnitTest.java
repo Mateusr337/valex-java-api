@@ -60,16 +60,17 @@ public class OrderServiceUnitTest {
   @Test
   void givenValidCreateCreditInPersonOrderThenReturnCreatedOrder () {
     Card card = getActivatedCard(CREDIT);
+    CardDto cardDto = getActivatedCardDto(card.getType());
     Order order = getOrder(card, card.getType());
     Product product = ProductMother.getProduct(card.getId());
-    OrderDto orderDto = getOrderDto(card, CREDIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
+    OrderDto orderDto = getOrderDto(cardDto, CREDIT);
+    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, cardDto);
 
     given(cardService.findByIdOrFail(anyLong())).willReturn(getActivatedCardDto(CREDIT));
     given(orderMapper.voToModel(any())).willReturn(order);
     given(orderRepository.save(any())).willReturn(order);
     given(productRepository.saveAll(anyList())).willReturn(List.of(product));
-    given(orderMapper.modelToDto(any())).willReturn(orderDto);
+    given(orderMapper.modelToDto(any(Order.class))).willReturn(orderDto);
 
     OrderDto response = orderService.create(createOrderVo);
 
@@ -84,8 +85,8 @@ public class OrderServiceUnitTest {
 
   @Test
   void givenInactiveCardThenReturnBadRequest () {
-    Card card = getActivatedCard(CREDIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
+    CardDto cardDto = getActivatedCardDto(CREDIT);
+    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, cardDto);
 
     given(cardService.findByIdOrFail(anyLong())).willReturn(getCardDtoWithId(CREDIT));
 
@@ -101,11 +102,9 @@ public class OrderServiceUnitTest {
 
   @Test
   void givenExpiredCardThenReturnBadRequest () {
-    Card card = getActivatedCard(CREDIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
-
     CardDto cardDto = getActivatedCardDto(CREDIT);
     cardDto.setExpirationDate(new Date());
+    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, cardDto);
 
     given(cardService.findByIdOrFail(anyLong())).willReturn(cardDto);
 
@@ -121,10 +120,9 @@ public class OrderServiceUnitTest {
 
   @Test
   void givenRequestTypeInvalidCardThenReturnBadRequest () {
-    Card card = getActivatedCard(CREDIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(DEBIT, card);
-
     CardDto cardDto = getActivatedCardDto(CREDIT);
+    CreateOrderVo createOrderVo = getCreateOrderVo(DEBIT, cardDto);
+
     given(cardService.findByIdOrFail(anyLong())).willReturn(cardDto);
 
     try {
@@ -139,10 +137,9 @@ public class OrderServiceUnitTest {
 
   @Test
   void givenInvalidAmountCreditCardThenReturnBadRequest () {
-    Card card = getActivatedCard(CREDIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, card);
-
     CardDto cardDto = getActivatedCardDto(CREDIT);
+    CreateOrderVo createOrderVo = getCreateOrderVo(CREDIT, cardDto);
+
     cardDto.setLimit(0L);
     given(cardService.findByIdOrFail(anyLong())).willReturn(cardDto);
 
@@ -158,10 +155,9 @@ public class OrderServiceUnitTest {
 
   @Test
   void givenInvalidAmountDebitCardThenReturnBadRequest () {
-    Card card = getActivatedCard(DEBIT);
-    CreateOrderVo createOrderVo = getCreateOrderVo(DEBIT, card);
-
     CardDto cardDto = getActivatedCardDto(DEBIT);
+    CreateOrderVo createOrderVo = getCreateOrderVo(DEBIT, cardDto);
+
     cardDto.setBalance(0L);
     given(cardService.findByIdOrFail(anyLong())).willReturn(cardDto);
 

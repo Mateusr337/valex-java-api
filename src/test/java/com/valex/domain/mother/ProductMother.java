@@ -44,14 +44,11 @@ public final class ProductMother {
   public static ProductDto getProductDto (Long orderId) {
     ProductDto product = new ProductDto();
 
-    OrderDto order = new OrderDto();
-    order.setId(orderId);
-
     product.setId(ID);
     product.setTitle(TITLE);
     product.setDescription(DESCRIPTION);
     product.setPrice(PRICE);
-    product.setOrder(order);
+    product.setOrderId(orderId);
 
     return product;
   }
