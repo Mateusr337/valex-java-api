@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.mapper.OrderMapper;
 import com.valex.domain.model.Card;
@@ -54,14 +55,14 @@ public class OrderControllerUnitTest {
   @Test
   @WithMockUser
   void givenCreateCreditOrderRequestReturnCreatedOrder () throws Exception {
-    Card card = getActivatedCard(CREDIT);
-    CreateOrderRequest createOrderRequest = getCreateOrderRequest(card.getId(), card.getType());
-    CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), card);
-    OrderDto orderDto = getOrderDto(card, card.getType());
-    OrderResponse orderResponse = getOrderResponse(card, card.getType());
+    CardDto cardDto = getActivatedCardDto(CREDIT);
+    CreateOrderRequest createOrderRequest = getCreateOrderRequest(cardDto.getId(), cardDto.getType());
+    CreateOrderVo createOrderVo = getCreateOrderVo(cardDto.getType(), cardDto);
+    OrderDto orderDto = getOrderDto(cardDto, cardDto.getType());
+    OrderResponse orderResponse = getOrderResponse(cardDto.getId(), cardDto.getType());
 
     given(orderMapper.requestToVo(any())).willReturn(createOrderVo);
-    given(orderMapper.dtoToResponse(any())).willReturn(orderResponse);
+    given(orderMapper.dtoToResponse(any(OrderDto.class))).willReturn(orderResponse);
     given(orderService.create(any())).willReturn(orderDto);
 
     mvc.perform(post(BASE_URL)
@@ -78,14 +79,14 @@ public class OrderControllerUnitTest {
   @Test
   @WithMockUser
   void givenCreateDebitOrderRequestReturnCreatedOrder () throws Exception {
-    Card card = getActivatedCard(DEBIT);
-    CreateOrderRequest createOrderRequest = getCreateOrderRequest(card.getId(), card.getType());
-    CreateOrderVo createOrderVo = getCreateOrderVo(card.getType(), card);
-    OrderDto orderDto = getOrderDto(card, card.getType());
-    OrderResponse orderResponse = getOrderResponse(card, card.getType());
+    CardDto cardDto = getActivatedCardDto(DEBIT);
+    CreateOrderRequest createOrderRequest = getCreateOrderRequest(cardDto.getId(), cardDto.getType());
+    CreateOrderVo createOrderVo = getCreateOrderVo(cardDto.getType(), cardDto);
+    OrderDto orderDto = getOrderDto(cardDto, cardDto.getType());
+    OrderResponse orderResponse = getOrderResponse(cardDto.getId(), cardDto.getType());
 
     given(orderMapper.requestToVo(any())).willReturn(createOrderVo);
-    given(orderMapper.dtoToResponse(any())).willReturn(orderResponse);
+    given(orderMapper.dtoToResponse(any(OrderDto.class))).willReturn(orderResponse);
     given(orderService.create(any())).willReturn(orderDto);
 
     mvc.perform(post(BASE_URL)

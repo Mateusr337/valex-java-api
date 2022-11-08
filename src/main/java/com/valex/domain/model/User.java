@@ -56,6 +56,8 @@ public class User implements UserDetails {
       fetch = FetchType.LAZY
   )
   @Column (name = "cards")
+  @Exclude
+  @JsonIgnore
   private Set<Card> cards;
 
   @Override

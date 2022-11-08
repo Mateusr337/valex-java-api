@@ -2,6 +2,7 @@ package com.valex.domain.mapper;
 
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
+import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.dto.ProductDto;
 import com.valex.domain.model.Card;
@@ -25,46 +26,37 @@ public interface OrderMapper {
   @Mapping(target = "id", ignore = true)
   Order voToModel (CreateOrderVo createOrderVo);
 
-  @Mapping(target = "products", ignore = true)
   OrderDto modelToDto (Order order);
 
-  @Mapping (target = "cardId", ignore = true)
+  List<OrderDto> modelToDto (List<Order> orders);
+
   OrderResponse dtoToResponse (OrderDto orderDto);
 
+  List<OrderResponse> dtoToResponse (List<OrderDto> orderDtoList);
+
   @AfterMapping
-  default void setCard (
+  default void setCardIdRequestToVo (
       @MappingTarget CreateOrderVo createOrderVo,
       CreateOrderRequest createOrderRequest
   ) {
-    Card card = new Card();
-    card.setId(createOrderRequest.getCardId());
-    createOrderVo.setCard(card);
+    CardDto cardDto = new CardDto();
+    cardDto.setId(createOrderRequest.getCardId());
+    createOrderVo.setCard(cardDto);
   }
 
   @AfterMapping
-  default void setCardId(
+  default void setCardIdDtoToResponse (
       @MappingTarget OrderResponse orderResponse,
       OrderDto orderDto
-  ) {
-    orderResponse.setCardId(orderDto.getCard().getId());
-  }
+  ) { orderResponse.setCardId(orderDto.getCard().getId()); }
 
   @AfterMapping
-  default void setProductsDto(
-      @MappingTarget Order order,
-      OrderDto orderDto
+  default void setCardIdDtoListToResponseList (
+      @MappingTarget List<OrderResponse> orderResponseList,
+      List<OrderDto> orderDtoList
   ) {
-    List<ProductDto> products = new ArrayList<>();
-    for (Product product : order.getProducts() ) {
-
-      ProductDto productDto = new ProductDto();
-      productDto.setId(productDto.getId());
-      productDto.setTitle(productDto.getTitle());
-      productDto.setDescription(productDto.getDescription());
-      productDto.setPrice(productDto.getPrice());
-      products.add(productDto);
+    for (int i = 0; i < orderDtoList.size(); i++) {
+      orderResponseList.get(i).setCardId(orderDtoList.get(i).getCard().getId());
     }
-    orderDto.setProducts(products);
-
   }
 }

@@ -5,6 +5,7 @@ import static com.valex.domain.mother.ProductMother.getProductDto;
 import static com.valex.domain.mother.ProductMother.getProductResponse;
 import static com.valex.domain.mother.ProductMother.getProductsOrderRequest;
 
+import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
@@ -23,11 +24,11 @@ public final class OrderMother {
 
   private static final Long ID = 8L;
 
-  public static CreateOrderVo getCreateOrderVo (CardType purchaseType, Card card) {
+  public static CreateOrderVo getCreateOrderVo (CardType purchaseType, CardDto cardDto) {
     ProductRequest product = getProductsOrderRequest();
     CreateOrderVo createOrderVo = new CreateOrderVo();
 
-    createOrderVo.setCard(card);
+    createOrderVo.setCard(cardDto);
     createOrderVo.setPurchaseType(purchaseType);
     createOrderVo.setShopName(SHOP_NAME);
     createOrderVo.setPasscode(PASSCODE);
@@ -63,28 +64,28 @@ public final class OrderMother {
     return order;
   }
 
-  public static OrderDto getOrderDto (Card card, CardType purchaseType) {
+  public static OrderDto getOrderDto (CardDto cardDto, CardType purchaseType) {
     OrderDto orderDto = new OrderDto();
 
     orderDto.setId(ID);
-    orderDto.setCard(card);
+    orderDto.setCard(cardDto);
     orderDto.setPurchaseType(purchaseType);
     orderDto.setDate(new Date());
     orderDto.setShopName(SHOP_NAME);
-    orderDto.setProducts(List.of(getProductDto(card.getId())));
+    orderDto.setProducts(List.of(getProductDto(cardDto.getId())));
 
     return orderDto;
   }
 
-  public static OrderResponse getOrderResponse (Card card, CardType purchaseType) {
+  public static OrderResponse getOrderResponse (Long cardId, CardType purchaseType) {
     OrderResponse orderResponse = new OrderResponse();
 
     orderResponse.setId(ID);
-    orderResponse.setCardId(card.getId());
+    orderResponse.setCardId(cardId);
     orderResponse.setPurchaseType(purchaseType);
     orderResponse.setDate(new Date());
     orderResponse.setShopName(SHOP_NAME);
-    orderResponse.setProducts(List.of(getProductResponse(card.getId())));
+    orderResponse.setProducts(List.of(getProductResponse(cardId)));
 
     return orderResponse;
   }

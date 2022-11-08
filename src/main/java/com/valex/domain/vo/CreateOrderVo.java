@@ -1,5 +1,6 @@
 package com.valex.domain.vo;
 
+import com.valex.domain.dto.CardDto;
 import com.valex.domain.enumeration.CardType;
 import com.valex.domain.model.Card;
 import com.valex.domain.request.ProductRequest;
@@ -18,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CreateOrderVo {
 
-  private Card card;
+  private CardDto card;
 
   private CardType purchaseType;
 

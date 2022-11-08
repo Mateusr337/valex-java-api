@@ -76,11 +76,28 @@ public final class CardMother {
     return cardDto;
   }
 
+  public static CardDto getActivatedCardDto (CardType cardType, Long balance) {
+    CardDto cardDto = getCardDtoWithId(cardType);
+    cardDto.setPasscode(getEncodedPasscode());
+    cardDto.setStatus(ACTIVE);
+    cardDto.setBalance(balance);
+    return cardDto;
+  }
+
   public static Card getActivatedCard (CardType cardType) {
     Card card = getCardWithId(cardType);
     card.setPasscode(getEncodedPasscode());
     card.setStatus(ACTIVE);
     card.setBalance(0L);
+    card.setExpirationDate(generateExpirationDate());
+    return card;
+  }
+
+  public static Card getActivatedCard (CardType cardType, Long amount) {
+    Card card = getCardWithId(cardType);
+    card.setPasscode(getEncodedPasscode());
+    card.setStatus(ACTIVE);
+    card.setBalance(amount);
     card.setExpirationDate(generateExpirationDate());
     return card;
   }

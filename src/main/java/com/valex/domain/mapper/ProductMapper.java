@@ -11,6 +11,7 @@ import com.valex.domain.response.ProductResponse;
 import com.valex.domain.vo.CreateOrderVo;
 import java.util.List;
 import org.mapstruct.AfterMapping;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -22,8 +23,10 @@ public interface ProductMapper {
 
   Product dtoToModel (ProductDto productDto);
 
+  @InheritInverseConfiguration
   ProductDto modelToDto (Product product);
 
+  @InheritInverseConfiguration
   List<ProductDto> modelToDto (List<Product> product);
 
   List<ProductResponse> dtoToResponse (List<ProductDto> productDtoList);
@@ -33,7 +36,7 @@ public interface ProductMapper {
       @MappingTarget ProductDto dto,
       ProductResponse response
   ) {
-    response.setOrderId(dto.getOrder().getId());
+    response.setOrderId(dto.getOrderId());
   }
 
 }

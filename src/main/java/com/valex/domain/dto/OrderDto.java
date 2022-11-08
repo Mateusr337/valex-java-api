@@ -19,7 +19,7 @@ public class OrderDto {
 
   private Long id;
 
-  private Card card;
+  private CardDto card;
 
   private CardType purchaseType;
 

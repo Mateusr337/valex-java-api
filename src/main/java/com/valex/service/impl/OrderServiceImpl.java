@@ -15,6 +15,7 @@ import com.valex.repository.OrderRepository;
 import com.valex.repository.ProductRepository;
 import com.valex.service.CardService;
 import com.valex.service.OrderService;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     CardDto cardDto = cardService.findByIdOrFail(createOrderVo.getCard().getId());
     ValidateCardToCreateOrder.valid(cardDto, createOrderVo);
 
-    createOrderVo.setDate(new Date());
+    createOrderVo.setDate(Calendar.getInstance().getTime());
     Order order = orderRepository.save(orderMapper.voToModel(createOrderVo));
 
     if (order.getPurchaseType() == DEBIT) {
@@ -63,8 +64,15 @@ public class OrderServiceImpl implements OrderService {
     if (optionalOrder.isEmpty()) {
       throw new NotFoundException("Order Not Found.");
     }
-
     Order order = optionalOrder.get();
     orderRepository.deleteById(order.getId());
+  }
+
+  public List<OrderDto> findOrderByPeriodAndCardId (
+      Long cardId, Date startDate, Date finalDate
+  ) {
+    List<Order> orders = orderRepository.findByCardIdAndByDateBetween(
+        cardId, startDate, finalDate);
+    return orderMapper.modelToDto(orders);
   }
 }
