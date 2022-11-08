@@ -28,7 +28,7 @@ public class InvoiceController {
 
   @GetMapping ("/cards/{cardId}/months/{month}/years/{year}")
   @ResponseStatus (code = HttpStatus.OK)
-  public InvoiceResponse getInvoiceByCardIdAndMonth (
+  public InvoiceResponse getInvoiceByCardIdAndBetweenDate (
       @PathVariable ("cardId") Long cardId,
       @PathVariable ("month") Integer month,
       @PathVariable ("year") Integer year
