@@ -58,13 +58,4 @@ public final class ValidateCardToCreateOrder {
     Encoder.matches(request
         .getPasscode(), card.getPasscode());
   }
-
-  private static void validateVirtualShop (CardDto card, CreateOrderVo request) {
-    // validar o cvv
-
-    if (card.getType() != CREDIT || request
-        .getPurchaseType() != CREDIT) {
-      throw new BadRequestException("Transaction type invalid.");
-    }
-  }
 }

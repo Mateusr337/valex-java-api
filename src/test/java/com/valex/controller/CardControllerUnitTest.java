@@ -18,7 +18,6 @@ import com.valex.domain.model.User;
 import com.valex.domain.request.ActivateCardRequest;
 import com.valex.domain.request.CardRequest;
 import com.valex.domain.response.CardResponse;
-import com.valex.service.CardService;
 import com.valex.service.impl.CardServiceImpl;
 import java.util.List;
 import org.junit.jupiter.api.Test;
