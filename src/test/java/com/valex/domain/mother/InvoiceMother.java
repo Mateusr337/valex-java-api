@@ -1,8 +1,5 @@
 package com.valex.domain.mother;
 
-import static com.valex.domain.mother.OrderMother.getOrderDto;
-
-import com.valex.domain.dto.CardDto;
 import com.valex.domain.dto.InvoiceDto;
 import com.valex.domain.dto.OrderDto;
 import com.valex.domain.response.InvoiceResponse;

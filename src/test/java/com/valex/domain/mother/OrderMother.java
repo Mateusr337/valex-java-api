@@ -64,6 +64,18 @@ public final class OrderMother {
     return order;
   }
 
+  public static Order getOrderWithoutId (Card card, CardType purchaseType) {
+    Order order = new Order();
+
+    order.setCard(card);
+    order.setPurchaseType(purchaseType);
+    order.setDate(new Date());
+    order.setShopName(SHOP_NAME);
+    order.setProducts(List.of(getProduct(card.getId())));
+
+    return order;
+  }
+
   public static OrderDto getOrderDto (CardDto cardDto, CardType purchaseType) {
     OrderDto orderDto = new OrderDto();
 
