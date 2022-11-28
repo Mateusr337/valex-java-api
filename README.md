@@ -7,17 +7,23 @@ Valex é uma aplicação feita em java e postgres que após se cadastrar e cessa
 
 ## :hammer: Features
 
-:ballot_box_with_check: `Sign Up` - Recebe nome de usuario, foto, email e senha.
+:ballot_box_with_check: POST `/users` - Recebe name, 'cpf', 'email' e 'password'.
 
-:ballot_box_with_check: `Login` - Recebe email e senha.
+:ballot_box_with_check: GET `/users/:userId` - Busca usuários pelo id.
 
-:ballot_box_with_check: `Search` - Poso usar para pesquisar usuários ou hashtags.
+:ballot_box_with_check: POST `/login` - Recebe 'email' e 'password'.
 
-:ballot_box_with_check: `Follow and Unfollow` - Segue ou deixa de seguir um usuário.
+:ballot_box_with_check: POST `/cards` - Recebe 'userId', 'type' (CREDIT ou DEBIT), 'limit'.
 
-:ballot_box_with_check: `Timeline` - Você pode publicar posts. Recebe um link que busca as informações e uma descrição.
+:ballot_box_with_check: GET `/cards/users/:userId` - Busca os cards do usuário.
 
-:ballot_box_with_check: `Posts` - Carrega os posts publicados pelos usuários.
+:ballot_box_with_check: POST `/cards/activate/:cardId` - Recebe 'passcode'. Ativa cartões criados para utilização.
+
+:ballot_box_with_check: POST `/orders` - Recebe 'purchaseType', 'cardId', 'shopName', 'passcode', 'products': [{'title': '', 'description': '', 'price': 0}].
+
+:ballot_box_with_check: DELETE `/orders/:orderId` - Deleta compras realizadas polo id.
+
+:ballot_box_with_check: GET `/invoices/cards/:cardId/months/:monthNumber(0-11)/years/:yearNumber` - Busca a fatura mensal da data indicada.
 
 ## :woman_technologist: Tecnologias
 
